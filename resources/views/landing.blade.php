@@ -336,35 +336,6 @@
         </div>
     </section>
 
-    <!-- Galeri Section dengan Carousel -->
-    @php
-        $galleries = [
-            [
-                'title' => 'Pengajian MUI - DMI TK. Kelurahan Tamanjaya',
-                'images' => ['pengajian.jpg', 'pengajian(2).jpg', 'pengajian(3).jpg']
-            ],
-            [
-                'title' => 'Idul Adha',
-                'images' => ['idul-adha.jpeg', 'idhul_adha(2).jpg', 'idhul_adha(3).jpg']
-            ],
-            [
-                'title' => 'Tasyakur dan Akad Pembelian Ambulance',
-                'images' => ['Tasyakur dan akad pembelian mobil ambulance.jpg', 'Tasyakur dan akad pembelian mobil ambulance(2).jpg', 'Tasyakur dan akad pembelian mobil ambulance(3).jpg']
-            ],
-            [
-                'title' => 'Peringatan 1 Muharram',
-                'images' => ['1 muharam.jpg', '1 muharam(2).jpg', '1 muharam(3).jpg']
-            ],
-            [
-                'title' => 'Maulid Nabi',
-                'images' => ['maulid(2).jpg', 'maulid.jpg', 'maulid(3).jpg']
-            ],
-            [
-                'title' => 'Santunan Anak Yatim',
-                'images' => ['santunan.jpg', 'santunan(2).jpg', 'santunan(3).jpg']
-            ],
-        ];
-    @endphp
     <section id="galeri" class="py-20 bg-white scroll-mt-20">
         <div class="container mx-auto px-4">
             <div class="text-center mb-12">
@@ -373,24 +344,31 @@
             </div>
 
             <div class="gallery-grid">
-                @foreach($galleries as $index => $gallery)
+                @foreach($galleries as $index => $group)
                 <div class="gallery-item">
                     <div class="activity-carousel" id="carousel-{{ $index + 1 }}">
                         <div class="carousel-track">
-                            @foreach($gallery['images'] as $image)
+                            @foreach($group->photos as $photo)
                             <div class="carousel-slide">
-                                <img src="{{ asset('img/' . $image) }}" alt="{{ $gallery['title'] }}">
+                                <img src="{{ asset('storage/' . $photo->image_path) }}" alt="{{ $photo->caption ?? $group->title }}">
                                 <div class="carousel-caption">
-                                    <h4 class="font-bold text-xl mb-3">{{ $gallery['title'] }}</h4>
+                                    <h4 class="font-bold text-xl mb-3">{{ $photo->caption ?? $group->title }}</h4>
                                 </div>
                             </div>
                             @endforeach
                         </div>
                         <div class="carousel-indicators">
-                            @foreach($gallery['images'] as $key => $image)
+                            @foreach($group->photos as $key => $photo)
                             <div class="carousel-indicator {{ $key === 0 ? 'active' : '' }}"></div>
                             @endforeach
                         </div>
+                    </div>
+
+                    <div class="p-4 text-center border-t border-gray-100">
+                        <h3 class="text-lg font-bold text-gray-800 mb-1">{{ $group->title }}</h3>
+                        @if($group->description)
+                        <p class="text-sm text-gray-600 line-clamp-2">{{ $group->description }}</p>
+                        @endif
                     </div>
                 </div>
                 @endforeach
