@@ -262,41 +262,89 @@
                 </p>
             </div>
 
-            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
-                <div class="bg-white rounded-xl shadow p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-                    <div class="w-14 h-14 bg-islamic-green/10 rounded-full flex items-center justify-center mb-4">
-                        <span class="text-2xl">📚</span>
+            <div class="flex overflow-x-auto gap-6 pb-8 snap-x snap-mandatory scrollbar-hide" style="-ms-overflow-style: none; scrollbar-width: none;">
+                @forelse($programs as $program)
+                <div class="min-w-[300px] md:min-w-[350px] snap-center bg-white rounded-xl shadow p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 cursor-pointer program-card group border border-gray-100"
+                    data-emoji="{{ $program->emoji ?? '📝' }}"
+                    data-title="{{ $program->title }}"
+                    data-description="{{ $program->description }}"
+                    data-schedule-type="{{ $program->schedule_type }}"
+                    data-start-date="{{ $program->start_date ? $program->start_date->translatedFormat('d F Y') : '' }}"
+                    data-end-date="{{ $program->end_date ? $program->end_date->translatedFormat('d F Y') : '' }}"
+                    data-start-time="{{ $program->start_time ? \Carbon\Carbon::parse($program->start_time)->format('H:i') : '' }}"
+                    data-end-time="{{ $program->end_time ? \Carbon\Carbon::parse($program->end_time)->format('H:i') : '' }}"
+                    data-day="{{ json_encode($program->day_of_week) }}"
+                    data-custom="{{ $program->custom_text }}">
+                    
+                    <div class="w-14 h-14 bg-islamic-green/10 rounded-full flex items-center justify-center mb-4 group-hover:bg-islamic-green/20 transition-colors">
+                        <span class="text-3xl">{{ $program->emoji ?? '📝' }}</span>
                     </div>
-                    <h3 class="text-xl font-bold mb-3">Kajian Islam Mingguan</h3>
-                    <p class="text-gray-600">Bergabunglah dengan para ulama kami setiap Jumat malam untuk diskusi yang mencerahkan tentang ajaran Islam dan isu-isu kontemporer.</p>
-                </div>
-
-                <div class="bg-white rounded-xl shadow p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-                    <div class="w-14 h-14 bg-islamic-green/10 rounded-full flex items-center justify-center mb-4">
-                        <span class="text-2xl">👥</span>
+                    <h3 class="text-xl font-bold mb-3 text-gray-800 group-hover:text-islamic-green transition-colors">{{ $program->title }}</h3>
+                    <p class="text-gray-600 line-clamp-3 mb-4">{{ $program->description }}</p>
+                    
+                    <div class="flex items-center text-sm text-islamic-green font-medium">
+                        <span>Lihat Detail</span>
+                        <svg class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                        </svg>
                     </div>
-                    <h3 class="text-xl font-bold mb-3">Kelas Quran & TPQ</h3>
-                    <p class="text-gray-600">Pendidikan Al-Quran yang komprehensif untuk segala usia, dari tajwid dasar hingga studi tafsir tingkat lanjut.</p>
                 </div>
-
-                <div class="bg-white rounded-xl shadow p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-                    <div class="w-14 h-14 bg-islamic-green/10 rounded-full flex items-center justify-center mb-4">
-                        <span class="text-2xl">❤️</span>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3">Sedekah Jumat</h3>
-                    <p class="text-gray-600">Program amal mingguan yang mendukung komunitas lokal kami, termasuk distribusi makanan dan bantuan bagi mereka yang membutuhkan.</p>
+                @empty
+                <div class="col-span-full text-center py-12 text-gray-500 w-full">
+                    <p>Belum ada program yang tersedia saat ini.</p>
                 </div>
-
-                <div class="bg-white rounded-xl shadow p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-                    <div class="w-14 h-14 bg-islamic-green/10 rounded-full flex items-center justify-center mb-4">
-                        <span class="text-2xl">🌙</span>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3">Acara Ramadan</h3>
-                    <p class="text-gray-600">Program khusus selama Ramadan termasuk sholat tarawih, buka puasa bersama, dan Qiyam al-Layl.</p>
-                </div>
+                @endforelse
             </div>
         </div>
     </section>
+
+    <!-- Program Detail Modal -->
+    <div id="program-modal" class="fixed inset-0 z-[100] hidden opacity-0 transition-opacity duration-300" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity" id="modal-overlay"></div>
+
+        <div class="fixed inset-0 z-10 overflow-y-auto">
+            <div class="flex min-h-full items-center justify-center p-4 text-center sm:p-0">
+                <!-- Modal Panel -->
+                <div class="relative transform overflow-hidden rounded-2xl bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg scale-95 opacity-0 duration-300" id="modal-panel">
+                    <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+                        <button type="button" id="modal-close" class="absolute top-4 right-4 text-gray-400 hover:text-gray-500 transition-colors">
+                            <span class="sr-only">Close</span>
+                            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                        
+                        <div class="sm:flex sm:items-start">
+                            <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left w-full">
+                                <div class="flex justify-center mb-6">
+                                    <div class="w-20 h-20 bg-islamic-green/10 rounded-full flex items-center justify-center">
+                                        <span id="modal-emoji" class="text-5xl"></span>
+                                    </div>
+                                </div>
+                                
+                                <h3 class="text-2xl font-bold leading-6 text-gray-900 text-center mb-6" id="modal-title"></h3>
+                                
+                                <div class="mt-4 bg-gray-50 rounded-xl p-4 mb-6 border border-gray-100">
+                                    <h4 class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-2">Waktu Pelaksanaan</h4>
+                                    <p id="modal-schedule-text" class="text-gray-900 font-medium"></p>
+                                </div>
+
+                                <div class="mt-2">
+                                    <p class="text-gray-600 whitespace-pre-line leading-relaxed" id="modal-description"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                        <button type="button" id="modal-close-btn" class="inline-flex w-full justify-center rounded-lg bg-islamic-green px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-islamic-green-light sm:ml-3 sm:w-auto transition-colors">
+                            Tutup
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Struktur organisasi Section -->
     @php

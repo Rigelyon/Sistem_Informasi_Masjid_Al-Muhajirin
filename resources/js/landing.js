@@ -311,4 +311,96 @@ function autoDailyRefresh() {
 document.addEventListener("DOMContentLoaded", () => {
     loadPrayerTimes();
     autoDailyRefresh();
+    initProgramModal();
 });
+
+function initProgramModal() {
+    const modal = document.getElementById('program-modal');
+    const modalPanel = document.getElementById('modal-panel');
+    const modalOverlay = document.getElementById('modal-overlay');
+    const closeBtns = document.querySelectorAll('#modal-close, #modal-close-btn');
+    const programCards = document.querySelectorAll('.program-card');
+
+    if (!modal) return;
+
+    function openModal(card) {
+        // Populate Data
+        document.getElementById('modal-emoji').textContent = card.dataset.emoji;
+        document.getElementById('modal-title').textContent = card.dataset.title;
+        document.getElementById('modal-description').textContent = card.dataset.description;
+
+        // Format Schedule Text
+        let scheduleText = '';
+        const type = card.dataset.scheduleType;
+        
+        if (type === 'one_time') {
+            scheduleText = `${card.dataset.startDate}`;
+            if (card.dataset.startTime) scheduleText += ` • ${card.dataset.startTime}`;
+            if (card.dataset.endTime) {
+                scheduleText += ` - ${card.dataset.endTime}`;
+            } else if (card.dataset.startTime) {
+                scheduleText += ` - Selesai`;
+            }
+        } else if (type === 'weekly') {
+            try {
+                const days = JSON.parse(card.dataset.day);
+                scheduleText = `Setiap Hari ${Array.isArray(days) ? days.join(', ') : days}`;
+            } catch (e) {
+                scheduleText = `Setiap Hari ${card.dataset.day}`;
+            }
+            
+            if (card.dataset.startTime) {
+                scheduleText += ` • Pukul ${card.dataset.startTime}`;
+                if (card.dataset.endTime) {
+                    scheduleText += ` - ${card.dataset.endTime}`;
+                } else {
+                    scheduleText += ` - Selesai`;
+                }
+            }
+        } else {
+            scheduleText = card.dataset.custom || 'Jadwal Menyesuaikan';
+        }
+        
+        document.getElementById('modal-schedule-text').textContent = scheduleText;
+
+        // Show Modal
+        modal.classList.remove('hidden');
+        // Small delay to allow display:block to apply before opacity transition
+        setTimeout(() => {
+            modal.classList.remove('opacity-0');
+            modalPanel.classList.remove('scale-95', 'opacity-0');
+            modalPanel.classList.add('scale-100', 'opacity-100');
+        }, 10);
+        
+        document.body.style.overflow = 'hidden'; // Prevent background scrolling
+    }
+
+    function closeModal() {
+        modal.classList.add('opacity-0');
+        modalPanel.classList.remove('scale-100', 'opacity-100');
+        modalPanel.classList.add('scale-95', 'opacity-0');
+
+        setTimeout(() => {
+            modal.classList.add('hidden');
+            document.body.style.overflow = '';
+        }, 300);
+    }
+
+    // Event Listeners
+    programCards.forEach(card => {
+        card.addEventListener('click', () => openModal(card));
+    });
+
+    closeBtns.forEach(btn => {
+        btn.addEventListener('click', closeModal);
+    });
+
+    modalOverlay.addEventListener('click', closeModal);
+
+    // Close on Escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+            closeModal();
+        }
+    });
+}

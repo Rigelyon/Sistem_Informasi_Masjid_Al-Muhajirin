@@ -75,6 +75,11 @@ const data = {
             url: "/gallery",
             icon: Image,
         },
+        {
+            title: "Program & Aktivitas",
+            url: "/programs",
+            icon: LifeBuoy,
+        },
     ],
     navSecondary: [
         // {

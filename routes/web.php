@@ -14,10 +14,13 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 use App\Models\GalleryGroup;
+use App\Models\Program;
+use App\Http\Controllers\ProgramController;
 
 Route::get('/', function () {
     $galleries = GalleryGroup::with('photos')->get();
-    return view('landing', compact('galleries'));
+    $programs = Program::latest()->take(20)->get();
+    return view('landing', compact('galleries', 'programs'));
 });
 
 Route::middleware(['auth'])->group(function () {
@@ -64,6 +67,9 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/gallery/group/{id}', [GalleryController::class, 'destroyGroup'])->name('gallery.group.destroy');
     Route::post('/gallery/photo', [GalleryController::class, 'storePhoto'])->name('gallery.photo.store');
     Route::delete('/gallery/photo/{id}', [GalleryController::class, 'destroyPhoto'])->name('gallery.photo.destroy');
+
+    // Program routes
+    Route::resource('programs', ProgramController::class);
 });
 
 require __DIR__ . '/auth.php';
