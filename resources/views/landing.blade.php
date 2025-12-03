@@ -8,216 +8,13 @@
     <meta name="description" content="Masjid Al-Muhajirin - Komunitas yang bersatu dalam iman, kasih sayang, dan pelayanan. Bergabunglah dengan kami untuk sholat harian, kelas Quran, dan program komunitas. Melayani sejak 1995.">
     <meta name="keywords" content="masjid, Islamic center, jadwal sholat, kelas Quran, komunitas Muslim, masjid Jakarta">
 
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
 
-    <!-- Tailwind Config -->
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'islamic-green': '#2d7a5e',
-                        'islamic-green-light': '#3a9373',
-                        'islamic-green-lighter': '#e8f5f1',
-                        'islamic-gold': '#f5c842',
-                        'islamic-gold-dark': '#e6b82e',
-                    },
-                    fontFamily: {
-                        'display': ['Playfair Display', 'Georgia', 'serif'],
-                        'body': ['Inter', 'sans-serif'],
-                    },
-                }
-            }
-        }
-    </script>
-
-    <style>
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-        }
-        
-        h1,
-        h2,
-        h3,
-        h4,
-        h5,
-        h6 {
-            font-family: 'Playfair Display', Georgia, serif;
-        }
-        
-        .hero-overlay {
-            background: linear-gradient(180deg, rgba(81, 156, 128, 0.6), rgba(34, 95, 73, 0.7));
-        }
-        
-        @keyframes fade-in {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        .animate-fade-in {
-            animation: fade-in 0.8s ease-out;
-        }
-        
-        .rotate-180 {
-            transform: rotate(180deg);
-        }
-        /* Styling untuk carousel kegiatan */
-        
-        .activity-carousel {
-            position: relative;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            height: 300px;
-            margin-bottom: 20px;
-        }
-        
-        .carousel-track {
-            display: flex;
-            height: 100%;
-            transition: transform 0.5s ease-in-out;
-        }
-        
-        .carousel-slide {
-            min-width: 100%;
-            position: relative;
-        }
-        
-        .carousel-slide img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
-        /* Keterangan yang muncul di tengah saat hover */
-        
-        .carousel-caption {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.7);
-            color: white;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 20px;
-            opacity: 0;
-            transform: scale(0.9);
-            transition: all 0.3s ease;
-        }
-        
-        .carousel-slide:hover .carousel-caption {
-            opacity: 1;
-            transform: scale(1);
-        }
-        
-        .carousel-nav {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(255, 255, 255, 0.7);
-            border: none;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            transition: all 0.3s ease;
-            opacity: 0;
-            z-index: 10;
-        }
-        
-        .activity-carousel:hover .carousel-nav {
-            opacity: 1;
-        }
-        
-        .carousel-nav:hover {
-            background: rgba(255, 255, 255, 0.9);
-        }
-        
-        .carousel-prev {
-            left: 10px;
-        }
-        
-        .carousel-next {
-            right: 10px;
-        }
-        
-        .carousel-indicators {
-            display: flex;
-            justify-content: center;
-            margin-top: 10px;
-            gap: 6px;
-        }
-        
-        .carousel-indicator {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #ccc;
-            cursor: pointer;
-            transition: background 0.3s ease;
-        }
-        
-        .carousel-indicator.active {
-            background: #2d7a5e;
-        }
-        /* Grid layout untuk galeri */
-        
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 30px;
-            margin-top: 30px;
-        }
-        
-        .gallery-item {
-            background: white;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
-        }
-        
-        .gallery-item:hover {
-            transform: translateY(-5px);
-        }
-        
-        .activity-info {
-            padding: 15px;
-        }
-        
-        .activity-info h3 {
-            margin: 0 0 10px 0;
-            color: #2d7a5e;
-            font-size: 1.2rem;
-        }
-        
-        .activity-info p {
-            margin: 0;
-            color: #666;
-            font-size: 0.9rem;
-        }
-    </style>
+    <!-- Vite Assets -->
+    @vite(['resources/css/landing.css', 'resources/js/landing.js'])
 </head>
 
 <body class="bg-white text-gray-900">
@@ -418,7 +215,6 @@
     </section>
 
     <!-- Jadwal sholat Section -->
-    <!-- kalau bisa integrasi sama api -->
     <section id="jadwal-sholat" class="py-20 bg-gray-50 scroll-mt-20">
         <div class="container mx-auto px-4">
             <div class="text-center mb-12">
@@ -512,7 +308,18 @@
     </section>
 
     <!-- Struktur organisasi Section -->
-    <!-- Foto bisa diganti menjadi icon kalau tidak ada foto yang resmi -->
+    @php
+        $structures = [
+            ['name' => 'Ustadz Ahmad Ibrahim', 'role' => 'Ketua DKM', 'img' => 'st1.jpeg'],
+            ['name' => 'Muhammad Yusuf', 'role' => 'Sekretaris', 'img' => 'st2.jpeg'],
+            ['name' => 'Fatimah Hassan', 'role' => 'Bendahara', 'img' => 'st3.jpeg'],
+            ['name' => 'Ustadz Abdullah Malik', 'role' => 'Bidang Keagamaan', 'img' => 'st4.jpeg'],
+            ['name' => 'Sulaiman', 'role' => 'Bidang Pembangunan', 'img' => 'st5.jpeg'],
+            ['name' => 'Khadijah Rahman', 'role' => 'Kegiatan Sosial', 'img' => 'st6.jpeg'],
+            ['name' => 'Abdul Karawita', 'role' => 'Media & Publikasi', 'img' => 'st7.jpeg'],
+            ['name' => 'Muhammad Sumbul', 'role' => 'Media & Publikasi', 'img' => 'st8.jpeg'],
+        ];
+    @endphp
     <section id="struktur" class="py-20 bg-gray-50 scroll-mt-20">
         <div class="container mx-auto px-4">
             <div class="text-center mb-12">
@@ -523,91 +330,50 @@
             </div>
 
             <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 max-w-7xl mx-auto">
-
+                @foreach($structures as $staff)
                 <div class="bg-white rounded-xl shadow p-6 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 border border-gray-200">
                     <div class="text-center">
                         <div class="w-20 h-20 mx-auto rounded-full overflow-hidden mb-4 shadow-md">
-                            <img src="{{ asset('img/st1.jpeg') }}" alt="Foto Ustadz Ahmad Ibrahim" class="w-full h-full object-cover">
+                            <img src="{{ asset('img/' . $staff['img']) }}" alt="Foto {{ $staff['name'] }}" class="w-full h-full object-cover">
                         </div>
-                        <h4 class="text-lg font-bold mb-2">Ketua DKM</h4>
-                        <p class="text-gray-600 font-medium">Ustadz Ahmad Ibrahim</p>
+                        <h4 class="text-lg font-bold mb-2">{{ $staff['role'] }}</h4>
+                        <p class="text-gray-600 font-medium">{{ $staff['name'] }}</p>
                     </div>
                 </div>
-
-                <div class="bg-white rounded-xl shadow p-6 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 border border-gray-200">
-                    <div class="text-center">
-                        <div class="w-20 h-20 mx-auto rounded-full overflow-hidden mb-4 shadow-md">
-                            <img src="{{ asset('img/st2.jpeg') }}" alt="Foto Muhammad Yusuf" class="w-full h-full object-cover">
-                        </div>
-                        <h4 class="text-lg font-bold mb-2">Sekretaris</h4>
-                        <p class="text-gray-600 font-medium">Muhammad Yusuf</p>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-xl shadow p-6 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 border border-gray-200">
-                    <div class="text-center">
-                        <div class="w-20 h-20 mx-auto rounded-full overflow-hidden mb-4 shadow-md">
-                            <img src="{{ asset('img/st3.jpeg') }}" alt="Foto Fatimah Hassan" class="w-full h-full object-cover">
-                        </div>
-                        <h4 class="text-lg font-bold mb-2">Bendahara</h4>
-                        <p class="text-gray-600 font-medium">Fatimah Hassan</p>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-xl shadow p-6 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 border border-gray-200">
-                    <div class="text-center">
-                        <div class="w-20 h-20 mx-auto rounded-full overflow-hidden mb-4 shadow-md">
-                            <img src="{{ asset('img/st4.jpeg') }}" alt="Foto Ustadz Abdullah Malik" class="w-full h-full object-cover">
-                        </div>
-                        <h4 class="text-lg font-bold mb-2">Bidang Keagamaan</h4>
-                        <p class="text-gray-600 font-medium">Ustadz Abdullah Malik</p>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-xl shadow p-6 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 border border-gray-200">
-                    <div class="text-center">
-                        <div class="w-20 h-20 mx-auto rounded-full overflow-hidden mb-4 shadow-md">
-                            <img src="{{ asset('img/st5.jpeg') }}" alt="Foto Sulaiman" class="w-full h-full object-cover">
-                        </div>
-                        <h4 class="text-lg font-bold mb-2">Bidang Pembangunan</h4>
-                        <p class="text-gray-600 font-medium">Sulaiman</p>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-xl shadow p-6 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 border border-gray-200">
-                    <div class="text-center">
-                        <div class="w-20 h-20 mx-auto rounded-full overflow-hidden mb-4 shadow-md">
-                            <img src="{{ asset('img/st6.jpeg') }}" alt="Foto Khadijah Rahman" class="w-full h-full object-cover">
-                        </div>
-                        <h4 class="text-lg font-bold mb-2">Kegiatan Sosial</h4>
-                        <p class="text-gray-600 font-medium">Khadijah Rahman</p>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-xl shadow p-6 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 border border-gray-200">
-                    <div class="text-center">
-                        <div class="w-20 h-20 mx-auto rounded-full overflow-hidden mb-4 shadow-md">
-                            <img src="{{ asset('img/st7.jpeg') }}" alt="Foto Omar Khalid" class="w-full h-full object-cover">
-                        </div>
-                        <h4 class="text-lg font-bold mb-2">Media & Publikasi</h4>
-                        <p class="text-gray-600 font-medium">Abdul Karawita</p>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-xl shadow p-6 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 border border-gray-200">
-                    <div class="text-center">
-                        <div class="w-20 h-20 mx-auto rounded-full overflow-hidden mb-4 shadow-md">
-                            <img src="{{ asset('img/st8.jpeg') }}" alt="Foto Omar Khalid" class="w-full h-full object-cover">
-                        </div>
-                        <h4 class="text-lg font-bold mb-2">Media & Publikasi</h4>
-                        <p class="text-gray-600 font-medium">Muhammad Sumbul</p>
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
     </section>
 
     <!-- Galeri Section dengan Carousel -->
+    @php
+        $galleries = [
+            [
+                'title' => 'Pengajian MUI - DMI TK. Kelurahan Tamanjaya',
+                'images' => ['pengajian.jpg', 'pengajian(2).jpg', 'pengajian(3).jpg']
+            ],
+            [
+                'title' => 'Idul Adha',
+                'images' => ['idul-adha.jpeg', 'idhul_adha(2).jpg', 'idhul_adha(3).jpg']
+            ],
+            [
+                'title' => 'Tasyakur dan Akad Pembelian Ambulance',
+                'images' => ['Tasyakur dan akad pembelian mobil ambulance.jpg', 'Tasyakur dan akad pembelian mobil ambulance(2).jpg', 'Tasyakur dan akad pembelian mobil ambulance(3).jpg']
+            ],
+            [
+                'title' => 'Peringatan 1 Muharram',
+                'images' => ['1 muharam.jpg', '1 muharam(2).jpg', '1 muharam(3).jpg']
+            ],
+            [
+                'title' => 'Maulid Nabi',
+                'images' => ['maulid(2).jpg', 'maulid.jpg', 'maulid(3).jpg']
+            ],
+            [
+                'title' => 'Santunan Anak Yatim',
+                'images' => ['santunan.jpg', 'santunan(2).jpg', 'santunan(3).jpg']
+            ],
+        ];
+    @endphp
     <section id="galeri" class="py-20 bg-white scroll-mt-20">
         <div class="container mx-auto px-4">
             <div class="text-center mb-12">
@@ -616,191 +382,27 @@
             </div>
 
             <div class="gallery-grid">
-                <!-- Kegiatan 1: Pengajian MUI -->
+                @foreach($galleries as $index => $gallery)
                 <div class="gallery-item">
-                    <div class="activity-carousel" id="carousel-1">
+                    <div class="activity-carousel" id="carousel-{{ $index + 1 }}">
                         <div class="carousel-track">
+                            @foreach($gallery['images'] as $image)
                             <div class="carousel-slide">
-                                <img src="{{ asset('img/pengajian.jpg') }}" alt="Pengajian MUI - DMI TK. Kelurahan Tamanjaya">
+                                <img src="{{ asset('img/' . $image) }}" alt="{{ $gallery['title'] }}">
                                 <div class="carousel-caption">
-                                    <h4 class="font-bold text-xl mb-3">Pengajian MUI - DMI TK. Kelurahan Tamanjaya</h4>
+                                    <h4 class="font-bold text-xl mb-3">{{ $gallery['title'] }}</h4>
                                 </div>
                             </div>
-                            <div class="carousel-slide">
-                                <img src="{{ asset('img/pengajian(2).jpg') }}" alt="Pengajian MUI - DMI TK. Kelurahan Tamanjaya">
-                                <div class="carousel-caption">
-                                    <h4 class="font-bold text-xl mb-3">Pengajian MUI - DMI TK. Kelurahan Tamanjaya</h4>
-                                </div>
-                            </div>
-                            <div class="carousel-slide">
-                                <img src="{{ asset('img/pengajian(3).jpg') }}" alt="Pengajian MUI - DMI TK. Kelurahan Tamanjaya">
-                                <div class="carousel-caption">
-                                    <h4 class="font-bold text-xl mb-3">Pengajian MUI - DMI TK. Kelurahan Tamanjaya</h4>
-                                </div>
-                            </div>
+                            @endforeach
                         </div>
                         <div class="carousel-indicators">
-                            <div class="carousel-indicator active"></div>
-                            <div class="carousel-indicator"></div>
-                            <div class="carousel-indicator"></div>
+                            @foreach($gallery['images'] as $key => $image)
+                            <div class="carousel-indicator {{ $key === 0 ? 'active' : '' }}"></div>
+                            @endforeach
                         </div>
                     </div>
                 </div>
-
-                <!-- Kegiatan 2: Idul Adha -->
-                <div class="gallery-item">
-                    <div class="activity-carousel" id="carousel-2">
-                        <div class="carousel-track">
-                            <div class="carousel-slide">
-                                <img src="{{ asset('img/idul-adha.jpeg') }}" alt="Idul Adha">
-                                <div class="carousel-caption">
-                                    <h4 class="font-bold text-xl mb-3">Idul Adha</h4>
-                                </div>
-                            </div>
-                            <div class="carousel-slide">
-                                <img src="{{ asset('img/idhul_adha(2).jpg') }}" alt="Idul Adha">
-                                <div class="carousel-caption">
-                                    <h4 class="font-bold text-xl mb-3">Idul Adha</h4>
-                                </div>
-                            </div>
-                            <div class="carousel-slide">
-                                <img src="{{ asset('img/idhul_adha(3).jpg') }}" alt="Idul Adha">
-                                <div class="carousel-caption">
-                                    <h4 class="font-bold text-xl mb-3">Idul Adha</h4>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="carousel-indicators">
-                            <div class="carousel-indicator active"></div>
-                            <div class="carousel-indicator"></div>
-                            <div class="carousel-indicator"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Kegiatan 3: Tasyakur Ambulance -->
-                <div class="gallery-item">
-                    <div class="activity-carousel" id="carousel-3">
-                        <div class="carousel-track">
-                            <div class="carousel-slide">
-                                <img src="{{ asset('img/Tasyakur dan akad pembelian mobil ambulance.jpg') }}" alt="Tasyakur dan akad pembelian mobil ambulance">
-                                <div class="carousel-caption">
-                                    <h4 class="font-bold text-xl mb-3">Tasyakur dan Akad Pembelian Ambulance</h4>
-                                </div>
-                            </div>
-                            <div class="carousel-slide">
-                                <img src="{{ asset('img/Tasyakur dan akad pembelian mobil ambulance(2).jpg') }}" alt="Tasyakur dan akad pembelian mobil ambulance">
-                                <div class="carousel-caption">
-                                    <h4 class="font-bold text-xl mb-3">Tasyakur dan Akad Pembelian Ambulance</h4>
-                                </div>
-                            </div>
-                            <div class="carousel-slide">
-                                <img src="{{ asset('img/Tasyakur dan akad pembelian mobil ambulance(3).jpg') }}" alt="Tasyakur dan akad pembelian mobil ambulance">
-                                <div class="carousel-caption">
-                                    <h4 class="font-bold text-xl mb-3">Tasyakur dan Akad Pembelian Ambulance</h4>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="carousel-indicators">
-                            <div class="carousel-indicator active"></div>
-                            <div class="carousel-indicator"></div>
-                            <div class="carousel-indicator"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Kegiatan 4: 1 Muharram -->
-                <div class="gallery-item">
-                    <div class="activity-carousel" id="carousel-4">
-                        <div class="carousel-track">
-                            <div class="carousel-slide">
-                                <img src="{{ asset('img/1 muharam.jpg') }}" alt="Peringatan 1 Muharram">
-                                <div class="carousel-caption">
-                                    <h4 class="font-bold text-xl mb-3">Peringatan 1 Muharram</h4>
-                                </div>
-                            </div>
-                            <div class="carousel-slide">
-                                <img src="{{ asset('img/1 muharam(2).jpg') }}" alt="Peringatan 1 Muharram">
-                                <div class="carousel-caption">
-                                    <h4 class="font-bold text-xl mb-3">Peringatan 1 Muharram</h4>
-                                </div>
-                            </div>
-                            <div class="carousel-slide">
-                                <img src="{{ asset('img/1 muharam(3).jpg') }}" alt="Peringatan 1 Muharram">
-                                <div class="carousel-caption">
-                                    <h4 class="font-bold text-xl mb-3">Peringatan 1 Muharram</h4>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="carousel-indicators">
-                            <div class="carousel-indicator active"></div>
-                            <div class="carousel-indicator"></div>
-                            <div class="carousel-indicator"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Kegiatan 5: Ramadhan -->
-                <div class="gallery-item">
-                    <div class="activity-carousel" id="carousel-5">
-                        <div class="carousel-track">
-                            <div class="carousel-slide">
-                                <img src="{{ asset('img/maulid(2).jpg') }}" alt="Maulid Nabi">
-                                <div class="carousel-caption">
-                                    <h4 class="font-bold text-xl mb-3">Maulid Nabi</h4>
-                                </div>
-                            </div>
-                            <div class="carousel-slide">
-                                <img src="{{ asset('img/maulid.jpg') }}" alt="Maulid Nabi">
-                                <div class="carousel-caption">
-                                    <h4 class="font-bold text-xl mb-3">Maulid Nabi</h4>
-                                </div>
-                            </div>
-                            <div class="carousel-slide">
-                                <img src="{{ asset('img/maulid(3).jpg') }}" alt="Maulid Nabi">
-                                <div class="carousel-caption">
-                                    <h4 class="font-bold text-xl mb-3">Maulid Nabi</h4>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="carousel-indicators">
-                            <div class="carousel-indicator active"></div>
-                            <div class="carousel-indicator"></div>
-                            <div class="carousel-indicator"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Kegiatan 6: Santunan Anak Yatim -->
-                <div class="gallery-item">
-                    <div class="activity-carousel" id="carousel-6">
-                        <div class="carousel-track">
-                            <div class="carousel-slide">
-                                <img src="{{ asset('img/santunan.jpg') }}" alt="Santunan Anak Yatim">
-                                <div class="carousel-caption">
-                                    <h4 class="font-bold text-xl mb-3">Santunan Anak Yatim</h4>
-                                </div>
-                            </div>
-                            <div class="carousel-slide">
-                                <img src="{{ asset('img/santunan(2).jpg') }}" alt="Santunan Anak Yatim">
-                                <div class="carousel-caption">
-                                    <h4 class="font-bold text-xl mb-3">Santunan Anak Yatim</h4>
-                                </div>
-                            </div>
-                            <div class="carousel-slide">
-                                <img src="{{ asset('img/santunan(3).jpg') }}" alt="Santunan Anak Yatim">
-                                <div class="carousel-caption">
-                                    <h4 class="font-bold text-xl mb-3">Santunan Anak Yatim</h4>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="carousel-indicators">
-                            <div class="carousel-indicator active"></div>
-                            <div class="carousel-indicator"></div>
-                            <div class="carousel-indicator"></div>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
     </section>
@@ -905,305 +507,6 @@
         </div>
     </footer>
 
-    <!-- JavaScript -->
-    <script>
-        // Mobile Menu Toggle
-        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
-
-        mobileMenuBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
-
-        // Close mobile menu when clicking a link
-        document.querySelectorAll('#mobile-menu a').forEach(link => {
-            link.addEventListener('click', () => {
-                mobileMenu.classList.add('hidden');
-            });
-        });
-
-        // Navbar Scroll Effect
-        const navbar = document.getElementById('navbar');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 20) {
-                navbar.classList.add('bg-white/95', 'backdrop-blur-sm', 'shadow-md');
-            } else {
-                navbar.classList.remove('bg-white/95', 'backdrop-blur-sm', 'shadow-md');
-            }
-        });
-
-        // Smooth Scrolling
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth'
-                    });
-                }
-            });
-        });
-
-        // Contact Form Submission
-        const contactForm = document.getElementById('contact-form');
-        const formMessage = document.getElementById('form-message');
-
-        contactForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const message = document.getElementById('message').value;
-
-            if (!name || !email || !message) {
-                formMessage.textContent = 'Mohon isi semua kolom';
-                formMessage.className = 'mt-4 text-center text-red-600';
-                formMessage.classList.remove('hidden');
-                return;
-            }
-
-            formMessage.textContent = 'Terima kasih telah menghubungi kami. Kami akan segera menghubungi Anda kembali.';
-            formMessage.className = 'mt-4 text-center text-green-600';
-            formMessage.classList.remove('hidden');
-
-            contactForm.reset();
-
-            setTimeout(() => {
-                formMessage.classList.add('hidden');
-            }, 5000);
-        });
-
-        // Set Current Year in Footer
-        document.getElementById('current-year').textContent = new Date().getFullYear();
-
-        function startSlideshow() {
-            const slides = document.querySelectorAll('#slideshow-bg > div');
-            let currentSlide = 0;
-
-            function nextSlide() {
-                // Sembunyikan slide saat ini
-                slides[currentSlide].classList.remove('opacity-100', 'z-0');
-                slides[currentSlide].classList.add('opacity-0', 'z-[-1]');
-
-                // Hitung slide berikutnya
-                currentSlide = (currentSlide + 1) % slides.length;
-
-                // Tampilkan slide berikutnya dengan transisi fade
-                slides[currentSlide].classList.remove('opacity-0', 'z-[-1]');
-                slides[currentSlide].classList.add('opacity-100', 'z-0');
-            }
-
-            // Mulai slideshow, ganti gambar setiap 5 detik (5000ms)
-            if (slides.length > 1) {
-                setInterval(nextSlide, 5000);
-            }
-        }
-
-        startSlideshow();
-
-        // Mobile Dropdown Toggle
-        const mobileTentangBtn = document.getElementById('mobile-tentang-btn');
-        const mobileTentangMenu = document.getElementById('mobile-tentang-menu');
-        const mobileTentangIcon = document.getElementById('mobile-tentang-icon');
-
-        mobileTentangBtn.addEventListener('click', () => {
-            mobileTentangMenu.classList.toggle('hidden');
-            mobileTentangIcon.classList.toggle('rotate-180');
-        });
-
-        // Close mobile dropdown when clicking a link
-        document.querySelectorAll('#mobile-tentang-menu a').forEach(link => {
-            link.addEventListener('click', () => {
-                mobileTentangMenu.classList.add('hidden');
-                mobileTentangIcon.classList.remove('rotate-180');
-                mobileMenu.classList.add('hidden'); // Close the entire mobile menu
-            });
-        });
-
-        // Inisialisasi semua carousel
-        document.addEventListener('DOMContentLoaded', function() {
-            // Dapatkan semua carousel
-            const carousels = document.querySelectorAll('.activity-carousel');
-
-            // Inisialisasi setiap carousel
-            carousels.forEach((carousel, index) => {
-                initCarousel(carousel, index);
-            });
-
-            function initCarousel(carousel, carouselIndex) {
-                const track = carousel.querySelector('.carousel-track');
-                const slides = Array.from(track.children);
-                const prevButton = carousel.querySelector('.carousel-prev');
-                const nextButton = carousel.querySelector('.carousel-next');
-                const indicators = Array.from(carousel.querySelectorAll('.carousel-indicator'));
-
-                let currentIndex = 0;
-                let autoSlideInterval;
-
-                // Fungsi untuk memperbarui carousel
-                function updateCarousel() {
-                    track.style.transform = `translateX(-${currentIndex * 100}%)`;
-
-                    // Update indicators
-                    indicators.forEach((indicator, index) => {
-                        indicator.classList.toggle('active', index === currentIndex);
-                    });
-                }
-
-                // Fungsi untuk pindah ke slide berikutnya
-                function nextSlide() {
-                    currentIndex = (currentIndex + 1) % slides.length;
-                    updateCarousel();
-                }
-
-                // Fungsi untuk pindah ke slide sebelumnya
-                function prevSlide() {
-                    currentIndex = (currentIndex - 1 + slides.length) % slides.length;
-                    updateCarousel();
-                }
-
-                // Event listeners untuk tombol navigasi
-                // nextButton.addEventListener('click', nextSlide);
-                // prevButton.addEventListener('click', prevSlide);
-
-                // Event listeners untuk indicators
-                indicators.forEach((indicator, index) => {
-                    indicator.addEventListener('click', () => {
-                        currentIndex = index;
-                        updateCarousel();
-                        resetAutoSlide();
-                    });
-                });
-
-                // Fungsi untuk memulai auto slide
-                function startAutoSlide() {
-                    autoSlideInterval = setInterval(nextSlide, 6000); // Ganti slide setiap 4 detik
-                }
-
-                // Fungsi untuk mereset auto slide
-                function resetAutoSlide() {
-                    clearInterval(autoSlideInterval);
-                    startAutoSlide();
-                }
-
-                // Hentikan auto slide saat hover
-                carousel.addEventListener('mouseenter', () => {
-                    clearInterval(autoSlideInterval);
-                });
-
-                // Lanjutkan auto slide saat mouse leave
-                carousel.addEventListener('mouseleave', () => {
-                    startAutoSlide();
-                });
-
-                // Mulai auto slide
-                startAutoSlide();
-
-                // Inisialisasi posisi carousel
-                updateCarousel();
-            }
-        });
-
-        // CONFIG LOKASI
-        const KODE_KOTA = 1218; // Tasikmalaya
-
-        // LOAD JADWAL HARI INI
-        async function loadPrayerTimes() {
-            const today = new Date().toISOString().split("T")[0];
-            const url = `https://api.myquran.com/v2/sholat/jadwal/${KODE_KOTA}/${today}`;
-
-            try {
-                const res = await fetch(url);
-                const json = await res.json();
-                const jadwal = json.data.jadwal;
-
-                // Update HTML jadwal
-                document.getElementById("subuh").textContent = jadwal.subuh;
-                document.getElementById("dzuhur").textContent = jadwal.dzuhur;
-                document.getElementById("ashar").textContent = jadwal.ashar;
-                document.getElementById("maghrib").textContent = jadwal.maghrib;
-                document.getElementById("isya").textContent = jadwal.isya;
-
-                updateNextPrayer(jadwal);
-            } catch (err) {
-                console.log("Gagal load jadwal sholat:", err);
-            }
-        }
-
-        // HITUNG NEXT PRAYER + COUNTDOWN
-        function updateNextPrayer(jadwal) {
-            const now = new Date();
-            const names = ["Subuh", "Dzuhur", "Ashar", "Maghrib", "Isya"];
-            const times = [
-                jadwal.subuh,
-                jadwal.dzuhur,
-                jadwal.ashar,
-                jadwal.maghrib,
-                jadwal.isya
-            ];
-
-            let nextName = "";
-            let nextTime = null;
-
-            for (let i = 0; i < times.length; i++) {
-                const [h, m] = times[i].split(":").map(Number);
-                const prayerTime = new Date();
-                prayerTime.setHours(h, m, 0, 0);
-
-                if (prayerTime > now) {
-                    nextName = names[i];
-                    nextTime = prayerTime;
-                    break;
-                }
-            }
-
-            // Jika semua jadwal hari ini sudah lewat → Subuh besok
-            if (!nextTime) {
-                const [h, m] = jadwal.subuh.split(":").map(Number);
-                nextTime = new Date();
-                nextTime.setDate(nextTime.getDate() + 1);
-                nextTime.setHours(h, m, 0, 0);
-                nextName = "Subuh";
-            }
-
-            // Update UI
-            document.getElementById("next-prayer").textContent = nextName;
-
-            // Countdown update
-            setInterval(() => {
-                const now = new Date();
-                const diff = nextTime - now;
-                const h = Math.floor(diff / 1000 / 60 / 60);
-                const m = Math.floor((diff / 1000 / 60) % 60);
-                const s = Math.floor((diff / 1000) % 60);
-
-                document.getElementById("countdown").textContent = h + " j " + m + " m " + s + " d";
-            }, 1000);
-        }
-
-        // AUTO REFRESH SETIAP HARI SAMPAI 2050
-        function autoDailyRefresh() {
-            const now = new Date();
-            const next = new Date();
-
-            next.setDate(now.getDate() + 1);
-            next.setHours(0, 5, 0, 0); // refresh jam 00:05
-
-            const diff = next - now;
-
-            setTimeout(() => {
-                loadPrayerTimes(); // muat jadwal baru
-                autoDailyRefresh(); // set ulang timer
-            }, diff);
-        }
-
-        // INIT
-        document.addEventListener("DOMContentLoaded", () => {
-            loadPrayerTimes();
-            autoDailyRefresh();
-        });
-    </script>
 </body>
 
 </html>

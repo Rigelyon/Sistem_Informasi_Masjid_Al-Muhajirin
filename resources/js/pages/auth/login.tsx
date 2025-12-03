@@ -99,9 +99,9 @@ export default function Login({
                             </Button>
                         </div>
                         <div className="mt-4 text-sm text-center">
-                            Tidak punya akun
+                            Tidak punya akun?&nbsp;
                             <Link href="/register" className="underline">
-                                Sign up
+                                 Sign up
                             </Link>
                         </div>
                     </CardContent>
