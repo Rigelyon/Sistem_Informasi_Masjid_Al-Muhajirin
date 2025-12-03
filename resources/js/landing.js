@@ -22,9 +22,9 @@ const navbar = document.getElementById('navbar');
 if (navbar) {
     window.addEventListener('scroll', () => {
         if (window.scrollY > 20) {
-            navbar.classList.add('bg-white/95', 'backdrop-blur-sm', 'shadow-md');
+            navbar.classList.add('bg-white', 'shadow-md');
         } else {
-            navbar.classList.remove('bg-white/95', 'backdrop-blur-sm', 'shadow-md');
+            navbar.classList.remove('bg-white', 'shadow-md');
         }
     });
 }

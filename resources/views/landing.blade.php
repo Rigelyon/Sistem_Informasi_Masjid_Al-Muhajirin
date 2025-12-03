@@ -62,7 +62,6 @@
                     <a href="#jadwal-sholat" class="px-4 py-2 text-sm font-medium text-gray-900 hover:text-islamic-green transition-colors">Jadwal
                         Sholat</a>
                     <a href="#aktivitas" class="px-4 py-2 text-sm font-medium text-gray-900 hover:text-islamic-green transition-colors">Aktivitas</a>
-                    <a href="#zakat" class="px-4 py-2 text-sm font-medium text-gray-900 hover:text-islamic-green transition-colors">Zakat</a>
 
                     <!-- Auth Links -->
                     @if (Route::has('login'))
@@ -70,11 +69,7 @@
                             @auth
                                 <a href="{{ url('/dashboard') }}" class="px-4 py-2 text-sm font-medium text-white bg-islamic-green rounded-lg hover:bg-islamic-green-light transition-colors">Dashboard</a>
                             @else
-                                <a href="{{ route('login') }}" class="px-4 py-2 text-sm font-medium text-islamic-green border border-islamic-green rounded-lg hover:bg-islamic-green-lighter transition-colors">Log in</a>
-
-                                @if (Route::has('register'))
-                                    <a href="{{ route('register') }}" class="px-4 py-2 text-sm font-medium text-white bg-islamic-green rounded-lg hover:bg-islamic-green-light transition-colors">Register</a>
-                                @endif
+                                <a href="{{ route('login') }}" class="px-4 py-2 text-sm font-medium text-white bg-islamic-green rounded-lg hover:bg-islamic-green-light transition-colors">Masuk</a>
                             @endauth
                         </div>
                     @endif
@@ -115,7 +110,6 @@
 
                     <a href="#jadwal-sholat" class="px-4 py-2 text-gray-900 hover:bg-gray-100 rounded-lg transition-colors">Jadwal Sholat</a>
                     <a href="#aktivitas" class="px-4 py-2 text-gray-900 hover:bg-gray-100 rounded-lg transition-colors">Aktivitas</a>
-                    <a href="#zakat" class="px-4 py-2 text-gray-900 hover:bg-gray-100 rounded-lg transition-colors">Zakat</a>
 
                     <!-- Mobile Auth Links -->
                     @if (Route::has('login'))
@@ -123,10 +117,7 @@
                             @auth
                                 <a href="{{ url('/dashboard') }}" class="block px-4 py-2 text-gray-900 hover:bg-gray-100 rounded-lg transition-colors">Dashboard</a>
                             @else
-                                <a href="{{ route('login') }}" class="block px-4 py-2 text-gray-900 hover:bg-gray-100 rounded-lg transition-colors">Log in</a>
-                                @if (Route::has('register'))
-                                    <a href="{{ route('register') }}" class="block px-4 py-2 text-gray-900 hover:bg-gray-100 rounded-lg transition-colors">Register</a>
-                                @endif
+                                <a href="{{ route('login') }}" class="block px-4 py-2 text-gray-900 hover:bg-gray-100 rounded-lg transition-colors">Masuk</a>
                             @endauth
                         </div>
                     @endif
@@ -216,8 +207,8 @@
 
     <!-- Jadwal sholat Section -->
     <section id="jadwal-sholat" class="py-20 bg-gray-50 scroll-mt-20">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-12">
+        <div class="container mx-auto px-4 ">
+            <div class="text-center  mb-12">
                 <h2 class="text-4xl md:text-5xl font-bold mb-4">Jadwal Sholat</h2>
                 <p class="text-lg text-gray-600">Jadwal Sholat Hari ini</p>
             </div>
