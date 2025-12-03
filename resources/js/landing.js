@@ -174,7 +174,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Fungsi untuk memulai auto slide
         function startAutoSlide() {
-            autoSlideInterval = setInterval(nextSlide, 6000); // Ganti slide setiap 6 detik
+            autoSlideInterval = setInterval(nextSlide, 3000); // Ganti slide setiap 3 detik
         }
 
         // Fungsi untuk mereset auto slide

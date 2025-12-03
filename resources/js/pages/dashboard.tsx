@@ -17,7 +17,7 @@ export default function Dashboard(props: {
 }) {
     return (
         <AuthenticatedLayout header="Dashboard">
-            <Head title="Dashboard Zakat" />
+            <Head title="Dashboard Website" />
 
             <DashboardPage
                 totalZakatUang={props.totalZakatUang}

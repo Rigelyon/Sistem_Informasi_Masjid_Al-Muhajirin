@@ -13,6 +13,7 @@ import {
     SendToBack,
     SquareTerminal,
     UsersIcon,
+    Image,
 } from "lucide-react";
 
 import { NavMain } from "@/components/nav-main";
@@ -69,6 +70,11 @@ const data = {
             url: "/distribusi-lainnya",
             icon: GiftIcon,
         },
+        {
+            title: "Kelola Galeri",
+            url: "/gallery",
+            icon: Image,
+        },
     ],
     navSecondary: [
         // {
@@ -95,14 +101,14 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                         <SidebarMenuButton size="lg" asChild>
                             <Link href={route("dashboard")}>
                                 <div className="flex items-center justify-center rounded-lg aspect-square size-8 bg-sidebar-primary text-sidebar-primary-foreground">
-                                    <Coins className="size-4" />
+                                    <Home className="size-4" />
                                 </div>
                                 <div className="grid flex-1 text-sm leading-tight text-left">
                                     <span className="font-semibold truncate">
-                                        Zakafit
+                                        Al-Muhajirin
                                     </span>
                                     <span className="text-xs truncate">
-                                        Pengelola Zakat Fitrah
+                                        Dashboard Website
                                     </span>
                                 </div>
                             </Link>

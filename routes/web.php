@@ -7,13 +7,17 @@ use App\Http\Controllers\DistribusiZakatLainnyaController;
 use App\Http\Controllers\LaporanZakatController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WargaController;
+use App\Http\Controllers\GalleryController;
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
+use App\Models\GalleryGroup;
+
 Route::get('/', function () {
-    return view('landing');
+    $galleries = GalleryGroup::with('photos')->get();
+    return view('landing', compact('galleries'));
 });
 
 Route::middleware(['auth'])->group(function () {
@@ -52,6 +56,14 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    // Gallery routes
+    Route::get('/gallery', [GalleryController::class, 'index'])->name('gallery.index');
+    Route::post('/gallery/group', [GalleryController::class, 'storeGroup'])->name('gallery.group.store');
+    Route::patch('/gallery/group/{id}', [GalleryController::class, 'updateGroup'])->name('gallery.group.update');
+    Route::delete('/gallery/group/{id}', [GalleryController::class, 'destroyGroup'])->name('gallery.group.destroy');
+    Route::post('/gallery/photo', [GalleryController::class, 'storePhoto'])->name('gallery.photo.store');
+    Route::delete('/gallery/photo/{id}', [GalleryController::class, 'destroyPhoto'])->name('gallery.photo.destroy');
 });
 
 require __DIR__ . '/auth.php';
