@@ -37,7 +37,6 @@ export default function ProgramIndex({ auth, programs }: Props) {
 
     return (
         <AuthenticatedLayout
-            user={auth.user}
             header={
                 <div className="flex justify-between items-center">
                     <h2 className="font-semibold text-xl text-gray-800 leading-tight">
