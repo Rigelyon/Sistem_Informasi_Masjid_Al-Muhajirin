@@ -806,6 +806,67 @@ export default function Warga(props: { warga: Warga[]; kategori: Kategori[] }) {
                                                                                         }
                                                                                     />
                                                                                 </div>
+                                                <div className="grid gap-2">
+                                                    <Label htmlFor="edit-familyId">
+                                                        Nomer KK
+                                                    </Label>
+                                                    <Input
+                                                        onChange={(e) => {
+                                                            setUpdateMuzakki(
+                                                                (prev: any) => {
+                                                                    return {
+                                                                        ...prev,
+                                                                        keluarga_id:
+                                                                            e.target
+                                                                                .value,
+                                                                    };
+                                                                }
+                                                            );
+                                                        }}
+                                                        id="edit-familyId"
+                                                        defaultValue={
+                                                            selectedCitizen.keluarga_id
+                                                        }
+                                                    />
+                                                </div>
+                                                <div className="grid gap-2">
+                                                    <Label htmlFor="edit-category">
+                                                        Kategori
+                                                    </Label>
+                                                    <Select
+                                                        value={
+                                                            selectedKategoriForUpdate
+                                                        }
+                                                        onValueChange={
+                                                            setSelectedKategoriForUpdate
+                                                        }
+                                                    >
+                                                        <SelectTrigger>
+                                                            <SelectValue placeholder="Pilih Kategori" />
+                                                        </SelectTrigger>
+                                                        <SelectContent>
+                                                            {props.kategori.map(
+                                                                (
+                                                                    value,
+                                                                    index
+                                                                ) => (
+                                                                    <SelectItem
+                                                                        key={
+                                                                            index
+                                                                        }
+                                                                        value={String(
+                                                                            value.id
+                                                                        )}
+                                                                    >
+                                                                        {
+                                                                            value.nama
+                                                                        }
+                                                                    </SelectItem>
+                                                                )
+                                                            )}
+                                                        </SelectContent>
+                                                    </Select>
+                                                </div>
                                                                                 <div className="grid gap-2">
                                                                                     <Label htmlFor="edit-jumlah-tanggungan">
                                                                                         Jumlah
@@ -864,80 +925,7 @@ export default function Warga(props: { warga: Warga[]; kategori: Kategori[] }) {
                                                                                         }
                                                                                     />
                                                                                 </div>
-                                                                                <div className="grid grid-cols-2 gap-4">
-                                                                                    <div className="grid gap-2">
-                                                                                        <Label htmlFor="edit-familyId">
-                                                                                            Nomor
-                                                                                            KK
-                                                                                        </Label>
-                                                                                        <Input
-                                                                                            onChange={(
-                                                                                                e
-                                                                                            ) => {
-                                                                                                setUpdateMuzakki(
-                                                                                                    (
-                                                                                                        prev: any
-                                                                                                    ) => {
-                                                                                                        return {
-                                                                                                            ...prev,
-                                                                                                            keluarga_id:
-                                                                                                                e
-                                                                                                                    .target
-                                                                                                                    .value,
-                                                                                                        };
-                                                                                                    }
-                                                                                                );
-                                                                                            }}
-                                                                                            id="edit-familyId"
-                                                                                            defaultValue={
-                                                                                                selectedCitizen.keluarga_id
-                                                                                            }
-                                                                                        />
-                                                                                    </div>
-                                                                                    {/* <div className="grid gap-2">
-                                                                                        <Label htmlFor="edit-category">
-                                                                                            Kategori{" "}
-                                                                                            {
-                                                                                                selectedCitizen
-                                                                                                    .kategori_bayar_zakat
-                                                                                                    .nama
-                                                                                            }
-                                                                                        </Label>
-                                                                                        <Select
-                                                                                            value={
-                                                                                                selectedKategoriForUpdate
-                                                                                            }
-                                                                                            onValueChange={
-                                                                                                setSelectedKategoriForUpdate
-                                                                                            }
-                                                                                        >
-                                                                                            <SelectTrigger>
-                                                                                                <SelectValue placeholder="Pilih Kategori" />
-                                                                                            </SelectTrigger>
-                                                                                            <SelectContent>
-                                                                                                {props.kategori.map(
-                                                                                                    (
-                                                                                                        value,
-                                                                                                        index
-                                                                                                    ) => (
-                                                                                                        <SelectItem
-                                                                                                            key={
-                                                                                                                index
-                                                                                                            }
-                                                                                                            value={String(
-                                                                                                                value.id
-                                                                                                            )}
-                                                                                                        >
-                                                                                                            {
-                                                                                                                value.nama
-                                                                                                            }
-                                                                                                        </SelectItem>
-                                                                                                    )
-                                                                                                )}
-                                                                                            </SelectContent>
-                                                                                        </Select>
-                                                                                    </div> */}
-                                                                                </div>
+
                                                                             </div>
                                                                         )}
                                                                         <DialogFooter>

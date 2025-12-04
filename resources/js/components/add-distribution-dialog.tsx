@@ -280,7 +280,7 @@ export function AddDistributionDialog({
                                 {kategoris.map((kategori) => (
                                     <SelectItem
                                         key={kategori.id}
-                                        value={kategori.id}
+                                        value={String(kategori.id)}
                                     >
                                         {kategori.nama}
                                     </SelectItem>
