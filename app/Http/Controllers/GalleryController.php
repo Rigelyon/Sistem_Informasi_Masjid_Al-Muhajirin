@@ -22,8 +22,8 @@ class GalleryController extends Controller
     public function storeGroup(Request $request)
     {
         $count = GalleryGroup::count();
-        if ($count >= 12) {
-            return redirect()->back()->withErrors(['message' => 'Maksimal 12 grup foto.']);
+        if ($count >= 6) {
+            return redirect()->back()->withErrors(['message' => 'Maksimal 6 grup foto.']);
         }
 
         $request->validate([
@@ -73,8 +73,8 @@ class GalleryController extends Controller
 
         $group = GalleryGroup::findOrFail($request->gallery_group_id);
 
-        if ($group->photos()->count() >= 5) {
-            return redirect()->back()->withErrors(['message' => 'Maksimal 5 foto per grup.']);
+        if ($group->photos()->count() >= 3) {
+            return redirect()->back()->withErrors(['message' => 'Maksimal 3 foto per grup.']);
         }
 
         $path = $request->file('image')->store('gallery', 'public');
