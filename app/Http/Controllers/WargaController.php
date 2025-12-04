@@ -18,9 +18,9 @@ class WargaController extends Controller
      */
     public function index()
     {
-        $warga = Warga::with("kategoriBayarZakat")->orderBy('created_at', 'desc')->get();
+        $warga = Warga::with("kategori")->orderBy('created_at', 'desc')->get();
 
-        $kategori = KategoriBayarZakat::get();
+        $kategori = Kategori::all();
         return Inertia::render("warga", ["warga" => $warga, 'kategori' => $kategori]);
     }
 
@@ -45,7 +45,10 @@ class WargaController extends Controller
             'jumlah_tanggungan' => (int) $request["jumlah_tanggungan"]
         ]);
 
-        if ($request["kategori_id"] == "1") {
+        // Cari ID kategori "Mampu"
+        $kategoriMampu = Kategori::where('nama', 'Mampu')->first();
+
+        if ($kategoriMampu && $request["kategori_id"] == $kategoriMampu->id) {
             BayarZakat::create([
                 "nama_KK" => $request["nama"],
                 "nomor_KK" => $request["keluarga_id"],

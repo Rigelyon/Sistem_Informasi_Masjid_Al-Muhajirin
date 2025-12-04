@@ -118,7 +118,7 @@ interface Warga {
     keluarga_id: string;
     created_at: string;
     updated_at: string;
-    kategori_bayar_zakat: Kategori;
+    kategori: Kategori;
 }
 
 interface Muzakki {
@@ -665,7 +665,7 @@ export default function Warga(props: { warga: Warga[]; kategori: Kategori[] }) {
                                                 <TableHead>
                                                     Tanggungan
                                                 </TableHead>
-                                                {/* <TableHead>Kategori</TableHead> */}
+                                                <TableHead>Kategori</TableHead>
                                                 <TableHead className="hidden md:table-cell">
                                                     Ditambahkan
                                                 </TableHead>
@@ -691,22 +691,22 @@ export default function Warga(props: { warga: Warga[]; kategori: Kategori[] }) {
                                                                 citizen.jumlah_tanggungan
                                                             }
                                                         </TableCell>
-                                                        {/* <TableCell>
+                                                        <TableCell>
                                                             <Badge
                                                                 variant="outline"
-                                                                className={getBadgeClass(
+                                                                className={getCategoryBadgeClass(
                                                                     citizen
                                                                         .kategori
-                                                                        .nama
+                                                                        ?.nama
                                                                 )}
                                                             >
                                                                 {
                                                                     citizen
                                                                         .kategori
-                                                                        .nama
+                                                                        ?.nama
                                                                 }
                                                             </Badge>
-                                                        </TableCell> */}
+                                                        </TableCell>
                                                         <TableCell className="hidden md:table-cell">
                                                             {format(
                                                                 citizen.created_at,
