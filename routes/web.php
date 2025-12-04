@@ -28,7 +28,7 @@ Route::middleware(['auth'])->group(function () {
 
     //Muzakki route start
     Route::get("/warga", [WargaController::class, "index"])->name("penduduk");
-    Route::get("/warga/{id}", [WargaController::class, "show"])->name("penduduk");
+    Route::get("/warga/{id}", [WargaController::class, "show"])->name("penduduk.show");
     Route::post("/muzakki", [WargaController::class, "store"])->name('penduduk.create');
     Route::patch("/muzakki/{id}", [WargaController::class, "update"])->name('penduduk.update');
     Route::delete("/muzakki/{id}", [WargaController::class, "destroy"])->name('penduduk.destroy');
@@ -49,7 +49,7 @@ Route::middleware(['auth'])->group(function () {
     // Distribusi zakat lainnya start
     Route::get("/distribusi-lainnya", [DistribusiZakatLainnyaController::class, "index"])->name("distribusi-lainnya");
     Route::post("/distribusi-lainnya", [DistribusiZakatLainnyaController::class, "store"])->name("distribusi-lainnya.create");
-    Route::delete("/distribusi-lainnya/{id}", [DistribusiZakatLainnyaController::class, "destroy"])->name("distribusi-lainnya.create");
+    Route::delete("/distribusi-lainnya/{id}", [DistribusiZakatLainnyaController::class, "destroy"])->name("distribusi-lainnya.destroy");
     // Distribusi zakat lainnya end
 
     // laporan zakat
