@@ -83,27 +83,17 @@ export interface Distribution {
     kategori?: Kategori;
 }
 
-// Mock data for demonstration
-const mockKategoris: Kategori[] = [
-    { id: "1", nama: "Fakir" },
-    { id: "2", nama: "Miskin" },
-    { id: "3", nama: "Amil" },
-    { id: "4", nama: "Muallaf" },
-    { id: "5", nama: "Riqab" },
-    { id: "6", nama: "Gharim" },
-    { id: "7", nama: "Fisabilillah" },
-    { id: "8", nama: "Ibnu Sabil" },
-    { id: "9", nama: "Mampu" },
-];
+// Mock data removed
 
 export function ZakatDistributionAdmin(props: {
     distribusiZakatLainnya: Distribution[];
+    kategoris: Kategori[];
 }) {
     const [distributions, setDistributions] = useState<Distribution[]>([]);
     const [filteredDistributions, setFilteredDistributions] = useState<
         Distribution[]
     >([]);
-    const [kategoris, setKategoris] = useState<Kategori[]>([]);
+    const [kategoris, setKategoris] = useState<Kategori[]>(props.kategoris);
     const [loading, setLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState("");
     const [categoryFilter, setCategoryFilter] = useState("");
@@ -157,7 +147,7 @@ export function ZakatDistributionAdmin(props: {
             // Simulate API call
             // await new Promise((resolve) => setTimeout(resolve, 1000));
             setDistributions(props.distribusiZakatLainnya);
-            setKategoris(mockKategoris);
+            setKategoris(props.kategoris);
             setLoading(false);
         };
 

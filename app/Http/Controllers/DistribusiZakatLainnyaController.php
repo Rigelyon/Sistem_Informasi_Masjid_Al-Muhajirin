@@ -14,7 +14,11 @@ class DistribusiZakatLainnyaController extends Controller
     public function index()
     {
         $distribusiZakatLainnya = DistribusiZakatLainnya::with("kategori")->get();
-        return Inertia::render("distribusi-lainnya", ["distribusiZakatLainnya" => $distribusiZakatLainnya]);
+        $kategoris = \App\Models\Kategori::all();
+        return Inertia::render("distribusi-lainnya", [
+            "distribusiZakatLainnya" => $distribusiZakatLainnya,
+            "kategoris" => $kategoris
+        ]);
     }
 
     /**

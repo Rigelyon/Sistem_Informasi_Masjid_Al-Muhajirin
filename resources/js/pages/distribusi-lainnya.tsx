@@ -5,8 +5,14 @@ import {
 import AuthenticatedLayout from "@/layouts/authenticated-layout";
 import { Head } from "@inertiajs/react";
 
+interface Kategori {
+    id: string;
+    nama: string;
+}
+
 export default function DistribusiLainnya(props: {
     distribusiZakatLainnya: Distribution[];
+    kategoris: Kategori[];
 }) {
 
     return (
@@ -19,6 +25,7 @@ export default function DistribusiLainnya(props: {
                 </h1>
                 <ZakatDistributionAdmin
                     distribusiZakatLainnya={props.distribusiZakatLainnya}
+                    kategoris={props.kategoris}
                 />
             </div>
         </AuthenticatedLayout>
