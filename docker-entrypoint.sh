@@ -6,6 +6,7 @@ echo "🚀 Starting deployment tasks..."
 # Run migrations
 echo "Running database migrations..."
 php artisan migrate --force
+php artisan storage:link
 
 # Cache config, routes, and views for performance
 echo "Caching configuration..."
