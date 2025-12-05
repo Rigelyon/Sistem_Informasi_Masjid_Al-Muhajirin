@@ -26,7 +26,7 @@ class Warga extends Model
 
     public function bayarZakat()
     {
-        return $this->hasOne(BayarZakat::class, 'warga_id');
+        return $this->hasMany(BayarZakat::class, 'warga_id');
     }
 
     public function distribusiZakats()

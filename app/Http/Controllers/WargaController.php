@@ -125,8 +125,15 @@ class WargaController extends Controller
 
         // Handle Switching Logic
         if ($request->type === 'Muzakki') {
-            // Ensure BayarZakat exists
-            if (!$warga->bayarZakat) {
+            // Ensure BayarZakat exists for CURRENT YEAR
+            $currentYear = date('Y');
+            
+            // Check if there is already a bill for this year
+            $existingBill = $warga->bayarZakat()
+                ->whereYear('created_at', $currentYear)
+                ->first();
+
+            if (!$existingBill) {
                 BayarZakat::create([
                     "warga_id" => $warga->id,
                     "nama_KK" => $warga->nama,
@@ -135,14 +142,18 @@ class WargaController extends Controller
                 ]);
             } else {
                 // Sync data just in case
-                $warga->bayarZakat->update([
+                $existingBill->update([
                     "nama_KK" => $warga->nama,
                     "nomor_KK" => $warga->keluarga_id,
                     "jumlah_tanggungan" => $warga->jumlah_tanggungan,
                 ]);
             }
-            // Remove from Distribusi if exists
-            $warga->distribusiZakats()->delete();
+            
+            // Remove from Distribusi if exists (Optional: Might want to keep history here too? 
+            // For now, let's assume if they become Muzakki, they shouldn't receive aid THIS year/active cycle)
+            $warga->distribusiZakats()
+                  ->where('status', 'belum_terkirim') // Safety: Only delete if not yet sent
+                  ->delete();
 
         } elseif ($request->type === 'Mustahik') {
             // Ensure DistribusiZakat exists
@@ -151,10 +162,12 @@ class WargaController extends Controller
                     'warga_id' => $warga->id,
                 ]);
             }
-            // Remove from BayarZakat if exists
-            if ($warga->bayarZakat) {
-                $warga->bayarZakat->delete();
-            }
+            
+            // Remove from BayarZakat ONLY IF PENDING (Cancel the bill)
+            // Do NOT delete history of previous payments (lunas)
+            $warga->bayarZakat()
+                  ->where('status', 'pending')
+                  ->delete();
         }
 
         return back()->with('success', 'Data berhasil diperbarui');

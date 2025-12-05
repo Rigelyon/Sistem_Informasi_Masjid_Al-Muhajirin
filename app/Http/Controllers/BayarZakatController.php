@@ -11,10 +11,57 @@ class BayarZakatController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $bayar_zakat = BayarZakat::get();
-        return Inertia::render("bayar", ["bayarZakat" => $bayar_zakat]);
+        $selectedYear = $request->input('year', date('Y'));
+        
+        $bayar_zakat = BayarZakat::whereYear('created_at', $selectedYear)->get();
+        return Inertia::render("bayar", [
+            "bayarZakat" => $bayar_zakat,
+            "selectedYear" => (int)$selectedYear,
+            "availableYears" => range(date('Y'), date('Y') - 4)
+        ]);
+    }
+
+    /**
+     * Generate bills for a specific year
+     */
+    public function generate(Request $request) 
+    {
+        $year = $request->input('year', date('Y'));
+        
+        // Find all Warga capable of paying (Mampu)
+        // Assuming 'kategori_id' for Mampu is known or can be found. 
+        // Based on WargaController, we look for 'Mampu'.
+        $kategoriMampu = \App\Models\Kategori::where('nama', 'Mampu')->first();
+        
+        if (!$kategoriMampu) {
+            return back()->with('error', 'Kategori "Mampu" tidak ditemukan.');
+        }
+
+        $wargaMampu = \App\Models\Warga::where('kategori_id', $kategoriMampu->id)->get();
+        $count = 0;
+
+        foreach ($wargaMampu as $warga) {
+            // Check if bill already exists for this year
+            $exists = BayarZakat::where('warga_id', $warga->id)
+                ->whereYear('created_at', $year)
+                ->exists();
+                
+            if (!$exists) {
+                BayarZakat::create([
+                    "warga_id" => $warga->id,
+                    "nama_KK" => $warga->nama,
+                    "nomor_KK" => $warga->keluarga_id,
+                    "jumlah_tanggungan" => $warga->jumlah_tanggungan,
+                    "status" => 'pending',
+                    "created_at" => \Carbon\Carbon::createFromDate($year, 1, 1) // Set to Jan 1st of that year
+                ]);
+                $count++;
+            }
+        }
+
+        return back()->with('success', "Berhasil membuat $count tagihan zakat untuk tahun $year.");
     }
 
     /**
@@ -30,7 +77,15 @@ class BayarZakatController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        BayarZakat::create([
+            "warga_id" => $request->warga_id,
+            "nama_KK" => $request->nama_KK,
+            "nomor_KK" => $request->nomor_KK,
+            "jumlah_tanggungan" => $request->jumlah_tanggungan,
+            "status" => 'pending'
+        ]);
+        
+        return back()->with('success', 'Tagihan zakat berhasil dibuat manual');
     }
 
     /**

@@ -1,9 +1,9 @@
-import type React from "react";
-
+import { router } from "@inertiajs/react";
 import { useState, useEffect } from "react";
-import { Search, Filter } from "lucide-react";
+import { Search, Filter, PlusCircle } from "lucide-react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
     Select,
@@ -17,7 +17,11 @@ import type { ZakatRecord } from "@/lib/types";
 
 import DataTable from "./data-table";
 
-export default function ZakatDashboard(props: { bayarZakat: ZakatRecord[] }) {
+export default function ZakatDashboard(props: { 
+    bayarZakat: ZakatRecord[];
+    selectedYear?: number;
+    availableYears?: number[];
+}) {
     const [data, setData] = useState<ZakatRecord[]>(props.bayarZakat);
     const [filteredData, setFilteredData] =
         useState<ZakatRecord[]>(props.bayarZakat);
@@ -26,6 +30,11 @@ export default function ZakatDashboard(props: { bayarZakat: ZakatRecord[] }) {
     const [paymentTypeFilter, setPaymentTypeFilter] = useState("all");
     const [currentPage, setCurrentPage] = useState(1);
     const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [isGenerating, setIsGenerating] = useState(false);
+
+    useEffect(() => {
+        setData(props.bayarZakat);
+    }, [props.bayarZakat]);
 
     useEffect(() => {
         let result = [...data];
@@ -81,11 +90,62 @@ export default function ZakatDashboard(props: { bayarZakat: ZakatRecord[] }) {
         setData(updatedData);
     };
 
+    const handleYearChange = (year: string) => {
+        router.get(
+            route("bayar.zakat.index"),
+            { year: year },
+            { preserveState: true, preserveScroll: true }
+        );
+    };
+
+    const handleGenerate = () => {
+        if (confirm(`Generate tagihan zakat untuk tahun ${props.selectedYear}?`)) {
+            setIsGenerating(true);
+            router.post(route("bayar.zakat.generate"), {
+                year: props.selectedYear
+            }, {
+                onFinish: () => setIsGenerating(false),
+                preserveScroll: true
+            });
+        }
+    };
+
     return (
         <div className="">
-            <h1 className="mb-6 text-3xl font-bold text-gray-800">
-                Manajemen Pembayaran Zakat
-            </h1>
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
+                <h1 className="text-3xl font-bold text-gray-800 mb-4 md:mb-0">
+                    Manajemen Pembayaran Zakat
+                </h1>
+                
+                <div className="flex gap-2">
+                    {props.availableYears && props.selectedYear && (
+                        <Select
+                            value={String(props.selectedYear)}
+                            onValueChange={handleYearChange}
+                        >
+                            <SelectTrigger className="w-[120px] bg-white">
+                                <SelectValue placeholder="Tahun" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {props.availableYears.map((year) => (
+                                    <SelectItem key={year} value={String(year)}>
+                                        {year}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                    )}
+
+                    <Button 
+                        onClick={handleGenerate} 
+                        disabled={isGenerating}
+                        className="bg-emerald-600 hover:bg-emerald-700 text-white"
+                    >
+                        <PlusCircle className="w-4 h-4 mr-2" />
+                        {isGenerating ? "Processing..." : "Generate Tagihan"}
+                    </Button>
+                </div>
+            </div>
 
             <Card>
                 <CardHeader className="pb-2">

@@ -38,7 +38,9 @@ Route::middleware(['auth'])->group(function () {
     //Muzakki route end
 
     // Bayar zakat start
-    Route::get("/bayar", [BayarZakatController::class, "index"])->name("bayar");
+    Route::get("/bayar", [BayarZakatController::class, "index"])->name("bayar.zakat.index");
+    Route::post("/bayar", [BayarZakatController::class, "store"])->name("bayar.zakat.store");
+    Route::post("/bayar/generate", [BayarZakatController::class, "generate"])->name("bayar.zakat.generate");
     Route::patch("/bayar-zakat/{id}", [BayarZakatController::class, "update"])->name('bayar.update');
     // Bayar zakat end
 
