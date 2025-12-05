@@ -32,22 +32,20 @@ export default function ZakatDistributionTable({
             <Table>
                 <TableHeader>
                     <TableRow>
-                        {/* <TableHead className="w-[50px]">No</TableHead> */}
-                        <TableHead>Nama Penerima</TableHead>
-                        <TableHead>Jumlah Tanggungan</TableHead>
-                        {/* <TableHead>Type</TableHead> */}
-                        {/* <TableHead>Amount</TableHead>
-            <TableHead>Notes</TableHead>
-            <TableHead>Distribution Date</TableHead> */}
+                        <TableHead>Nama</TableHead>
+                        <TableHead>Jenis Bantuan</TableHead>
+                        <TableHead>Jumlah Beras</TableHead>
+                        <TableHead>Jumlah Uang</TableHead>
                         <TableHead>Status</TableHead>
-                        <TableHead className="text-right">Actions</TableHead>
+                        <TableHead>Kategori</TableHead>
+                        <TableHead className="text-right">Aksi</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
                     {distributions.length === 0 ? (
                         <TableRow>
                             <TableCell
-                                colSpan={9}
+                                colSpan={7}
                                 className="py-6 text-center text-muted-foreground"
                             >
                                 {searchQuery
@@ -58,36 +56,50 @@ export default function ZakatDistributionTable({
                     ) : (
                         distributions.map((distribution, index) => (
                             <TableRow key={distribution.id}>
-                                {/* <TableCell>{index + 1}</TableCell> */}
                                 <TableCell className="font-medium">
                                     {distribution?.warga?.nama}
                                 </TableCell>
                                 <TableCell>
-                                    {distribution?.warga?.jumlah_tanggungan}
+                                    {distribution.jenis_bantuan === "beras"
+                                        ? "Beras"
+                                        : distribution.jenis_bantuan === "uang"
+                                        ? "Uang"
+                                        : "-"}
                                 </TableCell>
-                                {/* <TableCell>{distribution.assistanceType}</TableCell> */}
-                                {/* <TableCell>
-                  {distribution.assistanceType === "Rice"
-                    ? `${distribution.amount} Kg`
-                    : `IDR ${distribution.amount.toLocaleString()}`}
-                </TableCell>
-                <TableCell className="max-w-[200px] truncate">{distribution.notes || "-"}</TableCell>
-                <TableCell>{new Date(distribution.distributionDate).toLocaleDateString()}</TableCell> */}
+                                <TableCell>
+                                    {distribution.jumlah_beras
+                                        ? `${distribution.jumlah_beras} kg`
+                                        : "-"}
+                                </TableCell>
+                                <TableCell>
+                                    {distribution.jumlah_uang
+                                        ? new Intl.NumberFormat("id-ID", {
+                                              style: "currency",
+                                              currency: "IDR",
+                                              maximumFractionDigits: 0,
+                                          }).format(distribution.jumlah_uang)
+                                        : "-"}
+                                </TableCell>
                                 <TableCell>
                                     <Badge
                                         variant={
                                             distribution?.status === "terkirim"
                                                 ? "default"
-                                                : "destructive"
+                                                : "secondary"
                                         }
                                         className={
                                             distribution?.status === "terkirim"
                                                 ? "bg-green-100 text-green-800 hover:bg-green-100"
-                                                : "bg-yellow-100 text-yellow-800 hover:bg-yellow-100"
+                                                : "bg-orange-100 text-orange-800 hover:bg-orange-100"
                                         }
                                     >
-                                        {distribution?.status}
+                                        {distribution?.status === "terkirim"
+                                            ? "Terkirim"
+                                            : "Belum Terkirim"}
                                     </Badge>
+                                </TableCell>
+                                <TableCell>
+                                    {distribution?.kategori?.nama || "-"}
                                 </TableCell>
                                 <TableCell className="text-right">
                                     <div className="flex justify-end gap-2">
@@ -102,19 +114,6 @@ export default function ZakatDistributionTable({
                                                 Edit
                                             </span>
                                         </Button>
-                                        {/* <Button
-                                            variant="ghost"
-                                            size="icon"
-                                            onClick={() =>
-                                                onDelete(distribution?.id)
-                                            }
-                                            className="w-8 h-8 text-destructive hover:text-destructive"
-                                        >
-                                            <Trash2 className="w-4 h-4" />
-                                            <span className="sr-only">
-                                                Delete
-                                            </span>
-                                        </Button> */}
                                     </div>
                                 </TableCell>
                             </TableRow>

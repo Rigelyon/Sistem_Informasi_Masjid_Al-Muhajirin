@@ -36,25 +36,23 @@ export default function ProgramIndex({ auth, programs }: Props) {
     };
 
     return (
-        <AuthenticatedLayout
-            header={
-                <div className="flex justify-between items-center">
-                    <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                        Program & Aktivitas
-                    </h2>
-                    <Button asChild>
-                        <Link href={route("programs.create")}>
-                            <Plus className="w-4 h-4 mr-2" />
-                            Tambah Program
-                        </Link>
-                    </Button>
-                </div>
-            }
-        >
+        <AuthenticatedLayout header="Program & Aktivitas">
             <Head title="Program & Aktivitas" />
 
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                    <div className="flex justify-between items-center mb-6">
+                        <h2 className="text-2xl font-bold text-gray-800">
+                            Daftar Program
+                        </h2>
+                        <Button asChild>
+                            <Link href={route("programs.create")}>
+                                <Plus className="w-4 h-4 mr-2" />
+                                Tambah Program
+                            </Link>
+                        </Button>
+                    </div>
+
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
                         <Table>
                             <TableHeader>
