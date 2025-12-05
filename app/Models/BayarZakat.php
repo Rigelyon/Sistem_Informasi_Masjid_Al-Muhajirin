@@ -11,6 +11,7 @@ class BayarZakat extends Model
     public $timestamps = true;
 
     protected $fillable = [
+        'warga_id',
         'nama_KK',
         'nomor_KK',
         'jumlah_tanggungan',
@@ -20,4 +21,9 @@ class BayarZakat extends Model
         'bayar_uang',
         'total_zakat',
     ];
+
+    public function warga()
+    {
+        return $this->belongsTo(Warga::class, 'warga_id');
+    }
 }

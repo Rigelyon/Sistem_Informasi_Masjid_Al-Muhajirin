@@ -37,28 +37,38 @@ class WargaController extends Controller
      */
     public function store(Request $request)
     {
+        // 1. Determine Category ID based on Type (Muzakki vs Mustahik)
+        $kategoriId = null;
+        if ($request->type === 'Muzakki') {
+            $kategoriMampu = Kategori::where('nama', 'Mampu')->first();
+            $kategoriId = $kategoriMampu ? $kategoriMampu->id : null;
+        } 
+        // For Mustahik, we leave kategori_id as null initially (to be filled in Distribution)
+
+        // 2. Create Warga
         $warga = Warga::create([
             "keluarga_id" => $request["keluarga_id"],
             'nama' => $request["nama"],
             'deskripsi' => $request["deskripsi"],
-            'kategori_id' => (int) $request["kategori_id"],
+            'kategori_id' => $kategoriId,
             'jumlah_tanggungan' => (int) $request["jumlah_tanggungan"]
         ]);
 
-        // Cari ID kategori "Mampu"
-        $kategoriMampu = Kategori::where('nama', 'Mampu')->first();
-
-        if ($kategoriMampu && $request["kategori_id"] == $kategoriMampu->id) {
+        // 3. Create Related Records based on Type
+        if ($request->type === 'Muzakki') {
+            // Create BayarZakat record linked to Warga
             BayarZakat::create([
+                "warga_id" => $warga->id,
                 "nama_KK" => $request["nama"],
                 "nomor_KK" => $request["keluarga_id"],
                 "jumlah_tanggungan" => (int) $request["jumlah_tanggungan"],
             ]);
+        } else {
+            // Mustahik: Create DistribusiZakat record
+            DistribusiZakat::create([
+                'warga_id' => $warga->id,
+            ]);
         }
-
-        DistribusiZakat::create([
-            'warga_id' => $warga["id"],
-        ]);
 
         return back()->with('success', 'Data berhasil ditambahkan');
     }
@@ -91,13 +101,61 @@ class WargaController extends Controller
     public function update(Request $request, string $id)
     {
         $warga = Warga::findOrFail($id);
+        
+        // Determine new Category ID based on Type
+        $kategoriId = $warga->kategori_id; // Default to existing
+        if ($request->type === 'Muzakki') {
+            $kategoriMampu = Kategori::where('nama', 'Mampu')->first();
+            $kategoriId = $kategoriMampu ? $kategoriMampu->id : null;
+        } elseif ($request->type === 'Mustahik') {
+            // If switching to Mustahik, clear the "Mampu" category if it was set
+            $kategoriMampu = Kategori::where('nama', 'Mampu')->first();
+            if ($warga->kategori_id == $kategoriMampu->id) {
+                $kategoriId = null; 
+            }
+        }
+
         $warga->update([
             "keluarga_id" => $request["keluarga_id"],
             'nama' => $request["nama"],
             'deskripsi' => $request["deskripsi"],
-            'kategori_id' => (int) $request["kategori_id"],
+            'kategori_id' => $kategoriId,
             'jumlah_tanggungan' => (int) $request["jumlah_tanggungan"]
         ]);
+
+        // Handle Switching Logic
+        if ($request->type === 'Muzakki') {
+            // Ensure BayarZakat exists
+            if (!$warga->bayarZakat) {
+                BayarZakat::create([
+                    "warga_id" => $warga->id,
+                    "nama_KK" => $warga->nama,
+                    "nomor_KK" => $warga->keluarga_id,
+                    "jumlah_tanggungan" => $warga->jumlah_tanggungan,
+                ]);
+            } else {
+                // Sync data just in case
+                $warga->bayarZakat->update([
+                    "nama_KK" => $warga->nama,
+                    "nomor_KK" => $warga->keluarga_id,
+                    "jumlah_tanggungan" => $warga->jumlah_tanggungan,
+                ]);
+            }
+            // Remove from Distribusi if exists
+            $warga->distribusiZakats()->delete();
+
+        } elseif ($request->type === 'Mustahik') {
+            // Ensure DistribusiZakat exists
+            if ($warga->distribusiZakats->isEmpty()) {
+                DistribusiZakat::create([
+                    'warga_id' => $warga->id,
+                ]);
+            }
+            // Remove from BayarZakat if exists
+            if ($warga->bayarZakat) {
+                $warga->bayarZakat->delete();
+            }
+        }
 
         return back()->with('success', 'Data berhasil diperbarui');
     }

@@ -228,7 +228,7 @@ export default function Warga(props: { warga: Warga[]; kategori: Kategori[] }) {
             return "Jumlah tanggungan harus berupa angka positif.";
         }
         if (!data.keluarga_id?.trim()) return "Nomor KK wajib diisi.";
-        if (!kategoriSelected!) return "Kategori wajib dipilih.";
+        if (!kategoriSelected!) return "Status wajib dipilih.";
 
         return null;
     };
@@ -269,7 +269,7 @@ export default function Warga(props: { warga: Warga[]; kategori: Kategori[] }) {
 
         const data = {
             ...createMuzakki,
-            kategori_id: selectedKategoriForCreate,
+            type: selectedKategoriForCreate, // We reuse this state variable for Type to minimize changes
         };
 
         router.post("/muzakki", data, {
@@ -300,10 +300,15 @@ export default function Warga(props: { warga: Warga[]; kategori: Kategori[] }) {
 
     // update muzakki
     useEffect(() => {
-        if (selectedCitizen?.kategori_id) {
-            setSelectedKategoriForUpdate(String(selectedCitizen.kategori_id));
+        if (selectedCitizen?.kategori) {
+            const isMampu = selectedCitizen.kategori.nama === "Mampu";
+            setSelectedKategoriForUpdate(isMampu ? "Muzakki" : "Mustahik");
+        } else {
+             // If no category (e.g. new Mustahik), default to Mustahik? Or check logic.
+             // Actually, if it's null, it's likely a Mustahik who hasn't been assigned an Asnaf yet.
+             setSelectedKategoriForUpdate("Mustahik");
         }
-    }, [selectedCitizen, setSelectedKategoriForUpdate]);
+    }, [selectedCitizen]);
 
     useEffect(() => {
         if (selectedCitizen) {
@@ -326,7 +331,7 @@ export default function Warga(props: { warga: Warga[]; kategori: Kategori[] }) {
 
         const data = {
             ...updateMuzakki,
-            kategori_id: selectedKategoriForUpdate,
+            type: selectedKategoriForUpdate,
         };
 
         router.patch(`/muzakki/${selectedCitizen?.id}`, data, {
@@ -596,7 +601,7 @@ export default function Warga(props: { warga: Warga[]; kategori: Kategori[] }) {
                                                 </div>
                                                 <div className="grid gap-2">
                                                     <Label htmlFor="category">
-                                                        Kategori
+                                                        Status
                                                     </Label>
                                                     <Select
                                                         value={
@@ -607,28 +612,15 @@ export default function Warga(props: { warga: Warga[]; kategori: Kategori[] }) {
                                                         }
                                                     >
                                                         <SelectTrigger>
-                                                            <SelectValue placeholder="Pilih Kategori" />
+                                                            <SelectValue placeholder="Pilih Status" />
                                                         </SelectTrigger>
                                                         <SelectContent>
-                                                            {props.kategori.map(
-                                                                (
-                                                                    value,
-                                                                    index
-                                                                ) => (
-                                                                    <SelectItem
-                                                                        key={
-                                                                            index
-                                                                        }
-                                                                        value={String(
-                                                                            value.id
-                                                                        )}
-                                                                    >
-                                                                        {
-                                                                            value.nama
-                                                                        }
-                                                                    </SelectItem>
-                                                                )
-                                                            )}
+                                                            <SelectItem value="Muzakki">
+                                                                Muzakki (Pembayar)
+                                                            </SelectItem>
+                                                            <SelectItem value="Mustahik">
+                                                                Mustahik (Penerima)
+                                                            </SelectItem>
                                                         </SelectContent>
                                                     </Select>
                                                 </div>
@@ -831,7 +823,7 @@ export default function Warga(props: { warga: Warga[]; kategori: Kategori[] }) {
                                                 </div>
                                                 <div className="grid gap-2">
                                                     <Label htmlFor="edit-category">
-                                                        Kategori
+                                                        Status
                                                     </Label>
                                                     <Select
                                                         value={
@@ -842,28 +834,15 @@ export default function Warga(props: { warga: Warga[]; kategori: Kategori[] }) {
                                                         }
                                                     >
                                                         <SelectTrigger>
-                                                            <SelectValue placeholder="Pilih Kategori" />
+                                                            <SelectValue placeholder="Pilih Status" />
                                                         </SelectTrigger>
                                                         <SelectContent>
-                                                            {props.kategori.map(
-                                                                (
-                                                                    value,
-                                                                    index
-                                                                ) => (
-                                                                    <SelectItem
-                                                                        key={
-                                                                            index
-                                                                        }
-                                                                        value={String(
-                                                                            value.id
-                                                                        )}
-                                                                    >
-                                                                        {
-                                                                            value.nama
-                                                                        }
-                                                                    </SelectItem>
-                                                                )
-                                                            )}
+                                                            <SelectItem value="Muzakki">
+                                                                Muzakki (Pembayar)
+                                                            </SelectItem>
+                                                            <SelectItem value="Mustahik">
+                                                                Mustahik (Penerima)
+                                                            </SelectItem>
                                                         </SelectContent>
                                                     </Select>
                                                 </div>

@@ -20,7 +20,8 @@ class DistribusiZakatController extends Controller
 
     public function mustahik()
     {
-        $mustahik = Kategori::get();
+        // Return only Asnaf categories (exclude Mampu)
+        $mustahik = Kategori::where('nama', '!=', 'Mampu')->get();
         return response()->json($mustahik);
     }
 
@@ -70,6 +71,14 @@ class DistribusiZakatController extends Controller
             "jumlah_beras" => $request["jumlah_beras"],
             "status" => (string) $request["status"],
         ]);
+
+        // Sync Warga Category if linked
+        if ($distribusi->warga_id && $request["kategori_id"]) {
+            $warga = $distribusi->warga;
+            if ($warga) {
+                $warga->update(['kategori_id' => $request["kategori_id"]]);
+            }
+        }
 
         return back()->with('success', 'Data berhasil diperbarui');
     }
