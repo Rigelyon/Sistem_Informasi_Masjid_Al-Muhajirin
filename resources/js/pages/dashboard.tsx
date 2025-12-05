@@ -14,6 +14,8 @@ export default function Dashboard(props: {
     sudahBayar: any;
     jumlahWargaTerdistribusi: any;
     jumlahPenerimaLainnya: any;
+    selectedYear: number;
+    availableYears: number[];
 }) {
     return (
         <AuthenticatedLayout header="Dashboard">
@@ -31,6 +33,8 @@ export default function Dashboard(props: {
                 sudahBayar={props.sudahBayar}
                 jumlahWargaTerdistribusi={props.jumlahWargaTerdistribusi}
                 jumlahPenerimaLainnya={props.jumlahPenerimaLainnya}
+                selectedYear={props.selectedYear}
+                availableYears={props.availableYears}
             />
         </AuthenticatedLayout>
     );

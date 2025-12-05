@@ -64,6 +64,8 @@ import { Sheet, SheetContent } from "@/components/ui/sheet";
 //     PieChart as PieChartComponent,
 // } from "@/components/ui/chart";
 
+import { router } from "@inertiajs/react";
+
 export default function DashboardPage(props: {
     totalZakatBeras: number;
     totalZakatUang: number;
@@ -76,8 +78,18 @@ export default function DashboardPage(props: {
     belumBayar: number;
     jumlahWargaTerdistribusi: number;
     jumlahPenerimaLainnya: number;
+    selectedYear: number;
+    availableYears: number[];
 }) {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+    const handleYearChange = (year: string) => {
+        router.get(
+            route("dashboard"),
+            { year: year },
+            { preserveState: true, preserveScroll: true }
+        );
+    };
 
     // Mock data for the dashboard
     const summaryData = {
@@ -262,9 +274,29 @@ export default function DashboardPage(props: {
                             <h1 className="text-4xl font-bold">Dashboard</h1>
                         </div>
                         <div className="flex flex-col gap-2 sm:flex-row">
+                            <Select
+                                value={String(props.selectedYear)}
+                                onValueChange={handleYearChange}
+                            >
+                                <SelectTrigger className="w-full sm:w-[180px] bg-white">
+                                    <SelectValue placeholder="Pilih Tahun" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    {props.availableYears.map((year) => (
+                                        <SelectItem
+                                            key={year}
+                                            value={String(year)}
+                                        >
+                                            {year}
+                                        </SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
                             <Button className="w-full sm:w-auto" asChild>
                                 <a
-                                    href={route("laporan.zakat.pdf")}
+                                    href={route("laporan.zakat.pdf", {
+                                        year: props.selectedYear,
+                                    })}
                                     className="inline-flex items-center px-4 py-2 text-white bg-green-600 rounded hover:bg-green-700"
                                     target="_blank"
                                     rel="noopener noreferrer"

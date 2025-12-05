@@ -14,13 +14,26 @@ class DashboardController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $konversiBerasKeUang = 15000;
+        $selectedYear = $request->input('year', date('Y'));
+        
+        // Generate list of years (e.g., current year back to 2020 or based on data)
+        $currentYear = date('Y');
+        $availableYears = range($currentYear, $currentYear - 4); // Last 5 years
 
-        $zakatLunas = BayarZakat::where('status', 'lunas')->get();
-        $distribusiZakatTerkirim = DistribusiZakat::where('status', 'terkirim')->get();
-        $distribusiLainnya = DistribusiZakatLainnya::where('status', 'terkirim')->get();
+        $zakatLunas = BayarZakat::where('status', 'lunas')
+            ->whereYear('created_at', $selectedYear)
+            ->get();
+            
+        $distribusiZakatTerkirim = DistribusiZakat::where('status', 'terkirim')
+            ->whereYear('tanggal_distribusi', $selectedYear)
+            ->get();
+            
+        $distribusiLainnya = DistribusiZakatLainnya::where('status', 'terkirim')
+            ->whereYear('tanggal_distribusi', $selectedYear)
+            ->get();
 
         $totalUang = 0;
         $totalBeras = 0;
@@ -61,7 +74,10 @@ class DashboardController extends Controller
 
         $wargaWajib = Warga::where('kategori_id', 1)->get();
 
-        $sudahBayarKeluarga = BayarZakat::where('status', 'lunas')->pluck("nomor_KK")->toArray();
+        $sudahBayarKeluarga = BayarZakat::where('status', 'lunas')
+            ->whereYear('created_at', $selectedYear)
+            ->pluck("nomor_KK")->toArray();
+            
         $sudahBayar = 0;
         $belumBayar = 0;
 
@@ -74,14 +90,31 @@ class DashboardController extends Controller
         }
 
         $jumlahWargaTerdistribusi = DistribusiZakat::where('status', 'terkirim')
+            ->whereYear('tanggal_distribusi', $selectedYear)
             ->distinct('warga_id')
             ->count('warga_id');
 
-        $jumlahPenerimaLainnya = DistribusiZakatLainnya::where('status', 'terkirim')->count();
+        $jumlahPenerimaLainnya = DistribusiZakatLainnya::where('status', 'terkirim')
+            ->whereYear('tanggal_distribusi', $selectedYear)
+            ->count();
 
         // dd($jumlahWargaTerdistribusi);
 
-        return Inertia::render("dashboard", ["totalZakatBeras" => $totalBeras, "totalZakatUang" => $totalUang, "totalDistribusiZakatBeras" => $totalBerasDistribusi, 'totalDistribusiZakatUang' => $totalUangDistribusi, "totalUangDistribusiLainnya" => $totalUangDistribusiLainnya, 'totalBerasDistribusiLainnya' => $totalBerasDistribusiLainnya, "wargaWajibBayar" => count($wargaWajib), "sudahBayar" => $sudahBayar, "belumBayar" => $belumBayar, "jumlahWargaTerdistribusi" => $jumlahWargaTerdistribusi, "jumlahPenerimaLainnya" => $jumlahPenerimaLainnya]);
+        return Inertia::render("dashboard", [
+            "totalZakatBeras" => $totalBeras, 
+            "totalZakatUang" => $totalUang, 
+            "totalDistribusiZakatBeras" => $totalBerasDistribusi, 
+            'totalDistribusiZakatUang' => $totalUangDistribusi, 
+            "totalUangDistribusiLainnya" => $totalUangDistribusiLainnya, 
+            'totalBerasDistribusiLainnya' => $totalBerasDistribusiLainnya, 
+            "wargaWajibBayar" => count($wargaWajib), 
+            "sudahBayar" => $sudahBayar, 
+            "belumBayar" => $belumBayar, 
+            "jumlahWargaTerdistribusi" => $jumlahWargaTerdistribusi, 
+            "jumlahPenerimaLainnya" => $jumlahPenerimaLainnya,
+            "selectedYear" => (int)$selectedYear,
+            "availableYears" => $availableYears
+        ]);
     }
 
     /**

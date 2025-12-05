@@ -19,14 +19,21 @@ class LaporanZakatController extends Controller
         //
     }
 
-    public function exportPdf()
+    public function exportPdf(Request $request)
     {
 
         $konversiBerasKeUang = 15000;
+        $selectedYear = $request->input('year', date('Y'));
 
-        $zakatLunas = BayarZakat::where('status', 'lunas')->get();
-        $distribusiZakatTerkirim = DistribusiZakat::where('status', 'terkirim')->get();
-        $distribusiLainnya = DistribusiZakatLainnya::where('status', 'terkirim')->get();
+        $zakatLunas = BayarZakat::where('status', 'lunas')
+            ->whereYear('created_at', $selectedYear)
+            ->get();
+        $distribusiZakatTerkirim = DistribusiZakat::where('status', 'terkirim')
+            ->whereYear('tanggal_distribusi', $selectedYear)
+            ->get();
+        $distribusiLainnya = DistribusiZakatLainnya::where('status', 'terkirim')
+            ->whereYear('tanggal_distribusi', $selectedYear)
+            ->get();
 
         $totalUang = 0;
         $totalBeras = 0;
@@ -67,7 +74,9 @@ class LaporanZakatController extends Controller
 
         $wargaWajib = Warga::where('kategori_id', 1)->get();
 
-        $sudahBayarKeluarga = BayarZakat::where('status', 'lunas')->pluck("nomor_KK")->toArray();
+        $sudahBayarKeluarga = BayarZakat::where('status', 'lunas')
+            ->whereYear('created_at', $selectedYear)
+            ->pluck("nomor_KK")->toArray();
         $sudahBayar = 0;
         $belumBayar = 0;
 
@@ -80,10 +89,13 @@ class LaporanZakatController extends Controller
         }
 
         $jumlahWargaTerdistribusi = DistribusiZakat::where('status', 'terkirim')
+            ->whereYear('tanggal_distribusi', $selectedYear)
             ->distinct('warga_id')
             ->count('warga_id');
 
-        $jumlahPenerimaLainnya = DistribusiZakatLainnya::where('status', 'terkirim')->count();
+        $jumlahPenerimaLainnya = DistribusiZakatLainnya::where('status', 'terkirim')
+            ->whereYear('tanggal_distribusi', $selectedYear)
+            ->count();
         // Ambil data summary
         $data = [
             "totalZakatBeras" => $totalBeras,
@@ -96,7 +108,8 @@ class LaporanZakatController extends Controller
             "sudahBayar" => $sudahBayar,
             "belumBayar" => $belumBayar,
             "jumlahWargaTerdistribusi" => $jumlahWargaTerdistribusi,
-            "jumlahPenerimaLainnya" => $jumlahPenerimaLainnya
+            "jumlahPenerimaLainnya" => $jumlahPenerimaLainnya,
+            "tahun" => $selectedYear
         ];
 
         // Render PDF
@@ -104,7 +117,7 @@ class LaporanZakatController extends Controller
         $pdf->loadView('pdf.laporan-zakat', ['data' => $data]);
 
         // Kembalikan file PDF
-        return $pdf->download('laporan_zakat.pdf');
+        return $pdf->download('laporan_zakat_' . $selectedYear . '.pdf');
     }
 
     /**
