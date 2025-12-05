@@ -105,7 +105,7 @@ export default function ProgramEdit({ program }: Props) {
                         <form onSubmit={submit} className="space-y-6">
                             {/* Emoji & Title */}
                             <div className="flex gap-4">
-                                <div className="space-y-2">
+                                <div className="flex flex-col space-y-2">
                                     <Label>Emoji</Label>
                                     <Popover open={isEmojiOpen} onOpenChange={setIsEmojiOpen}>
                                         <PopoverTrigger asChild>
