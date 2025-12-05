@@ -49,8 +49,8 @@ export default function ZakatDistributionTable({
                                 className="py-6 text-center text-muted-foreground"
                             >
                                 {searchQuery
-                                    ? "No matching distribution records found"
-                                    : "No distribution records found"}
+                                    ? "Tidak ada data distribusi yang cocok ditemukan"
+                                    : "Tidak ada data distribusi ditemukan"}
                             </TableCell>
                         </TableRow>
                     ) : (

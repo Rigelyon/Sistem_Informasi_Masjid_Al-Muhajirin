@@ -322,7 +322,7 @@ export function ZakatDistributionAdmin(props: {
                     <div className="relative flex-1">
                         <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                         <Input
-                            placeholder="Search by name, notes, or status..."
+                            placeholder="Cari berdasarkan nama, catatan, atau status..."
                             className="pl-8"
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
@@ -333,10 +333,10 @@ export function ZakatDistributionAdmin(props: {
                         onValueChange={setCategoryFilter}
                     >
                         <SelectTrigger className="w-full md:w-[200px]">
-                            <SelectValue placeholder="Filter by Category" />
+                            <SelectValue placeholder="Filter berdasarkan Kategori" />
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem value="all">All Categories</SelectItem>
+                            <SelectItem value="all">Semua Kategori</SelectItem>
                             {kategoris.map((kategori) => (
                                 <SelectItem
                                     key={kategori.id}
@@ -525,10 +525,10 @@ export function ZakatDistributionAdmin(props: {
                                             >
                                                 <div className="flex flex-col items-center justify-center text-muted-foreground">
                                                     <Info className="w-10 h-10 mb-2" />
-                                                    <p>No records found</p>
+                                                    <p>Tidak ada data ditemukan</p>
                                                     <p className="text-sm">
-                                                        Try adjusting your
-                                                        search or filter
+                                                        Coba sesuaikan pencarian
+                                                        atau filter Anda
                                                     </p>
                                                 </div>
                                             </TableCell>
@@ -545,15 +545,16 @@ export function ZakatDistributionAdmin(props: {
                             <AlertDialogContent>
                                 <AlertDialogHeader>
                                     <AlertDialogTitle>
-                                        Are you sure?
+                                        Apakah Anda yakin?
                                     </AlertDialogTitle>
                                     <AlertDialogDescription>
-                                        This action cannot be undone. This will
-                                        permanently delete{" "}
+                                        Tindakan ini tidak dapat dibatalkan. Ini
+                                        akan menghapus secara permanen data
+                                        distribusi milik{" "}
                                         <span className="font-semibold">
                                             {selectedItem?.nama}
                                         </span>
-                                        ’s distribution record.
+                                        .
                                     </AlertDialogDescription>
                                 </AlertDialogHeader>
                                 <AlertDialogFooter>
@@ -562,13 +563,13 @@ export function ZakatDistributionAdmin(props: {
                                             setIsDeleteDialogOpen(false)
                                         }
                                     >
-                                        Cancel
+                                        Batal
                                     </AlertDialogCancel>
                                     <AlertDialogAction
                                         className="bg-destructive hover:bg-destructive/90"
                                         onClick={handleDeleteConfirm}
                                     >
-                                        Delete
+                                        Hapus
                                     </AlertDialogAction>
                                 </AlertDialogFooter>
                             </AlertDialogContent>
@@ -577,17 +578,17 @@ export function ZakatDistributionAdmin(props: {
                         {filteredDistributions.length > 0 && (
                             <div className="flex items-center justify-between mt-4">
                                 <div className="text-sm text-muted-foreground">
-                                    Showing{" "}
+                                    Menampilkan{" "}
                                     {Math.min(
                                         (currentPage - 1) * itemsPerPage + 1,
                                         filteredDistributions.length
                                     )}{" "}
-                                    to{" "}
+                                    sampai{" "}
                                     {Math.min(
                                         currentPage * itemsPerPage,
                                         filteredDistributions.length
                                     )}{" "}
-                                    of {filteredDistributions.length} entries
+                                    dari {filteredDistributions.length} entri
                                 </div>
                                 <Pagination>
                                     <PaginationContent>

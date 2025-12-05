@@ -172,10 +172,10 @@ export default function ZakatDistributionManagement(props: {
                                 }}
                             >
                                 <SelectTrigger className="w-[140px]">
-                                    <SelectValue placeholder="Filter by status" />
+                                    <SelectValue placeholder="Filter berdasarkan status" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="all">All</SelectItem>
+                                    <SelectItem value="all">Semua</SelectItem>
                                     <SelectItem value="terkirim">
                                         Terkirim
                                     </SelectItem>
@@ -208,10 +208,10 @@ export default function ZakatDistributionManagement(props: {
                             }
                             disabled={currentPage === 1}
                         >
-                            Previous
+                            Sebelumnya
                         </Button>
                         <span className="text-sm">
-                            Page {currentPage} of {totalPages}
+                            Halaman {currentPage} dari {totalPages}
                         </span>
                         <Button
                             variant="outline"
@@ -222,7 +222,7 @@ export default function ZakatDistributionManagement(props: {
                             }
                             disabled={currentPage === totalPages}
                         >
-                            Next
+                            Selanjutnya
                         </Button>
                     </div>
                 )}
