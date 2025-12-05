@@ -88,10 +88,11 @@ export default function ProgramIndex({ auth, programs }: Props) {
                                             </TableCell>
                                             <TableCell>
                                                 <span className="capitalize">
-                                                    {program.schedule_type.replace(
-                                                        "_",
-                                                        " "
-                                                    )}
+                                                    {program.schedule_type === "one_time"
+                                                        ? "Sekali Waktu"
+                                                        : program.schedule_type === "weekly"
+                                                        ? "Mingguan"
+                                                        : "Custom"}
                                                 </span>
                                             </TableCell>
                                             <TableCell className="text-right space-x-2">

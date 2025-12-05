@@ -66,7 +66,7 @@ const data = {
             icon: SendToBack,
         },
         {
-            title: "Distribusi Zakat lainnya",
+            title: "Distribusi Zakat Lainnya",
             url: "/distribusi-lainnya",
             icon: GiftIcon,
         },
