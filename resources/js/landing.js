@@ -53,6 +53,7 @@ if (contactForm && formMessage) {
         const name = document.getElementById('name').value;
         const email = document.getElementById('email').value;
         const message = document.getElementById('message').value;
+        const submitBtn = contactForm.querySelector('button[type="submit"]');
 
         if (!name || !email || !message) {
             formMessage.textContent = 'Mohon isi semua kolom';
@@ -61,15 +62,52 @@ if (contactForm && formMessage) {
             return;
         }
 
-        formMessage.textContent = 'Terima kasih telah menghubungi kami. Kami akan segera menghubungi Anda kembali.';
-        formMessage.className = 'mt-4 text-center text-green-600';
-        formMessage.classList.remove('hidden');
+        // Disable button & show loading state
+        const originalBtnText = submitBtn.textContent;
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Mengirim...';
+        formMessage.classList.add('hidden');
 
-        contactForm.reset();
-
-        setTimeout(() => {
-            formMessage.classList.add('hidden');
-        }, 5000);
+        fetch('/contact', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({
+                name: name,
+                email: email,
+                message: message
+            })
+        })
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(err => { throw err; });
+            }
+            return response.json();
+        })
+        .then(data => {
+            formMessage.textContent = 'Terima kasih telah menghubungi kami. Kami akan segera menghubungi Anda kembali.';
+            formMessage.className = 'mt-4 text-center text-green-600';
+            formMessage.classList.remove('hidden');
+            contactForm.reset();
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            formMessage.textContent = error.message || 'Maaf, terjadi kesalahan saat mengirim pesan. Silakan coba lagi nanti.';
+            formMessage.className = 'mt-4 text-center text-red-600';
+            formMessage.classList.remove('hidden');
+        })
+        .finally(() => {
+            submitBtn.disabled = false;
+            submitBtn.textContent = originalBtnText;
+            
+            if (formMessage.classList.contains('text-green-600')) {
+                setTimeout(() => {
+                    formMessage.classList.add('hidden');
+                }, 5000);
+            }
+        });
     });
 }
 

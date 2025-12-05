@@ -15,6 +15,7 @@ use Inertia\Inertia;
 
 use App\Models\GalleryGroup;
 use App\Models\Program;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ProgramController;
 
 Route::get('/', function () {
@@ -22,6 +23,8 @@ Route::get('/', function () {
     $programs = Program::latest()->take(20)->get();
     return view('landing', compact('galleries', 'programs'));
 });
+
+Route::post('/contact', [ContactController::class, 'send'])->name('contact.send');
 
 Route::middleware(['auth'])->group(function () {
     Route::get("/dashboard", [DashboardController::class, "index"])->name("dashboard");
