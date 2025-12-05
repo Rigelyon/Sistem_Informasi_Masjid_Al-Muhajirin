@@ -219,13 +219,15 @@ export default function Warga(props: { warga: Warga[]; kategori: Kategori[] }) {
         kategoriSelected: string
     ): string | null => {
         if (!data?.nama?.trim()) return "Nama lengkap wajib diisi.";
-        if (
-            data.jumlah_tanggungan! === undefined ||
-            data.jumlah_tanggungan! === null ||
-            isNaN(Number(data.jumlah_tanggungan)) ||
-            Number(data.jumlah_tanggungan) < 0
-        ) {
-            return "Jumlah tanggungan harus berupa angka positif.";
+        if (kategoriSelected === "Muzakki") {
+            if (
+                data.jumlah_tanggungan! === undefined ||
+                data.jumlah_tanggungan! === null ||
+                isNaN(Number(data.jumlah_tanggungan)) ||
+                Number(data.jumlah_tanggungan) < 0
+            ) {
+                return "Jumlah tanggungan harus berupa angka positif.";
+            }
         }
         if (!data.keluarga_id?.trim()) return "Nomor KK wajib diisi.";
         if (!kategoriSelected!) return "Status wajib dipilih.";
@@ -533,28 +535,30 @@ export default function Warga(props: { warga: Warga[]; kategori: Kategori[] }) {
                                                     placeholder="Masukan nama lengkap"
                                                 />
                                             </div>
-                                            <div className="grid gap-2">
-                                                <Label htmlFor="jumlah_tanggungan">
-                                                    Jumlah tanggungan
-                                                </Label>
-                                                <Input
-                                                    onChange={(e) => {
-                                                        setCreateMuzakki(
-                                                            (prev: any) => {
-                                                                return {
-                                                                    ...prev,
-                                                                    jumlah_tanggungan:
-                                                                        e.target
-                                                                            .value,
-                                                                };
-                                                            }
-                                                        );
-                                                    }}
-                                                    type="number"
-                                                    id="jumlah_tanggungan"
-                                                    placeholder="Masukan jumlah tanggungan"
-                                                />
-                                            </div>
+                                            {selectedKategoriForCreate === "Muzakki" && (
+                                                <div className="grid gap-2">
+                                                    <Label htmlFor="jumlah_tanggungan">
+                                                        Jumlah tanggungan
+                                                    </Label>
+                                                    <Input
+                                                        onChange={(e) => {
+                                                            setCreateMuzakki(
+                                                                (prev: any) => {
+                                                                    return {
+                                                                        ...prev,
+                                                                        jumlah_tanggungan:
+                                                                            e.target
+                                                                                .value,
+                                                                    };
+                                                                }
+                                                            );
+                                                        }}
+                                                        type="number"
+                                                        id="jumlah_tanggungan"
+                                                        placeholder="Masukan jumlah tanggungan"
+                                                    />
+                                                </div>
+                                            )}
                                             <div className="grid gap-2">
                                                 <Label htmlFor="description">
                                                     Deskripsi/Keterangan
@@ -846,36 +850,38 @@ export default function Warga(props: { warga: Warga[]; kategori: Kategori[] }) {
                                                         </SelectContent>
                                                     </Select>
                                                 </div>
-                                                                                <div className="grid gap-2">
-                                                                                    <Label htmlFor="edit-jumlah-tanggungan">
-                                                                                        Jumlah
-                                                                                        tanggungan
-                                                                                    </Label>
-                                                                                    <Input
-                                                                                        onChange={(
-                                                                                            e
-                                                                                        ) => {
-                                                                                            setUpdateMuzakki(
-                                                                                                (
-                                                                                                    prev: any
-                                                                                                ) => {
-                                                                                                    return {
-                                                                                                        ...prev,
-                                                                                                        jumlah_tanggungan:
-                                                                                                            e
-                                                                                                                .target
-                                                                                                                .value,
-                                                                                                    };
-                                                                                                }
-                                                                                            );
-                                                                                        }}
-                                                                                        type="number"
-                                                                                        id="edit-jumlah-tanggungan"
-                                                                                        defaultValue={
-                                                                                            selectedCitizen.jumlah_tanggungan
-                                                                                        }
-                                                                                    />
-                                                                                </div>
+                                                {selectedKategoriForUpdate === "Muzakki" && (
+                                                    <div className="grid gap-2">
+                                                        <Label htmlFor="edit-jumlah-tanggungan">
+                                                            Jumlah
+                                                            tanggungan
+                                                        </Label>
+                                                        <Input
+                                                            onChange={(
+                                                                e
+                                                            ) => {
+                                                                setUpdateMuzakki(
+                                                                    (
+                                                                        prev: any
+                                                                    ) => {
+                                                                        return {
+                                                                            ...prev,
+                                                                            jumlah_tanggungan:
+                                                                                e
+                                                                                    .target
+                                                                                    .value,
+                                                                        };
+                                                                    }
+                                                                );
+                                                            }}
+                                                            type="number"
+                                                            id="edit-jumlah-tanggungan"
+                                                            defaultValue={
+                                                                selectedCitizen.jumlah_tanggungan
+                                                            }
+                                                        />
+                                                    </div>
+                                                )}
                                                                                 <div className="grid gap-2">
                                                                                     <Label htmlFor="edit-description">
                                                                                         Deskripsi
