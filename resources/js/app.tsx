@@ -22,8 +22,9 @@ createInertiaApp({
         root.render(
             <ThemeProvider
                 attribute="class"
-                defaultTheme="system"
-                enableSystem
+                defaultTheme="light"
+                forcedTheme="light"
+                enableSystem={false}
                 disableTransitionOnChange
             >
                 <Toaster position="top-right" />
