@@ -109,7 +109,12 @@ class LaporanZakatController extends Controller
             "belumBayar" => $belumBayar,
             "jumlahWargaTerdistribusi" => $jumlahWargaTerdistribusi,
             "jumlahPenerimaLainnya" => $jumlahPenerimaLainnya,
-            "tahun" => $selectedYear
+            "tahun" => $selectedYear,
+            
+            // Detailed Data
+            "zakatLunas" => $zakatLunas,
+            "distribusiZakatTerkirim" => $distribusiZakatTerkirim,
+            "distribusiLainnya" => $distribusiLainnya
         ];
 
         // Render PDF

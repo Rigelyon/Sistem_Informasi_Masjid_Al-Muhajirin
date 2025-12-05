@@ -43,5 +43,97 @@
         <tr><td>Jumlah Warga Terdistribusi</td><td>{{ $data['jumlahWargaTerdistribusi'] }}</td></tr>
         <tr><td>Jumlah Penerima Lainnya</td><td>{{ $data['jumlahPenerimaLainnya'] }}</td></tr>
     </table>
+
+    <div style="page-break-before: always;"></div>
+
+    <div class="section-title">Rincian Pemasukan Zakat</div>
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 5%;">No</th>
+                <th>Nama KK</th>
+                <th>Tanggungan</th>
+                <th>Jenis Bayar</th>
+                <th>Nominal</th>
+            </tr>
+        </thead>
+        <tbody>
+            @forelse($data['zakatLunas'] as $index => $zakat)
+            <tr>
+                <td>{{ $index + 1 }}</td>
+                <td>{{ $zakat->nama_KK }}</td>
+                <td>{{ $zakat->jumlah_tanggungan }}</td>
+                <td>{{ ucfirst($zakat->jenis_bayar) }}</td>
+                <td>
+                    @if($zakat->jenis_bayar == 'beras')
+                        {{ $zakat->bayar_beras }} Kg
+                    @else
+                        Rp {{ number_format($zakat->bayar_uang, 0, ',', '.') }}
+                    @endif
+                </td>
+            </tr>
+            @empty
+            <tr>
+                <td colspan="5" style="text-align: center;">Tidak ada data pemasukan zakat.</td>
+            </tr>
+            @endforelse
+        </tbody>
+    </table>
+
+    <div class="section-title">Rincian Penyaluran Zakat</div>
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 5%;">No</th>
+                <th>Nama Penerima</th>
+                <th>Kategori</th>
+                <th>Jenis Bantuan</th>
+                <th>Tgl Distribusi</th>
+                <th>Jumlah</th>
+            </tr>
+        </thead>
+        <tbody>
+            @php $no = 1; @endphp
+            @foreach($data['distribusiZakatTerkirim'] as $d)
+            <tr>
+                <td>{{ $no++ }}</td>
+                <td>{{ $d->warga->nama ?? 'Warga' }}</td>
+                <td>{{ $d->kategori->nama_kategori ?? '-' }}</td>
+                <td>{{ ucfirst($d->jenis_bantuan) }}</td>
+                <td>{{ \Carbon\Carbon::parse($d->tanggal_distribusi)->format('d/m/Y') }}</td>
+                <td>
+                    @if($d->jenis_bantuan == 'beras')
+                        {{ $d->jumlah_beras }} Kg
+                    @else
+                        Rp {{ number_format($d->jumlah_uang, 0, ',', '.') }}
+                    @endif
+                </td>
+            </tr>
+            @endforeach
+
+            @foreach($data['distribusiLainnya'] as $d)
+            <tr>
+                <td>{{ $no++ }}</td>
+                <td>{{ $d->nama }} (Lainnya)</td>
+                <td>{{ $d->kategori->nama_kategori ?? '-' }}</td>
+                <td>{{ ucfirst($d->jenis_bantuan) }}</td>
+                <td>{{ \Carbon\Carbon::parse($d->tanggal_distribusi)->format('d/m/Y') }}</td>
+                <td>
+                    @if($d->jenis_bantuan == 'beras')
+                        {{ $d->jumlah_beras }} Kg
+                    @else
+                        Rp {{ number_format($d->jumlah_uang, 0, ',', '.') }}
+                    @endif
+                </td>
+            </tr>
+            @endforeach
+
+            @if(count($data['distribusiZakatTerkirim']) == 0 && count($data['distribusiLainnya']) == 0)
+            <tr>
+                <td colspan="6" style="text-align: center;">Tidak ada data penyaluran zakat.</td>
+            </tr>
+            @endif
+        </tbody>
+    </table>
 </body>
 </html>
