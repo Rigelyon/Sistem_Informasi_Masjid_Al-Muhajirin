@@ -20,6 +20,9 @@ class DistribusiZakatLainnyaController extends Controller
         } else {
              // Default to latest Hijri Year available
              $latestHijri = DistribusiZakatLainnya::max('tahun_hijriah');
+             
+             // Only filter if we have explicit Hijri years recorded. 
+             // If $latestHijri is null, it means all data is legacy (null year), so we show everything by default.
              if ($latestHijri) {
                  $query->where('tahun_hijriah', $latestHijri);
              }
@@ -29,7 +32,17 @@ class DistribusiZakatLainnyaController extends Controller
         $kategoris = \App\Models\Kategori::where('nama', '!=', 'Mampu')->get();
         
         // Available Hijri Years
-        $availableHijriYears = DistribusiZakatLainnya::select('tahun_hijriah')->distinct()->orderBy('tahun_hijriah', 'desc')->pluck('tahun_hijriah')->filter()->values();
+        $availableHijriYears = DistribusiZakatLainnya::select('tahun_hijriah')
+            ->distinct()
+            ->orderBy('tahun_hijriah', 'desc')
+            ->pluck('tahun_hijriah')
+            ->filter()
+            ->values()
+            ->toArray();
+
+        if (empty($availableHijriYears)) {
+            $availableHijriYears = [intval((date('Y') - 622) * 33 / 32)];
+        }
 
         return Inertia::render("distribusi-lainnya", [
             "distribusiZakatLainnya" => $distribusiZakatLainnya,
