@@ -17,22 +17,35 @@ class DashboardController extends Controller
     public function index(Request $request)
     {
         $konversiBerasKeUang = 15000;
-        $selectedYear = $request->input('year', date('Y'));
         
-        // Generate list of years (e.g., current year back to 2020 or based on data)
-        $currentYear = date('Y');
-        $availableYears = range($currentYear, $currentYear - 4); // Last 5 years
+        // Hijri Logic
+        $latestHijri = BayarZakat::max('tahun_hijriah');
+        $selectedYear = $request->input('tahun_hijriah', $latestHijri);
+        
+        // Available Hijri Years
+        $availableYears = BayarZakat::select('tahun_hijriah')
+            ->distinct()
+            ->orderBy('tahun_hijriah', 'desc')
+            ->pluck('tahun_hijriah')
+            ->filter()
+            ->values()
+            ->toArray();
+
+        // If no data yet, fallback
+        if (empty($availableYears)) {
+            $availableYears = [intval((date('Y') - 622) * 33 / 32)];
+        }
 
         $zakatLunas = BayarZakat::where('status', 'lunas')
-            ->whereYear('created_at', $selectedYear)
+            ->where('tahun_hijriah', $selectedYear)
             ->get();
             
         $distribusiZakatTerkirim = DistribusiZakat::where('status', 'terkirim')
-            ->whereYear('tanggal_distribusi', $selectedYear)
+            ->where('tahun_hijriah', $selectedYear)
             ->get();
             
         $distribusiLainnya = DistribusiZakatLainnya::where('status', 'terkirim')
-            ->whereYear('tanggal_distribusi', $selectedYear)
+            ->where('tahun_hijriah', $selectedYear)
             ->get();
 
         $totalUang = 0;
@@ -75,7 +88,7 @@ class DashboardController extends Controller
         $wargaWajib = Warga::where('kategori_id', 1)->get();
 
         $sudahBayarKeluarga = BayarZakat::where('status', 'lunas')
-            ->whereYear('created_at', $selectedYear)
+            ->where('tahun_hijriah', $selectedYear)
             ->pluck("nomor_KK")->toArray();
             
         $sudahBayar = 0;
@@ -90,12 +103,12 @@ class DashboardController extends Controller
         }
 
         $jumlahWargaTerdistribusi = DistribusiZakat::where('status', 'terkirim')
-            ->whereYear('tanggal_distribusi', $selectedYear)
+            ->where('tahun_hijriah', $selectedYear)
             ->distinct('warga_id')
             ->count('warga_id');
 
         $jumlahPenerimaLainnya = DistribusiZakatLainnya::where('status', 'terkirim')
-            ->whereYear('tanggal_distribusi', $selectedYear)
+            ->where('tahun_hijriah', $selectedYear)
             ->count();
 
         // dd($jumlahWargaTerdistribusi);
