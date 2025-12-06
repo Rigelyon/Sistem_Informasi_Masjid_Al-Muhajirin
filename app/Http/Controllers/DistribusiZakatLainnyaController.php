@@ -11,13 +11,31 @@ class DistribusiZakatLainnyaController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request) 
     {
-        $distribusiZakatLainnya = DistribusiZakatLainnya::with("kategori")->get();
+        $query = DistribusiZakatLainnya::with("kategori");
+        
+        if ($request->has('tahun_hijriah')) {
+            $query->where('tahun_hijriah', $request->tahun_hijriah);
+        } else {
+             // Default to latest Hijri Year available
+             $latestHijri = DistribusiZakatLainnya::max('tahun_hijriah');
+             if ($latestHijri) {
+                 $query->where('tahun_hijriah', $latestHijri);
+             }
+        }
+
+        $distribusiZakatLainnya = $query->get();
         $kategoris = \App\Models\Kategori::where('nama', '!=', 'Mampu')->get();
+        
+        // Available Hijri Years
+        $availableHijriYears = DistribusiZakatLainnya::select('tahun_hijriah')->distinct()->orderBy('tahun_hijriah', 'desc')->pluck('tahun_hijriah')->filter()->values();
+
         return Inertia::render("distribusi-lainnya", [
             "distribusiZakatLainnya" => $distribusiZakatLainnya,
-            "kategoris" => $kategoris
+            "kategoris" => $kategoris,
+            "filters" => $request->all(['tahun_hijriah']),
+            "availableHijriYears" => $availableHijriYears
         ]);
     }
 

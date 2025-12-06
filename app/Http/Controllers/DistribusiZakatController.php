@@ -18,6 +18,12 @@ class DistribusiZakatController extends Controller
         
         if ($request->has('tahun_hijriah')) {
             $query->where('tahun_hijriah', $request->tahun_hijriah);
+        } else {
+             // Default to latest Hijri Year available
+             $latestHijri = DistribusiZakat::max('tahun_hijriah');
+             if ($latestHijri) {
+                 $query->where('tahun_hijriah', $latestHijri);
+             }
         }
         
         $distribusiZakat = $query->get();

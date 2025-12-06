@@ -13,6 +13,8 @@ interface Kategori {
 export default function DistribusiLainnya(props: {
     distribusiZakatLainnya: Distribution[];
     kategoris: Kategori[];
+    availableHijriYears?: number[];
+    filters?: any;
 }) {
 
     return (
@@ -26,6 +28,8 @@ export default function DistribusiLainnya(props: {
                 <ZakatDistributionAdmin
                     distribusiZakatLainnya={props.distribusiZakatLainnya}
                     kategoris={props.kategoris}
+                    availableHijriYears={props.availableHijriYears}
+                    filters={props.filters}
                 />
             </div>
         </AuthenticatedLayout>

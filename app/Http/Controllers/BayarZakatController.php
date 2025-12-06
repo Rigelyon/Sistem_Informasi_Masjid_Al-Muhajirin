@@ -25,8 +25,11 @@ class BayarZakatController extends Controller
         } elseif ($request->has('year')) {
              $query->whereYear('created_at', $request->year);
         } else {
-             // Default to showing everything or maybe just latest unified period?
-             // Let's default to latest 50 records for now to avoid empty page
+             // Default to latest Hijri Year available to avoid showing all history
+             $latestHijri = BayarZakat::max('tahun_hijriah');
+             if ($latestHijri) {
+                 $query->where('tahun_hijriah', $latestHijri);
+             }
         }
 
         $bayar_zakat = $query->get();
@@ -34,10 +37,14 @@ class BayarZakatController extends Controller
         // We need to fetch available Hijri Years for the filter
         $availableHijriYears = BayarZakat::select('tahun_hijriah')->distinct()->orderBy('tahun_hijriah', 'desc')->pluck('tahun_hijriah')->filter()->values();
         
+        // Approximate current Hijri Year for default input
+        $currentHijriYear = intval((date('Y') - 622) * 33 / 32);
+
         return Inertia::render("bayar", [
             "bayarZakat" => $bayar_zakat,
             "filters" => $request->all(['tahun_hijriah', 'year']),
-            "availableHijriYears" => $availableHijriYears // Pass this to frontend
+            "availableHijriYears" => $availableHijriYears,
+            "currentHijriYear" => $currentHijriYear
         ]);
     }
 

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { router } from "@inertiajs/react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -33,6 +33,12 @@ export default function ZakatDistributionManagement(props: {
     const [distributions, setDistributions] = useState<DistribusiZakat[]>(
         props.distribusiZakat
     );
+
+    // Sync state with props when filters change
+    useEffect(() => {
+        setDistributions(props.distribusiZakat);
+    }, [props.distribusiZakat]);
+
     const [statusFilter, setStatusFilter] = useState<string>("all");
     const [currentPage, setCurrentPage] = useState(1);
     const [isFormOpen, setIsFormOpen] = useState(false);

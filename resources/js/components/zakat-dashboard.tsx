@@ -33,10 +33,11 @@ export default function ZakatDashboard(props: {
     availableYears?: number[];
     filters?: {
         tahun_hijriah?: string;
-        bulan_hijriah?: string;
+        bulan_hijriah?: string; // Legacy
         year?: string;
     };
     availableHijriYears?: number[];
+    currentHijriYear?: number;
 }) {
     const [data, setData] = useState<ZakatRecord[]>(props.bayarZakat);
     const [filteredData, setFilteredData] =
@@ -107,7 +108,22 @@ export default function ZakatDashboard(props: {
     };
 
     const [isPeriodDialogOpen, setIsPeriodDialogOpen] = useState(false);
-    const [periodYear, setPeriodYear] = useState("");
+    
+    // Default to currentHijriYear from backend, or calculate via Intl if missing
+    const getDefaultHijriYear = () => {
+        if (props.currentHijriYear) return String(props.currentHijriYear);
+        try {
+            const date = new Date();
+            const hijriDate = new Intl.DateTimeFormat('en-u-ca-islamic-umalqura', {
+                year: 'numeric',
+            }).format(date);
+            return hijriDate.split(' ')[0]; // Extract year part
+        } catch (e) {
+            return "1446"; // Fallback
+        }
+    };
+    
+    const [periodYear, setPeriodYear] = useState(getDefaultHijriYear());
     
     // Convert available years to string for Select
     const yearOptions = props.availableHijriYears?.map(y => String(y)) || [];

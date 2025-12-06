@@ -5,8 +5,11 @@ import { Head } from "@inertiajs/react";
 
 export default function Bayar(props: { 
     bayarZakat: ZakatRecord[];
-    selectedYear: number;
-    availableYears: number[];
+    selectedYear?: number;
+    availableYears?: number[];
+    availableHijriYears?: number[];
+    currentHijriYear?: number;
+    filters?: any;
 }) {
 
     return (
@@ -18,6 +21,9 @@ export default function Bayar(props: {
                     bayarZakat={props.bayarZakat} 
                     selectedYear={props.selectedYear}
                     availableYears={props.availableYears}
+                    availableHijriYears={props.availableHijriYears}
+                    currentHijriYear={props.currentHijriYear}
+                    filters={props.filters}
                 />
             </main>
         </AuthenticatedLayout>

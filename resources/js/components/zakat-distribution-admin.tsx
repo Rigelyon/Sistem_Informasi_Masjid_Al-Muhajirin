@@ -88,8 +88,16 @@ export interface Distribution {
 export function ZakatDistributionAdmin(props: {
     distribusiZakatLainnya: Distribution[];
     kategoris: Kategori[];
+    availableHijriYears?: number[];
+    filters?: any;
 }) {
     const [distributions, setDistributions] = useState<Distribution[]>([]);
+    
+    // Sync state with props
+    useEffect(() => {
+        setDistributions(props.distribusiZakatLainnya);
+    }, [props.distribusiZakatLainnya]);
+
     const [filteredDistributions, setFilteredDistributions] = useState<
         Distribution[]
     >([]);
@@ -136,6 +144,7 @@ export function ZakatDistributionAdmin(props: {
                 },
             });
             setIsDeleteDialogOpen(false);
+            setSelectedItem(null);
         }
     };
 
@@ -152,7 +161,7 @@ export function ZakatDistributionAdmin(props: {
         };
 
         fetchData();
-    }, []);
+    }, [props.distribusiZakatLainnya, props.kategoris]);
 
     // Filter and search data
     useEffect(() => {
@@ -309,12 +318,34 @@ export function ZakatDistributionAdmin(props: {
                             Manage and track zakat distribution to recipients
                         </CardDescription>
                     </div> */}
-                    <Button
-                        onClick={() => setIsDialogOpen(true)}
-                        className="self-end md:self-auto"
-                    >
-                        <Plus className="w-4 h-4 mr-2" /> Tambah Penerima
-                    </Button>
+                    <div className="flex gap-4">
+                         <Select
+                            value={props.filters?.tahun_hijriah || ""}
+                            onValueChange={(val) => {
+                                    router.get(
+                                    route("distribusi-lainnya"),
+                                    { ...props.filters, tahun_hijriah: val },
+                                    { preserveState: true, preserveScroll: true }
+                                );
+                            }}
+                        >
+                            <SelectTrigger className="w-[120px]">
+                                <SelectValue placeholder="Tahun (H)" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {props.availableHijriYears?.map((y) => (
+                                    <SelectItem key={y} value={String(y)}>{y} H</SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+
+                        <Button
+                            onClick={() => setIsDialogOpen(true)}
+                            className="self-end md:self-auto"
+                        >
+                            <Plus className="w-4 h-4 mr-2" /> Tambah Penerima
+                        </Button>
+                    </div>
                 </div>
             </CardHeader>
             <CardContent>
