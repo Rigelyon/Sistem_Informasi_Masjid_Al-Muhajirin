@@ -30,6 +30,16 @@ class BayarZakatController extends Controller
     {
         $year = $request->input('year', date('Y'));
         
+        // Progressive Lock Check:
+        // Do not allow generation if data already exists for a FUTURE year.
+        // This prevents backfilling historical data with current (potentially incorrect) status
+        // after the new cycle has begun.
+        $futureDataExists = BayarZakat::whereYear('created_at', '>', $year)->exists();
+        
+        if ($futureDataExists) {
+            return back()->with('error', "Gagal: Sudah ada data tagihan untuk tahun mendatang (>" . $year . "). Mohon input manual untuk tahun lampau agar data akurat.");
+        }
+
         // Find all Warga capable of paying (Mampu)
         // Assuming 'kategori_id' for Mampu is known or can be found. 
         // Based on WargaController, we look for 'Mampu'.

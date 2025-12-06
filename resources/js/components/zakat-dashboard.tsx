@@ -99,13 +99,23 @@ export default function ZakatDashboard(props: {
     };
 
     const handleGenerate = () => {
-        if (confirm(`Generate tagihan zakat untuk tahun ${props.selectedYear}?`)) {
+        const year = Number(props.selectedYear) || new Date().getFullYear();
+        const currentYear = new Date().getFullYear();
+        
+        // Custom warning if generating for current/future year (which locks past years)
+        const confirmationMessage = year >= currentYear 
+            ? `Membuat tagihan untuk Tahun ${year} akan membuatmu tidak bisa generate untuk tahun sebelumnya. Namun, anda masih bisa mengedit datanya secara manual. Pastikan data lampau sudah aman. Lanjutkan?`
+            : `Generate tagihan zakat untuk tahun ${year}?`;
+
+        if (confirm(confirmationMessage)) {
             setIsGenerating(true);
             router.post(route("bayar.zakat.generate"), {
                 year: props.selectedYear
             }, {
                 onFinish: () => setIsGenerating(false),
-                preserveScroll: true
+                preserveScroll: true,
+                // Handle error messages from backend nicely if needed, 
+                // typically Inertia handles flash messages automatically in layout.
             });
         }
     };
