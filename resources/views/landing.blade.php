@@ -350,14 +350,13 @@
     <!-- Struktur organisasi Section -->
     @php
         $structures = [
-            ['name' => 'Ustadz Ahmad Ibrahim', 'role' => 'Ketua DKM', 'img' => 'st1.jpeg'],
-            ['name' => 'Muhammad Yusuf', 'role' => 'Sekretaris', 'img' => 'st2.jpeg'],
-            ['name' => 'Fatimah Hassan', 'role' => 'Bendahara', 'img' => 'st3.jpeg'],
-            ['name' => 'Ustadz Abdullah Malik', 'role' => 'Bidang Keagamaan', 'img' => 'st4.jpeg'],
-            ['name' => 'Sulaiman', 'role' => 'Bidang Pembangunan', 'img' => 'st5.jpeg'],
-            ['name' => 'Khadijah Rahman', 'role' => 'Kegiatan Sosial', 'img' => 'st6.jpeg'],
-            ['name' => 'Abdul Karawita', 'role' => 'Media & Publikasi', 'img' => 'st7.jpeg'],
-            ['name' => 'Muhammad Sumbul', 'role' => 'Media & Publikasi', 'img' => 'st8.jpeg'],
+            ['name' => 'Koswara, S.Pd, M.Pd.', 'role' => 'Ketua DKM', 'img' => 'staff_placeholder.png'],
+            ['name' => 'Erik Dudi Susanto, S.Pd, M.Pd.', 'role' => 'Wakil Ketua 1', 'img' => 'staff_placeholder.png'],
+            ['name' => 'Amir', 'role' => 'Wakil Ketua 2', 'img' => 'staff_placeholder.png'],
+            ['name' => 'Abdul Gopur, S.Sos', 'role' => 'Sekretaris', 'img' => 'staff_placeholder.png'],
+            ['name' => 'Herlianto', 'role' => 'Wakil Sekretaris', 'img' => 'staff_placeholder.png'],
+            ['name' => 'Cucuk Supriadi, S.Pd.', 'role' => 'Bendahara', 'img' => 'staff_placeholder.png'],
+            ['name' => 'Herawan Setia Dipura', 'role' => 'Wakil Bendahara', 'img' => 'staff_placeholder.png'],
         ];
     @endphp
     <section id="struktur" class="py-20 bg-gray-50 scroll-mt-20">
