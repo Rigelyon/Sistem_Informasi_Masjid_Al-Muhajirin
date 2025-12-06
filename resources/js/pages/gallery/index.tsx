@@ -96,10 +96,10 @@ export default function GalleryIndex({ groups }: { groups: GalleryGroup[] }) {
         <AuthenticatedLayout header="Kelola Galeri">
             <Head title="Kelola Galeri" />
 
-            <div className="p-6">
-                <div className="flex justify-between items-center mb-6">
-                    <h2 className="text-2xl font-bold">Daftar Galeri</h2>
-                    <Button onClick={() => setIsCreateOpen(true)} disabled={groups.length >= 12}>
+            <main className="p-6 space-y-6">
+                <div className="flex items-center justify-between">
+                    <h1 className="text-3xl font-bold tracking-tight">Kelola Galeri</h1>
+                    <Button onClick={() => setIsCreateOpen(true)} disabled={groups.length >= 12} className="bg-emerald-600 hover:bg-emerald-700 text-white">
                         <Plus className="mr-2 h-4 w-4" /> Tambah Grup
                     </Button>
                 </div>
@@ -255,7 +255,7 @@ export default function GalleryIndex({ groups }: { groups: GalleryGroup[] }) {
                         </div>
                     </DialogContent>
                 </Dialog>
-            </div>
+            </main>
         </AuthenticatedLayout>
     );
 }

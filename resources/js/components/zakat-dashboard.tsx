@@ -166,37 +166,53 @@ export default function ZakatDashboard(props: {
     };
 
     return (
-        <div className="">
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
-                <h1 className="text-3xl font-bold text-gray-800 mb-4 md:mb-0">
-                    Manajemen Pembayaran Zakat
-                </h1>
-                
-                <div className="flex flex-wrap gap-2 items-center">
-                    {/* Filter Tahun Hijriah */}
-                    <Select
-                        value={props.filters?.tahun_hijriah || ""}
-                        onValueChange={(val) => handleFilterChange("tahun_hijriah", val)}
-                    >
-                        <SelectTrigger className="w-[120px] bg-white">
-                            <SelectValue placeholder="Tahun (H)" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            {yearOptions.map((year) => (
-                                <SelectItem key={year} value={year}>
-                                    {year} H
-                                </SelectItem>
-                            ))}
-                        </SelectContent>
-                    </Select>
-                    
-                     {/* Filter Bulan Hijriah REMOVED */}
+        <Card>
+            <CardHeader>
+                <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                    <div className="flex flex-1 items-center gap-4 flex-wrap">
+                        <div className="relative flex-1 md:max-w-sm">
+                            <Search className="absolute w-4 h-4 text-gray-500 transform -translate-y-1/2 left-3 top-1/2" />
+                            <Input
+                                placeholder="Cari nama / nomor KK..."
+                                value={searchQuery}
+                                onChange={handleSearch}
+                                className="pl-9 w-full"
+                            />
+                        </div>
+                        <Select
+                            value={props.filters?.tahun_hijriah || ""}
+                            onValueChange={(val) => handleFilterChange("tahun_hijriah", val)}
+                        >
+                            <SelectTrigger className="w-[130px]">
+                                <SelectValue placeholder="Tahun (H)" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {yearOptions.map((year) => (
+                                    <SelectItem key={year} value={year}>
+                                        {year} H
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                        <Select
+                            value={statusFilter}
+                            onValueChange={handleStatusFilterChange}
+                        >
+                            <SelectTrigger className="w-[140px]">
+                                <SelectValue placeholder="Status" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="all">Semua Status</SelectItem>
+                                <SelectItem value="pending">Pending</SelectItem>
+                                <SelectItem value="lunas">Lunas</SelectItem>
+                            </SelectContent>
+                        </Select>
+                    </div>
 
-                    {/* Unified Generator Dialog */}
                     <Dialog open={isPeriodDialogOpen} onOpenChange={setIsPeriodDialogOpen}>
                         <DialogTrigger asChild>
-                            <Button className="bg-emerald-600 hover:bg-emerald-700 text-white">
-                                <PlusCircle className="w-4 h-4 mr-2" />
+                            <Button className="bg-emerald-600 hover:bg-emerald-700 text-white gap-2">
+                                <PlusCircle className="w-4 h-4" />
                                 Buka Periode
                             </Button>
                         </DialogTrigger>
@@ -229,74 +245,8 @@ export default function ZakatDashboard(props: {
                         </DialogContent>
                     </Dialog>
                 </div>
-            </div>
-
-            <Card>
-                <CardHeader className="pb-2">
-                    {/* <CardTitle className="text-xl font-semibold text-gray-700">Zakat Payment Records</CardTitle> */}
-                    <div className="flex flex-col items-start justify-between gap-4 mt-4 md:flex-row md:items-center">
-                        <div className="flex flex-col w-full gap-2 sm:flex-row md:w-auto">
-                            {/* <div className="flex items-center gap-2">
-                                <Filter className="w-4 h-4 text-gray-500" />
-                                <Select
-                                    value={paymentTypeFilter}
-                                    onValueChange={
-                                        handlePaymentTypeFilterChange
-                                    }
-                                >
-                                    <SelectTrigger className="w-[140px]">
-                                        <SelectValue placeholder="Payment Type" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="all">
-                                            Semua Jenis
-                                        </SelectItem>
-                                        <SelectItem value="beras">
-                                            Beras
-                                        </SelectItem>
-                                        <SelectItem value="uang">
-                                            Uang
-                                        </SelectItem>
-                                    </SelectContent>
-                                </Select>
-                            </div> */}
-
-                            <div className="flex items-center gap-2">
-                                {/* <Filter className="w-4 h-4 text-gray-500" /> */}
-                                <Select
-                                    value={statusFilter}
-                                    onValueChange={handleStatusFilterChange}
-                                >
-                                    <SelectTrigger className="w-[140px]">
-                                        <SelectValue placeholder="Status" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="all">
-                                            Semua Status
-                                        </SelectItem>
-                                        <SelectItem value="pending">
-                                            Pending
-                                        </SelectItem>
-                                        <SelectItem value="lunas">
-                                            Lunas
-                                        </SelectItem>
-                                    </SelectContent>
-                                </Select>
-                            </div>
-                        </div>
-
-                        <div className="relative w-full md:w-auto">
-                            <Search className="absolute w-4 h-4 text-gray-500 transform -translate-y-1/2 left-3 top-1/2" />
-                            <Input
-                                placeholder="Cari berdasarkan Nama, Nomor KK..."
-                                value={searchQuery}
-                                onChange={handleSearch}
-                                className="pl-9 w-full md:w-[300px]"
-                            />
-                        </div>
-                    </div>
-                </CardHeader>
-                <CardContent>
+            </CardHeader>
+            <CardContent>
                     <DataTable
                         data={filteredData}
                         currentPage={currentPage}
@@ -307,6 +257,5 @@ export default function ZakatDashboard(props: {
                     />
                 </CardContent>
             </Card>
-        </div>
     );
 }

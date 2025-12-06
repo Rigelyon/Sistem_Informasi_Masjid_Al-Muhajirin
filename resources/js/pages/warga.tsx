@@ -14,6 +14,13 @@ import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
+    Card,
+    CardContent,
+    CardHeader,
+    CardTitle,
+    CardDescription,
+} from "@/components/ui/card";
+import {
     Table,
     TableBody,
     TableCell,
@@ -444,27 +451,25 @@ export default function Warga(props: { warga: Warga[]; kategori: Kategori[] }) {
     return (
         <>
             <AuthenticatedLayout header="Dashboard">
-                <Head title="Dashboard" />
-                <div className="min-h-screen pt-6 md:flex ">
-                    <div className="mx-auto md:flex-1 md:max-w-full max-w-96 md:mx-0">
-                        <header className="flex items-center pb-6 bg-background">
-                            <h1 className="text-2xl font-bold md:text-3xl">
-                                Manajemen Kelola Warga
-                            </h1>
-                        </header>
+                <Head title="Manajemen Warga" />
+                <div className="p-6 space-y-6">
+                    <div className="flex items-center justify-between">
+                        <h1 className="text-3xl font-bold tracking-tight">
+                            Manajemen Kelola Warga
+                        </h1>
+                    </div>
 
-                        <main className="p-6 bg-white rounded-md border-[0.3px]">
-                            <div className="flex flex-col gap-4 mb-6 sm:flex-row sm:items-center sm:justify-between">
+                    <Card>
+                        <CardHeader>
+                            <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                                 <div className="flex items-center flex-1 gap-4">
-                                    <div className="flex-1 sm:max-w-sm">
+                                    <div className="relative flex-1 md:max-w-sm">
                                         <Input
                                             type="search"
                                             placeholder="Cari warga..."
-                                            className=""
                                             value={searchTerm}
-                                            onChange={(e) =>
-                                                setSearchTerm(e.target.value)
-                                            }
+                                            onChange={(e) => setSearchTerm(e.target.value)}
+                                            className="w-full"
                                         />
                                     </div>
                                     <Select
@@ -475,21 +480,15 @@ export default function Warga(props: { warga: Warga[]; kategori: Kategori[] }) {
                                             <SelectValue placeholder="Category" />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            {props.kategori.map(
-                                                (category: Kategori) => (
-                                                    <SelectItem
-                                                        key={category.id}
-                                                        value={String(
-                                                            category?.id
-                                                        )}
-                                                    >
-                                                        {category.nama}
-                                                    </SelectItem>
-                                                )
-                                            )}
-                                            <SelectItem value={"All"}>
-                                                All
-                                            </SelectItem>
+                                            {props.kategori.map((category: Kategori) => (
+                                                <SelectItem
+                                                    key={category.id}
+                                                    value={String(category?.id)}
+                                                >
+                                                    {category.nama}
+                                                </SelectItem>
+                                            ))}
+                                            <SelectItem value={"All"}>All</SelectItem>
                                         </SelectContent>
                                     </Select>
                                 </div>
@@ -507,52 +506,37 @@ export default function Warga(props: { warga: Warga[]; kategori: Kategori[] }) {
                                     </DialogTrigger>
                                     <DialogContent>
                                         <DialogHeader>
-                                            <DialogTitle>
-                                                Tambah Warga Baru
-                                            </DialogTitle>
+                                            <DialogTitle>Tambah Warga Baru</DialogTitle>
                                             <DialogDescription>
-                                                Masukkan rincian warga baru di
-                                                bawah ini.
+                                                Masukkan rincian warga baru di bawah ini.
                                             </DialogDescription>
                                         </DialogHeader>
                                         <div className="grid gap-4 py-4">
                                             <div className="grid gap-2">
-                                                <Label htmlFor="fullName">
-                                                    Nama lengkap
-                                                </Label>
+                                                <Label htmlFor="fullName">Nama lengkap</Label>
                                                 <Input
                                                     onChange={(e) => {
-                                                        setCreateMuzakki(
-                                                            (prev: any) => {
-                                                                return {
-                                                                    ...prev,
-                                                                    nama: e
-                                                                        .target
-                                                                        .value,
-                                                                };
-                                                            }
-                                                        );
+                                                        setCreateMuzakki((prev: any) => {
+                                                            return {
+                                                                ...prev,
+                                                                nama: e.target.value,
+                                                            };
+                                                        });
                                                     }}
                                                     id="fullName"
                                                     placeholder="Masukan nama lengkap"
                                                 />
                                             </div>
                                             <div className="grid gap-2">
-                                                <Label htmlFor="familyId">
-                                                    Nomer KK
-                                                </Label>
+                                                <Label htmlFor="familyId">Nomer KK</Label>
                                                 <Input
                                                     onChange={(e) => {
-                                                        setCreateMuzakki(
-                                                            (prev: any) => {
-                                                                return {
-                                                                    ...prev,
-                                                                    keluarga_id:
-                                                                        e.target
-                                                                            .value,
-                                                                };
-                                                            }
-                                                        );
+                                                        setCreateMuzakki((prev: any) => {
+                                                            return {
+                                                                ...prev,
+                                                                keluarga_id: e.target.value,
+                                                            };
+                                                        });
                                                     }}
                                                     id="familyId"
                                                     placeholder="e.g. F-001"
@@ -560,16 +544,10 @@ export default function Warga(props: { warga: Warga[]; kategori: Kategori[] }) {
                                             </div>
                                             <div className="grid grid-cols-2 gap-4">
                                                 <div className="grid gap-2">
-                                                    <Label htmlFor="category">
-                                                        Status
-                                                    </Label>
+                                                    <Label htmlFor="category">Status</Label>
                                                     <Select
-                                                        value={
-                                                            selectedKategoriForCreate
-                                                        }
-                                                        onValueChange={
-                                                            setSelectedKategoriForCreate
-                                                        }
+                                                        value={selectedKategoriForCreate}
+                                                        onValueChange={setSelectedKategoriForCreate}
                                                     >
                                                         <SelectTrigger>
                                                             <SelectValue placeholder="Pilih Status" />
@@ -590,16 +568,12 @@ export default function Warga(props: { warga: Warga[]; kategori: Kategori[] }) {
                                                     </Label>
                                                     <Input
                                                         onChange={(e) => {
-                                                            setCreateMuzakki(
-                                                                (prev: any) => {
-                                                                    return {
-                                                                        ...prev,
-                                                                        jumlah_tanggungan:
-                                                                            e.target
-                                                                                .value,
-                                                                    };
-                                                                }
-                                                            );
+                                                            setCreateMuzakki((prev: any) => {
+                                                                return {
+                                                                    ...prev,
+                                                                    jumlah_tanggungan: e.target.value,
+                                                                };
+                                                            });
                                                         }}
                                                         type="number"
                                                         id="jumlah_tanggungan"
@@ -614,16 +588,12 @@ export default function Warga(props: { warga: Warga[]; kategori: Kategori[] }) {
                                                 </Label>
                                                 <Textarea
                                                     onChange={(e) => {
-                                                        setCreateMuzakki(
-                                                            (prev: any) => {
-                                                                return {
-                                                                    ...prev,
-                                                                    deskripsi:
-                                                                        e.target
-                                                                            .value,
-                                                                };
-                                                            }
-                                                        );
+                                                        setCreateMuzakki((prev: any) => {
+                                                            return {
+                                                                ...prev,
+                                                                deskripsi: e.target.value,
+                                                            };
+                                                        });
                                                     }}
                                                     id="description"
                                                     placeholder="Masukan deskripsi atau keterangan"
@@ -633,100 +603,69 @@ export default function Warga(props: { warga: Warga[]; kategori: Kategori[] }) {
                                         <DialogFooter>
                                             <Button
                                                 variant="outline"
-                                                onClick={() =>
-                                                    setIsAddDialogOpen(false)
-                                                }
+                                                onClick={() => setIsAddDialogOpen(false)}
                                             >
                                                 Cancel
                                             </Button>
-                                            <Button
-                                                onClick={handleCreateMuzakki}
-                                            >
+                                            <Button onClick={handleCreateMuzakki}>
                                                 Simpan Data
                                             </Button>
                                         </DialogFooter>
                                     </DialogContent>
                                 </Dialog>
                             </div>
-
-                            <div className="overflow-x-auto border rounded-md">
-                                <div className="min-w-full">
-                                    <Table className="min-w-full whitespace-nowrap">
-                                        <TableHeader>
-                                            <TableRow>
-                                                <TableHead>Nama</TableHead>
-                                                <TableHead className="hidden md:table-cell">
-                                                    Nomer KK
-                                                </TableHead>
-                                                <TableHead>
-                                                    Tanggungan
-                                                </TableHead>
-                                                <TableHead>Kategori</TableHead>
-                                                <TableHead className="hidden md:table-cell">
-                                                    Ditambahkan
-                                                </TableHead>
-                                                <TableHead className="text-center">
-                                                    Aksi
-                                                </TableHead>
-                                            </TableRow>
-                                        </TableHeader>
-                                        <TableBody>
-                                            {paginatedCitizens.map(
-                                                (citizen, index) => (
-                                                    <TableRow key={index}>
-                                                        <TableCell className="font-medium">
-                                                            {citizen.nama}
-                                                        </TableCell>
-                                                        <TableCell className="hidden max-w-xs truncate md:table-cell">
-                                                            {
-                                                                citizen.keluarga_id
-                                                            }
-                                                        </TableCell>
-                                                        <TableCell>
-                                                            {
-                                                                citizen.jumlah_tanggungan
-                                                            }
-                                                        </TableCell>
-                                                        <TableCell>
-                                                            <Badge
-                                                                variant="outline"
-                                                                className={getCategoryBadgeClass(
-                                                                    citizen
-                                                                        .kategori
-                                                                        ?.nama || "Mustahik"
-                                                                )}
-                                                            >
-                                                                {
-                                                                    citizen
-                                                                        .kategori
-                                                                        ?.nama || "Mustahik"
-                                                                }
-                                                            </Badge>
-                                                        </TableCell>
-                                                        <TableCell className="hidden md:table-cell">
-                                                            {format(
-                                                                citizen.created_at,
-                                                                "PPP"
-                                                            )}
-                                                        </TableCell>
-                                                        <TableCell className="text-right">
-                                                            <div className="flex justify-end gap-2">
-                                                                <Button
-                                                                    variant="ghost"
-                                                                    size="icon"
-                                                                    onClick={() =>
-                                                                        handleViewDetails(
-                                                                            citizen
-                                                                        )
-                                                                    }
-                                                                    title="View Details"
-                                                                >
-                                                                    <FileText className="w-4 h-4" />
-                                                                    <span className="sr-only">
-                                                                        View
-                                                                        Details
-                                                                    </span>
-                                                                </Button>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="overflow-x-auto rounded-md border">
+                                <Table>
+                                    <TableHeader>
+                                        <TableRow>
+                                            <TableHead>Nama</TableHead>
+                                            <TableHead className="hidden md:table-cell">
+                                                Nomer KK
+                                            </TableHead>
+                                            <TableHead>Tanggungan</TableHead>
+                                            <TableHead>Kategori</TableHead>
+                                            <TableHead className="hidden md:table-cell">
+                                                Ditambahkan
+                                            </TableHead>
+                                            <TableHead className="text-center">Aksi</TableHead>
+                                        </TableRow>
+                                    </TableHeader>
+                                    <TableBody>
+                                        {paginatedCitizens.map((citizen, index) => (
+                                            <TableRow key={index}>
+                                                <TableCell className="font-medium">
+                                                    {citizen.nama}
+                                                </TableCell>
+                                                <TableCell className="hidden max-w-xs truncate md:table-cell">
+                                                    {citizen.keluarga_id}
+                                                </TableCell>
+                                                <TableCell>{citizen.jumlah_tanggungan}</TableCell>
+                                                <TableCell>
+                                                    <Badge
+                                                        variant="outline"
+                                                        className={getCategoryBadgeClass(
+                                                            citizen.kategori?.nama || "Mustahik"
+                                                        )}
+                                                    >
+                                                        {citizen.kategori?.nama || "Mustahik"}
+                                                    </Badge>
+                                                </TableCell>
+                                                <TableCell className="hidden md:table-cell">
+                                                    {format(citizen.created_at, "PPP")}
+                                                </TableCell>
+                                                <TableCell className="text-right">
+                                                    <div className="flex justify-end gap-2">
+                                                        <Button
+                                                            variant="ghost"
+                                                            size="icon"
+                                                            onClick={() => handleViewDetails(citizen)}
+                                                            title="View Details"
+                                                        >
+                                                            <FileText className="w-4 h-4" />
+                                                            <span className="sr-only">View Details</span>
+                                                        </Button>
 
                                                                 <Dialog
                                                                     open={
@@ -1001,7 +940,6 @@ export default function Warga(props: { warga: Warga[]; kategori: Kategori[] }) {
                                         </TableBody>
                                     </Table>
                                 </div>
-                            </div>
 
                             {/* Pagination */}
                             {totalPages > 1 && (
@@ -1095,8 +1033,8 @@ export default function Warga(props: { warga: Warga[]; kategori: Kategori[] }) {
                                     </div>
                                 </div>
                             )}
-                        </main>
-                    </div>
+                        </CardContent>
+                    </Card>
                 </div>
 
                 {/* Citizen Details Sheet */}

@@ -49,7 +49,12 @@ export default function Distribusi(props: {
         <AuthenticatedLayout header="Dashboard">
             <Head title="Dashboard bayar" />
 
-            <main className="pt-6 mx-auto ">
+            <main className="p-6 space-y-6">
+                <div className="flex items-center justify-between">
+                    <h1 className="text-3xl font-bold tracking-tight">
+                        Manajemen Distribusi Zakat
+                    </h1>
+                </div>
                 <ZakatDistributionManagement
                     distribusiZakat={props.distribusiZakat}
                     filters={props.filters}

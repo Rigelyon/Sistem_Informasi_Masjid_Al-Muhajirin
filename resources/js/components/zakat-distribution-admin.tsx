@@ -310,19 +310,22 @@ export function ZakatDistributionAdmin(props: {
 
     return (
         <Card className="shadow-md rounded-2xl">
-            <CardHeader className="pb-2">
+            <CardHeader>
                 <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-                    {/* <div>
-                        <CardTitle>Zakat Distribution Records</CardTitle>
-                        <CardDescription>
-                            Manage and track zakat distribution to recipients
-                        </CardDescription>
-                    </div> */}
-                    <div className="flex gap-4">
-                         <Select
+                    <div className="flex flex-1 items-center gap-4 flex-wrap">
+                        <div className="relative flex-1 md:max-w-sm">
+                            <Search className="absolute w-4 h-4 text-gray-500 transform -translate-y-1/2 left-3 top-1/2" />
+                            <Input
+                                placeholder="Cari nama, catatan, atau status..."
+                                className="pl-9 w-full"
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                            />
+                        </div>
+                        <Select
                             value={props.filters?.tahun_hijriah || ""}
                             onValueChange={(val) => {
-                                    router.get(
+                                router.get(
                                     route("distribusi-lainnya"),
                                     { ...props.filters, tahun_hijriah: val },
                                     { preserveState: true, preserveScroll: true }
@@ -334,51 +337,41 @@ export function ZakatDistributionAdmin(props: {
                             </SelectTrigger>
                             <SelectContent>
                                 {props.availableHijriYears?.map((y) => (
-                                    <SelectItem key={y} value={String(y)}>{y} H</SelectItem>
+                                    <SelectItem key={y} value={String(y)}>
+                                        {y} H
+                                    </SelectItem>
                                 ))}
                             </SelectContent>
                         </Select>
+                        <Select
+                            value={categoryFilter}
+                            onValueChange={setCategoryFilter}
+                        >
+                            <SelectTrigger className="w-[200px]">
+                                <SelectValue placeholder="Semua Kategori" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="all">Semua Kategori</SelectItem>
+                                {kategoris.map((kategori) => (
+                                    <SelectItem key={kategori.id} value={kategori.id}>
+                                        {kategori.nama}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                    </div>
 
+                    <div className="flex items-center gap-2">
                         <Button
                             onClick={() => setIsDialogOpen(true)}
-                            className="self-end md:self-auto"
+                            className="bg-emerald-600 hover:bg-emerald-700 text-white gap-2"
                         >
-                            <Plus className="w-4 h-4 mr-2" /> Tambah Penerima
+                            <Plus className="w-4 h-4" /> Tambah Penerima
                         </Button>
                     </div>
                 </div>
             </CardHeader>
             <CardContent>
-                <div className="flex flex-col gap-4 mb-6 md:flex-row">
-                    <div className="relative flex-1">
-                        <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                        <Input
-                            placeholder="Cari berdasarkan nama, catatan, atau status..."
-                            className="pl-8"
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                        />
-                    </div>
-                    <Select
-                        value={categoryFilter}
-                        onValueChange={setCategoryFilter}
-                    >
-                        <SelectTrigger className="w-full md:w-[200px]">
-                            <SelectValue placeholder="Filter berdasarkan Kategori" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value="all">Semua Kategori</SelectItem>
-                            {kategoris.map((kategori) => (
-                                <SelectItem
-                                    key={kategori.id}
-                                    value={kategori.id}
-                                >
-                                    {kategori.nama}
-                                </SelectItem>
-                            ))}
-                        </SelectContent>
-                    </Select>
-                </div>
 
                 {loading ? (
                     <TableSkeleton />

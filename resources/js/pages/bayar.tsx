@@ -16,7 +16,12 @@ export default function Bayar(props: {
         <AuthenticatedLayout header="Dashboard">
             <Head title="Dashboard bayar" />
 
-            <main className="max-w-full min-h-screen pt-6 ">
+            <main className="p-6 space-y-6">
+                <div className="flex items-center justify-between">
+                    <h1 className="text-3xl font-bold tracking-tight">
+                        Manajemen Pembayaran Zakat
+                    </h1>
+                </div>
                 <ZakatDashboard 
                     bayarZakat={props.bayarZakat} 
                     selectedYear={props.selectedYear}

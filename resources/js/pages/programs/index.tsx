@@ -2,6 +2,7 @@ import AuthenticatedLayout from "@/layouts/authenticated-layout";
 import { Head, Link, router } from "@inertiajs/react";
 import { PageProps } from "@/types";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import {
     Table,
     TableBody,
@@ -39,21 +40,21 @@ export default function ProgramIndex({ auth, programs }: Props) {
         <AuthenticatedLayout header="Program & Aktivitas">
             <Head title="Program & Aktivitas" />
 
-            <div className="py-12">
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div className="flex justify-between items-center mb-6">
-                        <h2 className="text-2xl font-bold text-gray-800">
-                            Daftar Program
-                        </h2>
-                        <Button asChild>
-                            <Link href={route("programs.create")}>
-                                <Plus className="w-4 h-4 mr-2" />
-                                Tambah Program
-                            </Link>
-                        </Button>
-                    </div>
+            <main className="p-6 space-y-6">
+                <div className="flex items-center justify-between">
+                    <h1 className="text-3xl font-bold tracking-tight">
+                        Manajemen Program
+                    </h1>
+                    <Button asChild>
+                        <Link href={route("programs.create")}>
+                            <Plus className="w-4 h-4 mr-2" />
+                            Tambah Program
+                        </Link>
+                    </Button>
+                </div>
 
-                    <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
+                <Card>
+                    <CardContent>
                         <Table>
                             <TableHeader>
                                 <TableRow>
@@ -125,9 +126,9 @@ export default function ProgramIndex({ auth, programs }: Props) {
                                 )}
                             </TableBody>
                         </Table>
-                    </div>
-                </div>
-            </div>
+                    </CardContent>
+                </Card>
+            </main>
         </AuthenticatedLayout>
     );
 }

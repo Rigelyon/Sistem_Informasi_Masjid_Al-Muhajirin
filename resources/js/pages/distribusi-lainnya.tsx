@@ -21,17 +21,19 @@ export default function DistribusiLainnya(props: {
         <AuthenticatedLayout header="Dashboard">
             <Head title="Dashboard Zakat" />
 
-            <div className="pt-6 ">
-                <h1 className="mb-6 text-3xl font-bold">
-                    Manajemen Distribusi Zakat Lainnya
-                </h1>
+            <main className="p-6 space-y-6">
+                <div className="flex items-center justify-between">
+                    <h1 className="text-3xl font-bold tracking-tight">
+                        Manajemen Distribusi Zakat Lainnya
+                    </h1>
+                </div>
                 <ZakatDistributionAdmin
                     distribusiZakatLainnya={props.distribusiZakatLainnya}
                     kategoris={props.kategoris}
                     availableHijriYears={props.availableHijriYears}
                     filters={props.filters}
                 />
-            </div>
+            </main>
         </AuthenticatedLayout>
     );
 }

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { router } from "@inertiajs/react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
     Select,
@@ -152,75 +153,58 @@ export default function ZakatDistributionManagement(props: {
 
     return (
         <Card className="w-full">
-            <CardHeader className="flex flex-col gap-4">
-                <CardTitle className="text-2xl font-bold">
-                    Manajemen Distribusi Zakat
-                </CardTitle>
+            <CardHeader>
                 <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-                    <div className="relative flex items-center w-full md:w-1/2">
-                        <Search className="absolute left-2.5 h-4 w-4 text-muted-foreground" />
-                        <input
-                            type="text"
-                            placeholder="Cari berdasarkan nama"
-                            className="w-full py-2 pl-8 text-sm border rounded-md border-input bg-background ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                            value={searchQuery}
-                            onChange={(e) => {
-                                setSearchQuery(e.target.value);
-                                setCurrentPage(1); // Reset to first page when searching
-                            }}
-                        />
-                    </div>
-                    <div className="flex flex-col gap-4 sm:flex-row">
-                        {/* Hijri Year */}
-                         <Select
+                    <div className="flex flex-1 items-center gap-4 flex-wrap">
+                        <div className="relative flex-1 md:max-w-sm">
+                            <Search className="absolute w-4 h-4 text-gray-500 transform -translate-y-1/2 left-3 top-1/2" />
+                            <Input
+                                placeholder="Cari berdasarkan nama..."
+                                value={searchQuery}
+                                onChange={(e) => {
+                                    setSearchQuery(e.target.value);
+                                    setCurrentPage(1);
+                                }}
+                                className="pl-9 w-full"
+                            />
+                        </div>
+                        <Select
                             value={props.filters?.tahun_hijriah || ""}
                             onValueChange={(val) => {
-                                    router.get(
+                                router.get(
                                     route("distribusi"),
                                     { ...props.filters, tahun_hijriah: val },
                                     { preserveState: true, preserveScroll: true }
                                 );
                             }}
                         >
-                            <SelectTrigger className="w-[120px]">
+                            <SelectTrigger className="w-[130px]">
                                 <SelectValue placeholder="Tahun (H)" />
                             </SelectTrigger>
                             <SelectContent>
                                 {props.availableHijriYears?.map((y) => (
-                                    <SelectItem key={y} value={String(y)}>{y} H</SelectItem>
+                                    <SelectItem key={y} value={String(y)}>
+                                        {y} H
+                                    </SelectItem>
                                 ))}
                             </SelectContent>
                         </Select>
-
-
-
-                        <div className="flex items-center gap-2">
-                            <span className="text-sm font-medium">Status:</span>
-                            <Select
-                                value={statusFilter}
-                                onValueChange={(value) => {
-                                    setStatusFilter(value);
-                                    setCurrentPage(1); // Reset to first page when changing filter
-                                }}
-                            >
-                                <SelectTrigger className="w-[140px]">
-                                    <SelectValue placeholder="Filter berdasarkan status" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="all">Semua</SelectItem>
-                                    <SelectItem value="terkirim">
-                                        Terkirim
-                                    </SelectItem>
-                                    <SelectItem value="belum_terkirim">
-                                        Belum Terkirim
-                                    </SelectItem>
-                                </SelectContent>
-                            </Select>
-                        </div>
-                        {/* <Button onClick={handleAddDistribution} className="flex items-center gap-2">
-              <PlusCircle className="w-4 h-4" />
-              Distribute Zakat
-            </Button> */}
+                        <Select
+                            value={statusFilter}
+                            onValueChange={(value) => {
+                                setStatusFilter(value);
+                                setCurrentPage(1);
+                            }}
+                        >
+                            <SelectTrigger className="w-[140px]">
+                                <SelectValue placeholder="Status" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="all">Semua Status</SelectItem>
+                                <SelectItem value="terkirim">Terkirim</SelectItem>
+                                <SelectItem value="belum_terkirim">Belum Terkirim</SelectItem>
+                            </SelectContent>
+                        </Select>
                     </div>
                 </div>
             </CardHeader>
