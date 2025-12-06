@@ -186,27 +186,7 @@ export default function ZakatDistributionManagement(props: {
                             </SelectContent>
                         </Select>
 
-                        {/* Hijri Month */}
-                        <Select
-                            value={props.filters?.bulan_hijriah || "all"}
-                            onValueChange={(val) => {
-                                    router.get(
-                                    route("distribusi"),
-                                    { ...props.filters, bulan_hijriah: val },
-                                    { preserveState: true, preserveScroll: true }
-                                );
-                            }}
-                        >
-                            <SelectTrigger className="w-[140px]">
-                                <SelectValue placeholder="Bulan" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="all">Semua Bulan</SelectItem>
-                                {["Muharram", "Safar", "Rabiul Awal", "Rabiul Akhir", "Jumadil Awal", "Jumadil Akhir", "Rajab", "Sya'ban", "Ramadhan", "Syawal", "Zulqaidah", "Zulhijjah"].map((m) => (
-                                    <SelectItem key={m} value={m}>{m}</SelectItem>
-                                ))}
-                            </SelectContent>
-                        </Select>
+
 
                         <div className="flex items-center gap-2">
                             <span className="text-sm font-medium">Status:</span>

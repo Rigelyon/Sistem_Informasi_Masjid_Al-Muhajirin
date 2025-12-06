@@ -13,17 +13,14 @@ return new class extends Migration
     {
         Schema::table('bayar_zakats', function (Blueprint $table) {
             $table->integer('tahun_hijriah')->nullable()->after('status');
-            $table->string('bulan_hijriah')->nullable()->after('tahun_hijriah');
         });
 
         Schema::table('distribusi_zakats', function (Blueprint $table) {
             $table->integer('tahun_hijriah')->nullable()->after('status');
-            $table->string('bulan_hijriah')->nullable()->after('tahun_hijriah');
         });
 
         Schema::table('distribusi_zakat_lainnyas', function (Blueprint $table) {
-            $table->integer('tahun_hijriah')->nullable()->after('status'); // Assuming status exists, or put at end
-            $table->string('bulan_hijriah')->nullable()->after('tahun_hijriah');
+            $table->integer('tahun_hijriah')->nullable()->after('status');
         });
     }
 

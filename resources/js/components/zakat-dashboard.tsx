@@ -108,7 +108,6 @@ export default function ZakatDashboard(props: {
 
     const [isPeriodDialogOpen, setIsPeriodDialogOpen] = useState(false);
     const [periodYear, setPeriodYear] = useState("");
-    const [periodMonth, setPeriodMonth] = useState("");
     
     // Convert available years to string for Select
     const yearOptions = props.availableHijriYears?.map(y => String(y)) || [];
@@ -129,18 +128,17 @@ export default function ZakatDashboard(props: {
     };
 
     const handleGenerateUnified = () => {
-        if (!periodYear || !periodMonth) {
-            alert("Harap pilih Tahun dan Bulan Hijriah");
+        if (!periodYear) {
+            alert("Harap pilih Tahun Hijriah");
             return;
         }
 
-        const confirmMsg = `Buka Periode Zakat untuk ${periodYear} H (${periodMonth})?\n\nPERINGATAN: Membuka periode baru akan MENGUNCI fitur generate untuk tahun-tahun sebelumnya (> ${periodYear} H). Lanjutkan?`;
+        const confirmMsg = `Buka Periode Zakat untuk ${periodYear} H?\n\nPERINGATAN: Membuka periode baru akan MENGUNCI fitur generate untuk tahun-tahun sebelumnya (> ${periodYear} H). Lanjutkan?`;
         
         if (confirm(confirmMsg)) {
             setIsGenerating(true);
             router.post(route("bayar.zakat.generate"), {
-                tahun_hijriah: periodYear,
-                bulan_hijriah: periodMonth
+                tahun_hijriah: periodYear
             }, {
                 onFinish: () => {
                     setIsGenerating(false);
@@ -176,23 +174,7 @@ export default function ZakatDashboard(props: {
                         </SelectContent>
                     </Select>
                     
-                     {/* Filter Bulan Hijriah */}
-                     <Select
-                        value={props.filters?.bulan_hijriah || "all"}
-                        onValueChange={(val) => handleFilterChange("bulan_hijriah", val)}
-                    >
-                        <SelectTrigger className="w-[140px] bg-white">
-                            <SelectValue placeholder="Bulan" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value="all">Semua Bulan</SelectItem>
-                            {hijriMonths.map((m) => (
-                                <SelectItem key={m} value={m}>
-                                    {m}
-                                </SelectItem>
-                            ))}
-                        </SelectContent>
-                    </Select>
+                     {/* Filter Bulan Hijriah REMOVED */}
 
                     {/* Unified Generator Dialog */}
                     <Dialog open={isPeriodDialogOpen} onOpenChange={setIsPeriodDialogOpen}>
@@ -206,7 +188,7 @@ export default function ZakatDashboard(props: {
                             <DialogHeader>
                                 <DialogTitle>Buka Periode Zakat Baru</DialogTitle>
                                 <DialogDescription>
-                                    Masukkan Tahun dan Bulan Hijriah untuk membuat tagihan dan daftar distribusi baru.
+                                    Masukkan Tahun Hijriah untuk membuat tagihan dan daftar distribusi baru.
                                 </DialogDescription>
                             </DialogHeader>
                             <div className="grid gap-4 py-4">
@@ -220,19 +202,6 @@ export default function ZakatDashboard(props: {
                                         onChange={(e) => setPeriodYear(e.target.value)}
                                         type="number"
                                     />
-                                </div>
-                                <div className="grid grid-cols-4 items-center gap-4">
-                                    <Label className="text-right">Bulan</Label>
-                                    <Select value={periodMonth} onValueChange={setPeriodMonth}>
-                                        <SelectTrigger className="col-span-3">
-                                            <SelectValue placeholder="Pilih Bulan" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            {hijriMonths.map(m => (
-                                                <SelectItem key={m} value={m}>{m}</SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
                                 </div>
                             </div>
                             <DialogFooter>

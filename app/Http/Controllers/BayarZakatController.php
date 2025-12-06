@@ -22,9 +22,6 @@ class BayarZakatController extends Controller
         
         if ($request->has('tahun_hijriah')) {
             $query->where('tahun_hijriah', $request->tahun_hijriah);
-            if ($request->has('bulan_hijriah') && $request->bulan_hijriah !== 'all') {
-                $query->where('bulan_hijriah', $request->bulan_hijriah);
-            }
         } elseif ($request->has('year')) {
              $query->whereYear('created_at', $request->year);
         } else {
@@ -39,7 +36,7 @@ class BayarZakatController extends Controller
         
         return Inertia::render("bayar", [
             "bayarZakat" => $bayar_zakat,
-            "filters" => $request->all(['tahun_hijriah', 'bulan_hijriah', 'year']),
+            "filters" => $request->all(['tahun_hijriah', 'year']),
             "availableHijriYears" => $availableHijriYears // Pass this to frontend
         ]);
     }
@@ -50,10 +47,9 @@ class BayarZakatController extends Controller
     public function generateUnified(Request $request) 
     {
         $tahunHijriah = $request->input('tahun_hijriah');
-        $bulanHijriah = $request->input('bulan_hijriah');
         
-        if (!$tahunHijriah || !$bulanHijriah) {
-            return back()->with('error', 'Tahun dan Bulan Hijriah wajib diisi.');
+        if (!$tahunHijriah) {
+            return back()->with('error', 'Tahun Hijriah wajib diisi.');
         }
 
         // Progressive Lock Check (Hijri)
@@ -83,7 +79,6 @@ class BayarZakatController extends Controller
                     "jumlah_tanggungan" => $warga->jumlah_tanggungan,
                     "status" => 'pending',
                     "tahun_hijriah" => $tahunHijriah,
-                    "bulan_hijriah" => $bulanHijriah,
                     "created_at" => now() // Record created now
                 ]);
                 $bayarCount++;
@@ -106,14 +101,13 @@ class BayarZakatController extends Controller
                     'warga_id' => $warga->id,
                     'status' => 'belum_terkirim', // Default status
                     'tahun_hijriah' => $tahunHijriah,
-                    "bulan_hijriah" => $bulanHijriah,
                     'created_at' => now()
                 ]);
                 $distribusiCount++;
             }
         }
 
-        return back()->with('success', "Berhasil membuka periode $tahunHijriah H ($bulanHijriah). Dibuat: $bayarCount Tagihan, $distribusiCount Penerima.");
+        return back()->with('success', "Berhasil membuka periode $tahunHijriah H. Dibuat: $bayarCount Tagihan, $distribusiCount Penerima.");
     }
 
     /**

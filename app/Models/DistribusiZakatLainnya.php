@@ -17,7 +17,6 @@ class DistribusiZakatLainnya extends Model
         'jumlah_beras',
         'jenis_bantuan',
         'tahun_hijriah',
-        'bulan_hijriah',
     ];
 
     public $timestamps = true;

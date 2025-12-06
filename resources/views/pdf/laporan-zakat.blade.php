@@ -67,7 +67,7 @@
                 <td>{{ ucfirst($zakat->jenis_bayar) }}</td>
                 <td>
                     @if($zakat->tahun_hijriah)
-                        {{ $zakat->bulan_hijriah }} {{ $zakat->tahun_hijriah }} H<br>
+                        {{ $zakat->tahun_hijriah }} H<br>
                     @endif
                     <small>{{ \Carbon\Carbon::parse($zakat->created_at)->format('d/m/Y') }}</small>
                 </td>
@@ -109,7 +109,7 @@
                 <td>{{ ucfirst($d->jenis_bantuan) }}</td>
                 <td>
                     @if($d->tahun_hijriah)
-                        {{ $d->bulan_hijriah }} {{ $d->tahun_hijriah }} H<br>
+                        {{ $d->tahun_hijriah }} H<br>
                     @endif
                     <small>{{ \Carbon\Carbon::parse($d->tanggal_distribusi)->format('d/m/Y') }}</small>
                 </td>
@@ -131,7 +131,7 @@
                 <td>{{ ucfirst($d->jenis_bantuan) }}</td>
                 <td>
                     @if($d->tahun_hijriah)
-                        {{ $d->bulan_hijriah }} {{ $d->tahun_hijriah }} H<br>
+                        {{ $d->tahun_hijriah }} H<br>
                     @endif
                     <small>{{ \Carbon\Carbon::parse($d->tanggal_distribusi)->format('d/m/Y') }}</small>
                 </td>

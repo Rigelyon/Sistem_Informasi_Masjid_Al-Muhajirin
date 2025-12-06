@@ -18,9 +18,6 @@ class DistribusiZakatController extends Controller
         
         if ($request->has('tahun_hijriah')) {
             $query->where('tahun_hijriah', $request->tahun_hijriah);
-            if ($request->has('bulan_hijriah') && $request->bulan_hijriah !== 'all') {
-                $query->where('bulan_hijriah', $request->bulan_hijriah);
-            }
         }
         
         $distribusiZakat = $query->get();
@@ -28,7 +25,7 @@ class DistribusiZakatController extends Controller
 
         return Inertia::render("distribusi", [
             "distribusiZakat" => $distribusiZakat,
-            "filters" => $request->all(['tahun_hijriah', 'bulan_hijriah']),
+            "filters" => $request->all(['tahun_hijriah']),
             "availableHijriYears" => $availableHijriYears
         ]);
     }

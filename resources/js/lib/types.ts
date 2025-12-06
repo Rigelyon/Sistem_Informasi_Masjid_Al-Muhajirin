@@ -24,5 +24,4 @@ export interface ZakatRecord {
   created_at: string
   updated_at: string
   tahun_hijriah?: number
-  bulan_hijriah?: string
 }
