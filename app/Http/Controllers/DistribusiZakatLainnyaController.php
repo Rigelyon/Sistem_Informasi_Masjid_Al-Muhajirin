@@ -31,18 +31,14 @@ class DistribusiZakatLainnyaController extends Controller
         $distribusiZakatLainnya = $query->get();
         $kategoris = \App\Models\Kategori::where('nama', '!=', 'Mampu')->get();
         
-        // Available Hijri Years
-        $availableHijriYears = DistribusiZakatLainnya::select('tahun_hijriah')
+        // Available Hijri Years (Source from BayarZakat as Master Period)
+        $availableHijriYears = \App\Models\BayarZakat::select('tahun_hijriah')
             ->distinct()
             ->orderBy('tahun_hijriah', 'desc')
             ->pluck('tahun_hijriah')
             ->filter()
             ->values()
             ->toArray();
-
-        if (empty($availableHijriYears)) {
-            $availableHijriYears = [intval((date('Y') - 622) * 33 / 32)];
-        }
 
         return Inertia::render("distribusi-lainnya", [
             "distribusiZakatLainnya" => $distribusiZakatLainnya,
