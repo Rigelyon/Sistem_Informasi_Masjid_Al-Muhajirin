@@ -125,7 +125,7 @@ export default function DistribusiZakatForm({
             { ...payload },
             {
                 onSuccess: () => {
-                    toast.success("Zakar Berhasil Terdistribusi", {
+                    toast.success("Zakat Berhasil Terdistribusi", {
                         id: "distribusi",
                     });
                 },

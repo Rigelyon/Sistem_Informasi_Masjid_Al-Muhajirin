@@ -140,7 +140,7 @@ export default function Warga(props: { warga: Warga[]; kategori: Kategori[] }) {
     const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
     const [itemsPerPage, setItemsPerPage] = useState(5);
 
-    const [infoBayarZakar, setInfoBayarZakat] = useState<any | null>();
+    const [infoBayarZakat, setInfoBayarZakat] = useState<any | null>();
     const [infoDistribusiZakat, setInfoDistribusiZakat] = useState<
         any | null
     >();
@@ -195,7 +195,7 @@ export default function Warga(props: { warga: Warga[]; kategori: Kategori[] }) {
 
     // View citizen details
     const handleViewDetails = async (citizen: Warga) => {
-        await getBayarZakarByNomerKK(citizen.keluarga_id, citizen.id);
+        await getBayarZakatByNomerKK(citizen.keluarga_id, citizen.id);
         setSelectedCitizen(citizen);
         setIsDetailsOpen(true);
     };
@@ -397,7 +397,7 @@ export default function Warga(props: { warga: Warga[]; kategori: Kategori[] }) {
     };
 
     // get data bayar zakat
-    const getBayarZakarByNomerKK = async (nomerKK: string, id: string) => {
+    const getBayarZakatByNomerKK = async (nomerKK: string, id: string) => {
         const response = await fetch(`/warga/${nomerKK}`);
         const data = await response.json();
 
@@ -1156,7 +1156,7 @@ export default function Warga(props: { warga: Warga[]; kategori: Kategori[] }) {
                                     <h3 className="text-lg font-medium">
                                         Riwayat Pembayaran Zakat
                                     </h3>
-                                    {infoBayarZakar?.nomor_KK ? (
+                                    {infoBayarZakat?.nomor_KK ? (
                                         <div className="border rounded-md">
                                             <Table>
                                                 <TableHeader>
@@ -1181,7 +1181,7 @@ export default function Warga(props: { warga: Warga[]; kategori: Kategori[] }) {
                                                     <TableRow>
                                                         <TableCell>
                                                             {
-                                                                infoBayarZakar.jenis_bayar
+                                                                infoBayarZakat.jenis_bayar
                                                             }
                                                         </TableCell>
                                                         <TableCell>
@@ -1194,26 +1194,26 @@ export default function Warga(props: { warga: Warga[]; kategori: Kategori[] }) {
                                                                     minimumFractionDigits: 0,
                                                                 }
                                                             ).format(
-                                                                infoBayarZakar.bayar_uang
+                                                                infoBayarZakat.bayar_uang
                                                             )}
                                                         </TableCell>
                                                         <TableCell>
                                                             {
-                                                                infoBayarZakar.bayar_beras
+                                                                infoBayarZakat.bayar_beras
                                                             }
                                                         </TableCell>
                                                         <TableCell>
                                                             <Badge
                                                                 variant="outline"
                                                                 className={
-                                                                    infoBayarZakar.status ===
+                                                                    infoBayarZakat.status ===
                                                                     "terkirim"
                                                                         ? "text-green-800 bg-green-100"
                                                                         : "text-red-800 bg-red-100"
                                                                 }
                                                             >
                                                                 {
-                                                                    infoBayarZakar.status
+                                                                    infoBayarZakat.status
                                                                 }
                                                             </Badge>
                                                         </TableCell>

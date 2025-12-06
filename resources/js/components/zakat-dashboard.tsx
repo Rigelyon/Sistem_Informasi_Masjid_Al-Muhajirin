@@ -133,7 +133,7 @@ export default function ZakatDashboard(props: {
             return;
         }
 
-        const confirmMsg = `Buka Periode Zakat untuk ${periodYear} H?\n\nPERINGATAN: Membuka periode baru akan MENGUNCI fitur generate untuk tahun-tahun sebelumnya (> ${periodYear} H). Lanjutkan?`;
+        const confirmMsg = `Buka Periode Zakat untuk ${periodYear} H?\n\nMembuka periode baru akan MENGUNCI fitur generate untuk tahun-tahun sebelumnya. Namun anda masih bisa mengedit data sebelumnya. Lanjutkan?`;
         
         if (confirm(confirmMsg)) {
             setIsGenerating(true);
