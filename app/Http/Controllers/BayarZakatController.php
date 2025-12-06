@@ -126,6 +126,9 @@ class BayarZakatController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $bayar_zakat = BayarZakat::findOrFail($id);
+        $bayar_zakat->delete();
+        
+        return back()->with('success', 'Data zakat berhasil dihapus');
     }
 }

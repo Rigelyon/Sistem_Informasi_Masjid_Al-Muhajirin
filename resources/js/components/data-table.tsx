@@ -3,7 +3,8 @@
 import { useState } from "react"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
-import { BadgeCheck, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Pencil, Wallet } from "lucide-react"
+import { BadgeCheck, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Pencil, Wallet, Trash } from "lucide-react"
+import { router } from "@inertiajs/react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Badge } from "@/components/ui/badge"
 import type { ZakatRecord } from "@/lib/types"
@@ -139,6 +140,19 @@ export default function DataTable({
                         <Wallet className="w-4 h-4" />
                         {/* <span className="sr-only">Konfirmasi Pembayaran</span> */}
                         <span className="text-xs">Konfirmasi Pembayaran</span>
+                      </Button>
+                      <Button
+                        variant="destructive"
+                        // size="icon"
+                        onClick={() => {
+                            if (confirm("Apakah Anda yakin ingin menghapus data ini? Aksi ini tidak dapat dibatalkan.")) {
+                                router.delete(route('bayar.destroy', record.id));
+                            }
+                        }}
+                        className="text-xs ml-2"
+                      >
+                        <Trash className="w-4 h-4" />
+                        <span className="sr-only">Hapus</span>
                       </Button>
                     </TableCell>
                   </TableRow>
