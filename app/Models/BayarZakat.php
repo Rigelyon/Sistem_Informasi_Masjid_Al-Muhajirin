@@ -20,6 +20,8 @@ class BayarZakat extends Model
         'bayar_beras',
         'bayar_uang',
         'total_zakat',
+        'tahun_hijriah',
+        'bulan_hijriah',
     ];
 
     public function warga()

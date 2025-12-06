@@ -40,7 +40,7 @@ Route::middleware(['auth'])->group(function () {
     // Bayar zakat start
     Route::get("/bayar", [BayarZakatController::class, "index"])->name("bayar.zakat.index");
     Route::post("/bayar", [BayarZakatController::class, "store"])->name("bayar.zakat.store");
-    Route::post("/bayar/generate", [BayarZakatController::class, "generate"])->name("bayar.zakat.generate");
+    Route::post("/bayar/generate", [BayarZakatController::class, "generateUnified"])->name("bayar.zakat.generate");
     Route::patch("/bayar-zakat/{id}", [BayarZakatController::class, "update"])->name('bayar.update');
     // Bayar zakat end
 

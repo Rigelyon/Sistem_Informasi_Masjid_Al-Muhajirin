@@ -12,6 +12,7 @@ export interface ZakatPayment {
 
 export interface ZakatRecord {
   id: number
+  warga_id?: number
   nama_KK: string
   nomor_KK: string
   jumlah_tanggungan: number
@@ -22,4 +23,6 @@ export interface ZakatRecord {
   total_zakat: number
   created_at: string
   updated_at: string
+  tahun_hijriah?: number
+  bulan_hijriah?: string
 }

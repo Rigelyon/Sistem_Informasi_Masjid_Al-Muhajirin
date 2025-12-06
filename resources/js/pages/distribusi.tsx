@@ -41,6 +41,8 @@ export interface DistribusiZakat {
 
 export default function Distribusi(props: {
     distribusiZakat: DistribusiZakat[];
+    filters?: any;
+    availableHijriYears?: number[];
 }) {
 
     return (
@@ -50,6 +52,8 @@ export default function Distribusi(props: {
             <main className="pt-6 mx-auto ">
                 <ZakatDistributionManagement
                     distribusiZakat={props.distribusiZakat}
+                    filters={props.filters}
+                    availableHijriYears={props.availableHijriYears}
                 />
             </main>
         </AuthenticatedLayout>

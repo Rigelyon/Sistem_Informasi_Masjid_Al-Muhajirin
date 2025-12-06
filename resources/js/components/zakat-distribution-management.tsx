@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { router } from "@inertiajs/react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -26,6 +27,8 @@ import { DistribusiZakat } from "@/pages/distribusi";
 
 export default function ZakatDistributionManagement(props: {
     distribusiZakat: DistribusiZakat[];
+    availableHijriYears?: number[];
+    filters?: any;
 }) {
     const [distributions, setDistributions] = useState<DistribusiZakat[]>(
         props.distribusiZakat
@@ -162,6 +165,49 @@ export default function ZakatDistributionManagement(props: {
                         />
                     </div>
                     <div className="flex flex-col gap-4 sm:flex-row">
+                        {/* Hijri Year */}
+                         <Select
+                            value={props.filters?.tahun_hijriah || ""}
+                            onValueChange={(val) => {
+                                    router.get(
+                                    route("distribusi"),
+                                    { ...props.filters, tahun_hijriah: val },
+                                    { preserveState: true, preserveScroll: true }
+                                );
+                            }}
+                        >
+                            <SelectTrigger className="w-[120px]">
+                                <SelectValue placeholder="Tahun (H)" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {props.availableHijriYears?.map((y) => (
+                                    <SelectItem key={y} value={String(y)}>{y} H</SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+
+                        {/* Hijri Month */}
+                        <Select
+                            value={props.filters?.bulan_hijriah || "all"}
+                            onValueChange={(val) => {
+                                    router.get(
+                                    route("distribusi"),
+                                    { ...props.filters, bulan_hijriah: val },
+                                    { preserveState: true, preserveScroll: true }
+                                );
+                            }}
+                        >
+                            <SelectTrigger className="w-[140px]">
+                                <SelectValue placeholder="Bulan" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="all">Semua Bulan</SelectItem>
+                                {["Muharram", "Safar", "Rabiul Awal", "Rabiul Akhir", "Jumadil Awal", "Jumadil Akhir", "Rajab", "Sya'ban", "Ramadhan", "Syawal", "Zulqaidah", "Zulhijjah"].map((m) => (
+                                    <SelectItem key={m} value={m}>{m}</SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+
                         <div className="flex items-center gap-2">
                             <span className="text-sm font-medium">Status:</span>
                             <Select

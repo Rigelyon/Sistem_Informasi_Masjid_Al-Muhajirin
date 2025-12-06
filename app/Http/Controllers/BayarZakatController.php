@@ -13,50 +13,67 @@ class BayarZakatController extends Controller
      */
     public function index(Request $request)
     {
-        $selectedYear = $request->input('year', date('Y'));
+        // Default to current Hijri Year/Month would be ideal, but for now we might default to latest available or just Gregorian Year equivalent?
+        // Let's rely on frontend sending params, or default to all? 
+        // User asked for Hijri Filter. Let's assume we pass nothing, we might want to return everything or latest year?
+        // Let's keep logic simple: If 'tahun_hijriah' is passed, use it. If 'year' passed, use created_at (legacy).
         
-        $bayar_zakat = BayarZakat::whereYear('created_at', $selectedYear)->get();
+        $query = BayarZakat::query();
+        
+        if ($request->has('tahun_hijriah')) {
+            $query->where('tahun_hijriah', $request->tahun_hijriah);
+            if ($request->has('bulan_hijriah') && $request->bulan_hijriah !== 'all') {
+                $query->where('bulan_hijriah', $request->bulan_hijriah);
+            }
+        } elseif ($request->has('year')) {
+             $query->whereYear('created_at', $request->year);
+        } else {
+             // Default to showing everything or maybe just latest unified period?
+             // Let's default to latest 50 records for now to avoid empty page
+        }
+
+        $bayar_zakat = $query->get();
+        
+        // We need to fetch available Hijri Years for the filter
+        $availableHijriYears = BayarZakat::select('tahun_hijriah')->distinct()->orderBy('tahun_hijriah', 'desc')->pluck('tahun_hijriah')->filter()->values();
+        
         return Inertia::render("bayar", [
             "bayarZakat" => $bayar_zakat,
-            "selectedYear" => (int)$selectedYear,
-            "availableYears" => range(date('Y'), date('Y') - 4)
+            "filters" => $request->all(['tahun_hijriah', 'bulan_hijriah', 'year']),
+            "availableHijriYears" => $availableHijriYears // Pass this to frontend
         ]);
     }
 
     /**
-     * Generate bills for a specific year
+     * Unified Generation for Zakat Period (Hijri)
      */
-    public function generate(Request $request) 
+    public function generateUnified(Request $request) 
     {
-        $year = $request->input('year', date('Y'));
+        $tahunHijriah = $request->input('tahun_hijriah');
+        $bulanHijriah = $request->input('bulan_hijriah');
         
-        // Progressive Lock Check:
-        // Do not allow generation if data already exists for a FUTURE year.
-        // This prevents backfilling historical data with current (potentially incorrect) status
-        // after the new cycle has begun.
-        $futureDataExists = BayarZakat::whereYear('created_at', '>', $year)->exists();
+        if (!$tahunHijriah || !$bulanHijriah) {
+            return back()->with('error', 'Tahun dan Bulan Hijriah wajib diisi.');
+        }
+
+        // Progressive Lock Check (Hijri)
+        $futureDataExists = BayarZakat::where('tahun_hijriah', '>', $tahunHijriah)->exists();
         
         if ($futureDataExists) {
-            return back()->with('error', "Gagal: Sudah ada data tagihan untuk tahun mendatang (>" . $year . "). Mohon input manual untuk tahun lampau agar data akurat.");
+            return back()->with('error', "Gagal: Sudah ada data periode tahun mendatang (> $tahunHijriah H).");
         }
-
-        // Find all Warga capable of paying (Mampu)
-        // Assuming 'kategori_id' for Mampu is known or can be found. 
-        // Based on WargaController, we look for 'Mampu'.
-        $kategoriMampu = \App\Models\Kategori::where('nama', 'Mampu')->first();
         
-        if (!$kategoriMampu) {
-            return back()->with('error', 'Kategori "Mampu" tidak ditemukan.');
-        }
-
+        // 1. Generate BayarZakat (For Mampu)
+        $kategoriMampu = \App\Models\Kategori::where('nama', 'Mampu')->first();
+        if (!$kategoriMampu) return back()->with('error', 'Kategori Mampu tidak ditemukan.');
+        
         $wargaMampu = \App\Models\Warga::where('kategori_id', $kategoriMampu->id)->get();
-        $count = 0;
-
+        $bayarCount = 0;
+        
         foreach ($wargaMampu as $warga) {
-            // Check if bill already exists for this year
             $exists = BayarZakat::where('warga_id', $warga->id)
-                ->whereYear('created_at', $year)
-                ->exists();
+                ->where('tahun_hijriah', $tahunHijriah)
+                ->exists(); // Check existence by Hijri Year primarily
                 
             if (!$exists) {
                 BayarZakat::create([
@@ -65,13 +82,38 @@ class BayarZakatController extends Controller
                     "nomor_KK" => $warga->keluarga_id,
                     "jumlah_tanggungan" => $warga->jumlah_tanggungan,
                     "status" => 'pending',
-                    "created_at" => \Carbon\Carbon::createFromDate($year, 1, 1) // Set to Jan 1st of that year
+                    "tahun_hijriah" => $tahunHijriah,
+                    "bulan_hijriah" => $bulanHijriah,
+                    "created_at" => now() // Record created now
                 ]);
-                $count++;
+                $bayarCount++;
             }
         }
 
-        return back()->with('success', "Berhasil membuat $count tagihan zakat untuk tahun $year.");
+        // 2. Generate DistribusiZakat (For Mustahik / Non-Mampu)
+        // Find Warga who are NOT Mampu
+        $wargaMustahik = \App\Models\Warga::where('kategori_id', '!=', $kategoriMampu->id)->orWhereNull('kategori_id')->get();
+        $distribusiCount = 0;
+        
+        foreach ($wargaMustahik as $warga) {
+            // Ensure DistribusiZakat exists for this period
+             $exists = \App\Models\DistribusiZakat::where('warga_id', $warga->id)
+                ->where('tahun_hijriah', $tahunHijriah)
+                ->exists();
+            
+            if (!$exists) {
+                \App\Models\DistribusiZakat::create([
+                    'warga_id' => $warga->id,
+                    'status' => 'belum_terkirim', // Default status
+                    'tahun_hijriah' => $tahunHijriah,
+                    "bulan_hijriah" => $bulanHijriah,
+                    'created_at' => now()
+                ]);
+                $distribusiCount++;
+            }
+        }
+
+        return back()->with('success', "Berhasil membuka periode $tahunHijriah H ($bulanHijriah). Dibuat: $bayarCount Tagihan, $distribusiCount Penerima.");
     }
 
     /**

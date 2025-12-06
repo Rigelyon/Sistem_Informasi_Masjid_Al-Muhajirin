@@ -18,6 +18,8 @@ class DistribusiZakat extends Model
         'jumlah_uang',
         'jumlah_beras',
         'jenis_bantuan',
+        'tahun_hijriah',
+        'bulan_hijriah',
 
     ];
 

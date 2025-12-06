@@ -23,17 +23,30 @@ class LaporanZakatController extends Controller
     {
 
         $konversiBerasKeUang = 15000;
+        
+        $tahunHijriah = $request->input('tahun_hijriah');
         $selectedYear = $request->input('year', date('Y'));
+        $yearLabel = "";
 
-        $zakatLunas = BayarZakat::where('status', 'lunas')
-            ->whereYear('created_at', $selectedYear)
-            ->get();
-        $distribusiZakatTerkirim = DistribusiZakat::where('status', 'terkirim')
-            ->whereYear('tanggal_distribusi', $selectedYear)
-            ->get();
-        $distribusiLainnya = DistribusiZakatLainnya::where('status', 'terkirim')
-            ->whereYear('tanggal_distribusi', $selectedYear)
-            ->get();
+        $queryZakat = BayarZakat::where('status', 'lunas');
+        $queryDistribusi = DistribusiZakat::where('status', 'terkirim');
+        $queryLainnya = DistribusiZakatLainnya::where('status', 'terkirim');
+        
+        if ($tahunHijriah) {
+            $queryZakat->where('tahun_hijriah', $tahunHijriah);
+            $queryDistribusi->where('tahun_hijriah', $tahunHijriah);
+            $queryLainnya->where('tahun_hijriah', $tahunHijriah);
+            $yearLabel = $tahunHijriah . ' Hijriah';
+        } else {
+             $queryZakat->whereYear('created_at', $selectedYear);
+             $queryDistribusi->whereYear('tanggal_distribusi', $selectedYear);
+             $queryLainnya->whereYear('tanggal_distribusi', $selectedYear);
+             $yearLabel = $selectedYear . ' Masehi';
+        }
+
+        $zakatLunas = $queryZakat->get();
+        $distribusiZakatTerkirim = $queryDistribusi->get();
+        $distribusiLainnya = $queryLainnya->get();
 
         $totalUang = 0;
         $totalBeras = 0;
@@ -74,9 +87,14 @@ class LaporanZakatController extends Controller
 
         $wargaWajib = Warga::where('kategori_id', 1)->get();
 
-        $sudahBayarKeluarga = BayarZakat::where('status', 'lunas')
-            ->whereYear('created_at', $selectedYear)
-            ->pluck("nomor_KK")->toArray();
+        $querySudahBayar = BayarZakat::where('status', 'lunas');
+        if ($tahunHijriah) {
+            $querySudahBayar->where('tahun_hijriah', $tahunHijriah);
+        } else {
+            $querySudahBayar->whereYear('created_at', $selectedYear);
+        }
+        $sudahBayarKeluarga = $querySudahBayar->pluck("nomor_KK")->toArray();
+
         $sudahBayar = 0;
         $belumBayar = 0;
 
@@ -88,14 +106,21 @@ class LaporanZakatController extends Controller
             }
         }
 
-        $jumlahWargaTerdistribusi = DistribusiZakat::where('status', 'terkirim')
-            ->whereYear('tanggal_distribusi', $selectedYear)
-            ->distinct('warga_id')
-            ->count('warga_id');
+        $queryTerdistribusi = DistribusiZakat::where('status', 'terkirim');
+        if ($tahunHijriah) {
+            $queryTerdistribusi->where('tahun_hijriah', $tahunHijriah);
+        } else {
+            $queryTerdistribusi->whereYear('tanggal_distribusi', $selectedYear);
+        }
+        $jumlahWargaTerdistribusi = $queryTerdistribusi->distinct('warga_id')->count('warga_id');
 
-        $jumlahPenerimaLainnya = DistribusiZakatLainnya::where('status', 'terkirim')
-            ->whereYear('tanggal_distribusi', $selectedYear)
-            ->count();
+        $queryPenerimaLainnya = DistribusiZakatLainnya::where('status', 'terkirim');
+        if ($tahunHijriah) {
+            $queryPenerimaLainnya->where('tahun_hijriah', $tahunHijriah);
+        } else {
+            $queryPenerimaLainnya->whereYear('tanggal_distribusi', $selectedYear);
+        }
+        $jumlahPenerimaLainnya = $queryPenerimaLainnya->count();
         // Ambil data summary
         $data = [
             "totalZakatBeras" => $totalBeras,
@@ -109,7 +134,7 @@ class LaporanZakatController extends Controller
             "belumBayar" => $belumBayar,
             "jumlahWargaTerdistribusi" => $jumlahWargaTerdistribusi,
             "jumlahPenerimaLainnya" => $jumlahPenerimaLainnya,
-            "tahun" => $selectedYear,
+            "tahun" => $yearLabel,
             
             // Detailed Data
             "zakatLunas" => $zakatLunas,

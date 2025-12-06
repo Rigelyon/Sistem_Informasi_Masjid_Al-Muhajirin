@@ -12,10 +12,25 @@ class DistribusiZakatController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $distribusiZakat = DistribusiZakat::with("warga", 'kategori')->get();
-        return Inertia::render("distribusi", ["distribusiZakat" => $distribusiZakat]);
+        $query = DistribusiZakat::with("warga", 'kategori');
+        
+        if ($request->has('tahun_hijriah')) {
+            $query->where('tahun_hijriah', $request->tahun_hijriah);
+            if ($request->has('bulan_hijriah') && $request->bulan_hijriah !== 'all') {
+                $query->where('bulan_hijriah', $request->bulan_hijriah);
+            }
+        }
+        
+        $distribusiZakat = $query->get();
+        $availableHijriYears = DistribusiZakat::select('tahun_hijriah')->distinct()->orderBy('tahun_hijriah', 'desc')->pluck('tahun_hijriah')->filter()->values();
+
+        return Inertia::render("distribusi", [
+            "distribusiZakat" => $distribusiZakat,
+            "filters" => $request->all(['tahun_hijriah', 'bulan_hijriah']),
+            "availableHijriYears" => $availableHijriYears
+        ]);
     }
 
     public function mustahik()
