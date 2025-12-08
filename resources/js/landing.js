@@ -22,9 +22,11 @@ const navbar = document.getElementById('navbar');
 if (navbar) {
     window.addEventListener('scroll', () => {
         if (window.scrollY > 20) {
-            navbar.classList.add('bg-white', 'shadow-md');
+            navbar.classList.add('bg-white', 'shadow-md', 'text-gray-900');
+            navbar.classList.remove('text-white');
         } else {
-            navbar.classList.remove('bg-white', 'shadow-md');
+            navbar.classList.remove('bg-white', 'shadow-md', 'text-gray-900');
+            navbar.classList.add('text-white');
         }
     });
 }
@@ -240,12 +242,24 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // CONFIG LOKASI
-const KODE_KOTA = 1218; // Tasikmalaya
+const KODE_KOTA_DEFAULT = 1218; // Tasikmalaya
+const DEFAULT_CITY_NAME = "Kab. Tasikmalaya";
 
 // LOAD JADWAL HARI INI
 async function loadPrayerTimes() {
     const today = new Date().toISOString().split("T")[0];
-    const url = `https://api.myquran.com/v2/sholat/jadwal/${KODE_KOTA}/${today}`;
+    
+    // Get City ID using Geolocation
+    const cityData = await getCityId();
+    
+    // Update Location Name on UI
+    const locationNameEl = document.getElementById("location-name");
+    if (locationNameEl) {
+        // Format name to be Title Case if possible
+        locationNameEl.textContent = formatCityName(cityData.name);
+    }
+
+    const url = `https://api.myquran.com/v2/sholat/jadwal/${cityData.id}/${today}`;
 
     try {
         const res = await fetch(url);
@@ -271,7 +285,91 @@ async function loadPrayerTimes() {
         updateNextPrayer(jadwal);
     } catch (err) {
         console.log("Gagal load jadwal sholat:", err);
+        if (locationNameEl) locationNameEl.textContent = "Gagal memuat jadwal";
     }
+}
+
+// Helper: Format City Name (e.g., "KAB. TASIKMALAYA" -> "Kab. Tasikmalaya")
+function formatCityName(name) {
+    if (!name) return name;
+    return name.toLowerCase().replace(/(?:^|\s)\S/g, function(a) { return a.toUpperCase(); });
+}
+
+// Helper: Get City ID Logic
+async function getCityId() {
+    // Check if geolocation is supported
+    if (!navigator.geolocation) {
+        return { id: KODE_KOTA_DEFAULT, name: DEFAULT_CITY_NAME };
+    }
+
+    return new Promise((resolve) => {
+        navigator.geolocation.getCurrentPosition(async (position) => {
+            try {
+                const { latitude, longitude } = position.coords;
+                
+                // 1. Reverse Geocoding (Nominatim)
+                // Use a descriptive User-Agent if possible or just standard fetch
+                const geoUrl = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`;
+                const geoRes = await fetch(geoUrl, {
+                     headers: { 'Accept-Language': 'id' } // Request Indonesian result
+                });
+                
+                if (!geoRes.ok) throw new Error("Nominatim error");
+                
+                const geoData = await geoRes.json();
+                
+                // Extract city/regency name
+                // Priority: city -> town -> county -> administrative
+                let cityName = geoData.address.city || 
+                               geoData.address.town || 
+                               geoData.address.county || 
+                               geoData.address.municipality;
+                               
+                if (!cityName) {
+                    // Fallback if no clean city name found
+                    cityName = "Tasikmalaya"; 
+                }
+
+                // Clean up name: remove "City", "Kabupaten", "Kota" for search
+                const cleanCityName = cityName.replace(/Kota|Kabupaten|Kab\.|Adm\./gi, "").trim();
+                const searchKeyword = cleanCityName.split(" ")[0]; // Take first word to be safe (e.g. "Jakarta Selatan" -> "Jakarta")
+
+                // 2. Search City ID in MyQuran API
+                const searchUrl = `https://api.myquran.com/v2/sholat/kota/cari/${searchKeyword}`;
+                const searchRes = await fetch(searchUrl);
+                const searchData = await searchRes.json();
+
+                if (searchData.status && searchData.data.length > 0) {
+                    // Try to find exact match first
+                    let match = searchData.data.find(item => item.lokasi.toLowerCase().includes(cityName.toLowerCase()));
+                    
+                    // If no specific match, take the first one
+                    if (!match) match = searchData.data[0];
+                    
+                    resolve({ id: match.id, name: match.lokasi });
+                } else {
+                    // If search fails, fallback
+                    console.warn(`City ID not found for ${cityName}, falling back.`);
+                    resolve({ id: KODE_KOTA_DEFAULT, name: `${cityName} (Tidak ada jadwal)` }); 
+                    // Better to fallback to Default ID but show detected name? 
+                    // Or just full default
+                    // Let's fallback to full default to be safe on ID.
+                     resolve({ id: KODE_KOTA_DEFAULT, name: DEFAULT_CITY_NAME });
+                }
+
+            } catch (err) {
+                console.error("Error getting location/city:", err);
+                resolve({ id: KODE_KOTA_DEFAULT, name: DEFAULT_CITY_NAME });
+            }
+        }, (error) => {
+            // Geolocation denied or error
+            let msg = DEFAULT_CITY_NAME;
+            if (error.code === error.PERMISSION_DENIED) {
+                // User denied
+            }
+            resolve({ id: KODE_KOTA_DEFAULT, name: msg });
+        });
+    });
 }
 
 // HITUNG NEXT PRAYER + COUNTDOWN

@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Masjid Al-Muhajirin</title>
-
-    <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}?v=1" type="image/x-icon">
+    <link rel="icon" href="{{ asset('favicon.ico') }}?v=1" type="image/x-icon">
     <meta name="description" content="Masjid Al-Muhajirin Tamanjaya, Kec. Tamansari, Kab. Tasikmalaya, Jawa Barat - Komunitas yang bersatu dalam iman, kasih sayang, dan pelayanan. Bergabunglah dengan kami untuk sholat harian, kelas Quran, dan program komunitas. Melayani sejak 1995.">
     <meta name="keywords" content="masjid, Islamic center, jadwal sholat, kelas Quran, komunitas Muslim, masjid Tasikmalaya, Tamanjaya, Kec. Tamansari, Kab. Tasikmalaya, Jawa Barat">
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -39,7 +39,7 @@
 <body class="bg-white text-gray-900">
 
     <!-- Navbar -->
-    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 text-white">
         <div class="container mx-auto px-4">
             <div class="flex items-center justify-between h-20">
                 <div class="flex items-center space-x-3">
@@ -49,19 +49,19 @@
                         </span>
                     </div>
                     <div>
-                        <h1 class="text-xl font-bold text-gray-900">Masjid Al-Muhajirin</h1>
+                        <h1 class="text-xl font-bold">Masjid Al-Muhajirin</h1>
                     </div>
                 </div>
 
                 <!-- Desktop Menu -->
                 <div class="hidden md:flex items-center space-x-1">
                     <a href="#home"
-                        class="px-4 py-2 text-sm font-medium text-gray-900 hover:text-islamic-green transition-colors">Beranda</a>
+                        class="px-4 py-2 text-sm font-medium hover:text-islamic-green">Beranda</a>
 
                     <!-- Dropdown untuk Tentang -->
                     <div class="relative group">
                         <button
-                            class="px-4 py-2 text-sm font-medium text-gray-900 hover:text-islamic-green transition-colors flex items-center">
+                            class="px-4 py-2 text-sm font-medium hover:text-islamic-green flex items-center">
                             Tentang
                             <svg class="w-4 h-4 ml-1 transition-transform group-hover:rotate-180" fill="none"
                                 stroke="currentColor" viewBox="0 0 24 24">
@@ -85,20 +85,20 @@
                     </div>
 
                     <a href="#jadwal-sholat"
-                        class="px-4 py-2 text-sm font-medium text-gray-900 hover:text-islamic-green transition-colors">Jadwal
+                        class="px-4 py-2 text-sm font-medium hover:text-islamic-green">Jadwal
                         Sholat</a>
                     <a href="#aktivitas"
-                        class="px-4 py-2 text-sm font-medium text-gray-900 hover:text-islamic-green transition-colors">Aktivitas</a>
+                        class="px-4 py-2 text-sm font-medium hover:text-islamic-green">Aktivitas</a>
 
                     <!-- Auth Links -->
                     @if (Route::has('login'))
                         <div class="ml-4 flex items-center space-x-2">
                             @auth
                                 <a href="{{ url('/dashboard') }}"
-                                    class="px-4 py-2 text-sm font-medium text-white bg-islamic-green rounded-lg hover:bg-islamic-green-light transition-colors">Dashboard</a>
+                                    class="px-6 py-2 ml-3 text-sm font-medium text-white bg-islamic-green rounded-full hover:bg-islamic-green-light transition-colors shadow-md hover:shadow-lg">Dashboard</a>
                             @else
                                 <a href="{{ route('login') }}"
-                                    class="px-6 py-2 text-sm font-medium text-white bg-islamic-green rounded-full hover:bg-islamic-green-light transition-colors shadow-md hover:shadow-lg">Masuk</a>
+                                    class="px-6 py-2 ml-3 text-sm font-medium text-white bg-islamic-green rounded-full hover:bg-islamic-green-light transition-colors shadow-md hover:shadow-lg">Masuk</a>
                             @endauth
                         </div>
                     @endif
@@ -117,12 +117,12 @@
             <div id="mobile-menu" class="hidden md:hidden pb-4">
                 <div class="flex flex-col space-y-2">
                     <a href="#home"
-                        class="px-4 py-2 text-gray-900 hover:bg-gray-100 rounded-lg transition-colors">Beranda</a>
+                        class="px-4 py-2 hover:bg-gray-100 hover:text-gray-900 rounded-lg transition-colors">Beranda</a>
 
                     <!-- Dropdown untuk Tentang (Mobile) -->
                     <div class="relative">
                         <button id="mobile-tentang-btn"
-                            class="w-full text-left px-4 py-2 text-gray-900 hover:bg-gray-100 rounded-lg transition-colors flex items-center justify-between">
+                            class="w-full text-left px-4 py-2 hover:bg-gray-100 hover:text-gray-900 rounded-lg transition-colors flex items-center justify-between">
                             Tentang
                             <svg id="mobile-tentang-icon" class="w-4 h-4 transition-transform" fill="none"
                                 stroke="currentColor" viewBox="0 0 24 24">
@@ -132,27 +132,27 @@
                         </button>
                         <div id="mobile-tentang-menu" class="hidden pl-6 mt-2 space-y-2">
                             <a href="#tentang"
-                                class="block px-4 py-2 text-gray-900 hover:bg-gray-100 rounded-lg transition-colors">Tentang
+                                class="block px-4 py-2 hover:bg-gray-100 hover:text-gray-900 rounded-lg transition-colors">Tentang
                                 Masjid</a>
                             <a href="#struktur"
-                                class="block px-4 py-2 text-gray-900 hover:bg-gray-100 rounded-lg transition-colors">Struktur
+                                class="block px-4 py-2 hover:bg-gray-100 hover:text-gray-900 rounded-lg transition-colors">Struktur
                                 Organisasi</a>
                             <a href="#galeri"
-                                class="block px-4 py-2 text-gray-900 hover:bg-gray-100 rounded-lg transition-colors">Galeri</a>
+                                class="block px-4 py-2 hover:bg-gray-100 hover:text-gray-900 rounded-lg transition-colors">Galeri</a>
                         </div>
                     </div>
 
                     <a href="#jadwal-sholat"
-                        class="px-4 py-2 text-gray-900 hover:bg-gray-100 rounded-lg transition-colors">Jadwal Sholat</a>
+                        class="px-4 py-2 hover:bg-gray-100 hover:text-gray-900 rounded-lg transition-colors">Jadwal Sholat</a>
                     <a href="#aktivitas"
-                        class="px-4 py-2 text-gray-900 hover:bg-gray-100 rounded-lg transition-colors">Aktivitas</a>
+                        class="px-4 py-2 hover:bg-gray-100 hover:text-gray-900 rounded-lg transition-colors">Aktivitas</a>
 
                     <!-- Mobile Auth Links -->
                     @if (Route::has('login'))
                         <div class="pt-2 border-t border-gray-200">
                             @auth
                                 <a href="{{ url('/dashboard') }}"
-                                    class="block px-4 py-2 text-gray-900 hover:bg-gray-100 rounded-lg transition-colors">Dashboard</a>
+                                    class="block px-4 py-2 hover:bg-gray-100 hover:text-gray-900 rounded-lg transition-colors">Dashboard</a>
                             @else
                                 <a href="{{ route('login') }}"
                                     class="px-6 py-2 text-sm font-medium text-white bg-islamic-green rounded-full hover:bg-islamic-green-light transition-colors shadow-md hover:shadow-lg">Masuk</a>
@@ -197,7 +197,7 @@
             <h3 class="text-xl md:text-2xl font-semibold mb-6 animate-fade-in opacity-90">
                 Tamanjaya, Kec. Tamansari, Kab. Tasikmalaya, Jawa Barat
             </h3>
-            <p class="text-xl md:text-2xl mb-8 max-w-2xl mx-auto opacity-95">
+            <p class="text-xl md:text-2xl mb-8 max-w-4xl mx-auto opacity-95">
                 Mewujudkan sarana ibadah yang nyaman dan khusyuk, serta mempererat Ukhuwah Islamiyah dalam menggapai
                 ridha Allah SWT
             </p>
@@ -282,9 +282,18 @@
     <!-- Jadwal sholat Section -->
     <section id="jadwal-sholat" class="py-20 bg-gray-50 scroll-mt-20">
         <div class="container mx-auto px-4 ">
-            <div class="text-center  mb-12">
+            <div class="text-center mb-12">
                 <h2 class="text-4xl md:text-5xl font-bold mb-4">Jadwal Sholat</h2>
-                <p class="text-lg text-gray-600">Jadwal Sholat Hari ini</p>
+                <p class="text-lg text-gray-600 mb-4">Jadwal Sholat Hari ini</p>
+                <div class="inline-flex items-center gap-2 bg-islamic-green/10 px-4 py-2 rounded-full animate-fade-in">
+                    <svg class="w-4 h-4 text-islamic-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                    </svg>
+                    <span id="location-name" class="text-islamic-green font-semibold">Memuat lokasi...</span>
+                </div>
             </div>
 
             <div class="max-w-4xl mx-auto mb-8">
@@ -615,6 +624,87 @@
             </div>
         </div>
     </section>
+
+    <!-- Image Modal -->
+    <div id="image-modal" class="fixed inset-0 z-[200] hidden opacity-0 transition-opacity duration-300"
+        aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-black/90 backdrop-blur-sm transition-opacity" id="image-modal-overlay"></div>
+
+        <div class="fixed inset-0 z-10 overflow-y-auto">
+            <div class="flex min-h-full items-center justify-center p-4 text-center sm:p-0">
+                <div class="relative transform overflow-hidden rounded-lg text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-5xl">
+                    <button type="button" id="image-modal-close"
+                        class="absolute top-4 right-4 z-50 text-white/70 hover:text-white bg-black/50 hover:bg-black/70 rounded-full p-2 transition-colors">
+                        <span class="sr-only">Close</span>
+                        <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                    
+                    <div class="flex items-center justify-center">
+                        <img id="image-modal-content" src="" alt="Full size" class="max-h-[85vh] w-auto object-contain rounded-lg shadow-2xl">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script Image Modal -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const modal = document.getElementById('image-modal');
+            const modalImg = document.getElementById('image-modal-content');
+            const closeBtn = document.getElementById('image-modal-close');
+            const overlay = document.getElementById('image-modal-overlay');
+            
+            // Function to open modal
+            function openModal(src) {
+                modalImg.src = src;
+                modal.classList.remove('hidden');
+                // Trigger reflow
+                void modal.offsetWidth;
+                modal.classList.add('opacity-100');
+            }
+
+            // Function to close modal
+            function closeModal() {
+                modal.classList.remove('opacity-100');
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                    modalImg.src = '';
+                }, 300);
+            }
+
+            // Add click event to all images
+            const images = document.querySelectorAll('img');
+            images.forEach(img => {
+                // Add cursor pointer style
+                img.style.cursor = 'zoom-in';
+                
+                img.addEventListener('click', function(e) {
+                    // Prevent if it's inside a button or link that shouldn't open modal
+                    // but user requested "setiap gambar", so apply to all.
+                    // Only exception might be if intended behavior is navigation (like logo link)
+                    // implementing stopPropagation if needed, but for now apply to all as requested.
+                    e.preventDefault(); 
+                    e.stopPropagation();
+                    openModal(this.src);
+                });
+            });
+
+            // Close events
+            closeBtn.addEventListener('click', closeModal);
+            overlay.addEventListener('click', closeModal);
+            
+            // Close on Escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+                    closeModal();
+                }
+            });
+        });
+    </script>
 
     <!-- Footer -->
     <footer class="bg-islamic-green text-white">

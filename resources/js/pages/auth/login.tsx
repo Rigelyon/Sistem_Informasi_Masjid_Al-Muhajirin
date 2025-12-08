@@ -45,10 +45,11 @@ export default function Login({
             <form onSubmit={submit}>
                 <Card className="max-w-sm mx-auto">
                     <CardHeader>
-                        <CardTitle className="text-2xl">Login</CardTitle>
+                        <CardTitle className="text-2xl">Masuk</CardTitle>
                         <CardDescription>
                             Masukkan email Anda di bawah ini untuk masuk ke akun
-                            Anda
+                            Anda. <br></br><br></br><span className="text-islamic-green">Hanya pengurus dari masjid Al-Muhajirin yang
+                            dapat masuk ke dalam sistem ini.</span>
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
@@ -98,12 +99,12 @@ export default function Login({
                                 Login
                             </Button>
                         </div>
-                        <div className="mt-4 text-sm text-center">
+                        {/* <div className="mt-4 text-sm text-center">
                             Tidak punya akun?&nbsp;
                             <Link href="/register" className="underline">
                                  Sign up
                             </Link>
-                        </div>
+                        </div> */}
                     </CardContent>
                 </Card>
             </form>
