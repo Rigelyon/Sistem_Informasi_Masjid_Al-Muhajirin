@@ -22,12 +22,15 @@ class SecurityHeaders
         $response->headers->set('X-XSS-Protection', '1; mode=block');
         
         // Permissive CSP to fix deployment issues
+        $viteUrl = app()->isLocal() ? ' http://127.0.0.1:5173' : '';
+        $viteWs = app()->isLocal() ? ' ws://127.0.0.1:5173' : '';
+
         $csp = "default-src 'self'; " .
-               "script-src 'self' 'unsafe-inline' 'unsafe-eval' https:; " .
-               "style-src 'self' 'unsafe-inline' https:; " .
-               "img-src 'self' data: https: blob:; " .
-               "font-src 'self' data: https:; " .
-               "connect-src 'self' https:; " .
+               "script-src 'self' 'unsafe-inline' 'unsafe-eval' https:{$viteUrl}; " .
+               "style-src 'self' 'unsafe-inline' https:{$viteUrl}; " .
+               "img-src 'self' data: https: blob:{$viteUrl}; " .
+               "font-src 'self' data: https:{$viteUrl}; " .
+               "connect-src 'self' https:{$viteUrl}{$viteWs}; " .
                "frame-src 'self' https:;";
                
         $response->headers->set('Content-Security-Policy', $csp);
