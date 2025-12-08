@@ -5,10 +5,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Masjid Al-Muhajirin</title>
-    <meta name="description"
-        content="Masjid Al-Muhajirin - Komunitas yang bersatu dalam iman, kasih sayang, dan pelayanan. Bergabunglah dengan kami untuk sholat harian, kelas Quran, dan program komunitas. Melayani sejak 1995.">
-    <meta name="keywords" content="masjid, Islamic center, jadwal sholat, kelas Quran, komunitas Muslim, masjid Jakarta">
+
+    <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
+    <meta name="description" content="Masjid Al-Muhajirin Tamanjaya, Kec. Tamansari, Kab. Tasikmalaya, Jawa Barat - Komunitas yang bersatu dalam iman, kasih sayang, dan pelayanan. Bergabunglah dengan kami untuk sholat harian, kelas Quran, dan program komunitas. Melayani sejak 1995.">
+    <meta name="keywords" content="masjid, Islamic center, jadwal sholat, kelas Quran, komunitas Muslim, masjid Tasikmalaya, Tamanjaya, Kec. Tamansari, Kab. Tasikmalaya, Jawa Barat">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <!-- SEO & Open Graph -->
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="{{ url('/') }}">
+    <meta property="og:title" content="Masjid Al-Muhajirin - Pusat Kegiatan Islam & Komunitas">
+    <meta property="og:description" content="Masjid Al-Muhajirin - Komunitas yang bersatu dalam iman, kasih sayang, dan pelayanan. Jadwal sholat, kelas Quran, dan program komunitas.">
+    <meta property="og:image" content="{{ asset('img/logo-masjid.png') }}">
+    <meta property="og:url" content="{{ url('/') }}">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Masjid Al-Muhajirin">
+    <meta name="twitter:description" content="Komunitas yang bersatu dalam iman, kasih sayang, dan pelayanan.">
+    <meta name="twitter:image" content="{{ asset('img/logo-masjid.png') }}">
+    <meta name="google-site-verification" content="eHJ1t7LzZZxX5ihOYfeZOszcGCksoYgnPhusnf0h73Y" />
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -177,8 +192,11 @@
 
         <div class="relative z-10 container mx-auto px-4 text-center text-white">
             <h1 class="text-5xl md:text-7xl font-bold mb-6 animate-fade-in">
-                Selamat Datang di Masjid Al-Muhajirin
+                Selamat Datang di Masjid <br>Al-Muhajirin
             </h1>
+            <h3 class="text-xl md:text-2xl font-semibold mb-6 animate-fade-in opacity-90">
+                Tamanjaya, Kec. Tamansari, Kab. Tasikmalaya, Jawa Barat
+            </h3>
             <p class="text-xl md:text-2xl mb-8 max-w-2xl mx-auto opacity-95">
                 Mewujudkan sarana ibadah yang nyaman dan khusyuk, serta mempererat Ukhuwah Islamiyah dalam menggapai
                 ridha Allah SWT
@@ -324,8 +342,20 @@
                     jamaah.</p>
             </div>
 
-            <div class="flex overflow-x-auto gap-6 pb-8 snap-x snap-mandatory scrollbar-hide"
-                style="-ms-overflow-style: none; scrollbar-width: none;">
+            <div class="relative group">
+                <!-- Navigation Buttons -->
+                <button id="program-prev" class="absolute left-4 top-1/2 -translate-y-1/2 z-20 bg-white shadow-lg rounded-full p-3 text-gray-800 hover:text-islamic-green hover:scale-110 transition-all opacity-0 group-hover:opacity-100 hidden md:flex items-center justify-center border border-gray-100">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                    </svg>
+                </button>
+                <button id="program-next" class="absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-white shadow-lg rounded-full p-3 text-gray-800 hover:text-islamic-green hover:scale-110 transition-all opacity-0 group-hover:opacity-100 hidden md:flex items-center justify-center border border-gray-100">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                </button>
+
+                <div id="program-scroll-container" class="flex overflow-x-auto gap-6 pb-8 snap-x snap-mandatory scrollbar-hide scroll-smooth" style="-ms-overflow-style: none; scrollbar-width: none;">
                 @forelse($programs as $program)
                     <div class="min-w-[300px] md:min-w-[350px] snap-center bg-white rounded-xl shadow p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 cursor-pointer program-card group border border-gray-100"
                         data-emoji="{{ $program->emoji ?? '📝' }}" data-title="{{ $program->title }}"
@@ -361,6 +391,7 @@
                         <p>Belum ada program yang tersedia saat ini.</p>
                     </div>
                 @endforelse
+                </div>
             </div>
         </div>
     </section>
