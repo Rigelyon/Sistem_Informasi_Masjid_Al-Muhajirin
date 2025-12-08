@@ -234,7 +234,7 @@
                             kami juga
                             menyediakan fasilitas pendidikan Madrasah Diniyah Awaliyah (MDA) di lantai dasar, serta
                             fasilitas
-                            sosial berupa garasi ambulans untuk melayani umat dan kegiatan santunan yatim piatu.
+                            sosial berupa garasi ambulans untuk melayani umat dan kegiatan santunan yatim piatu
                         </p>
                     </div>
                     <div class="mt-8 space-y-4">
