@@ -9,6 +9,20 @@
     <meta name="keywords" content="masjid, Islamic center, jadwal sholat, kelas Quran, komunitas Muslim, masjid Jakarta">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    <!-- SEO & Open Graph -->
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="{{ url('/') }}">
+    <meta property="og:title" content="Masjid Al-Muhajirin - Pusat Kegiatan Islam & Komunitas">
+    <meta property="og:description" content="Masjid Al-Muhajirin - Komunitas yang bersatu dalam iman, kasih sayang, dan pelayanan. Jadwal sholat, kelas Quran, dan program komunitas.">
+    <meta property="og:image" content="{{ asset('img/logo-masjid.png') }}">
+    <meta property="og:url" content="{{ url('/') }}">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Masjid Al-Muhajirin">
+    <meta name="twitter:description" content="Komunitas yang bersatu dalam iman, kasih sayang, dan pelayanan.">
+    <meta name="twitter:image" content="{{ asset('img/logo-masjid.png') }}">
+    <meta name="google-site-verification" content="eHJ1t7LzZZxX5ihOYfeZOszcGCksoYgnPhusnf0h73Y" />
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
