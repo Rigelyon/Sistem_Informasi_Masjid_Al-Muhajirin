@@ -350,6 +350,7 @@ document.addEventListener("DOMContentLoaded", () => {
     loadPrayerTimes();
     autoDailyRefresh();
     initProgramModal();
+    initProgramCarouselNav();
 });
 
 function initProgramModal() {
@@ -441,4 +442,20 @@ function initProgramModal() {
             closeModal();
         }
     });
+}
+
+function initProgramCarouselNav() {
+    const programContainer = document.getElementById('program-scroll-container');
+    const programPrevBtn = document.getElementById('program-prev');
+    const programNextBtn = document.getElementById('program-next');
+
+    if (programContainer && programPrevBtn && programNextBtn) {
+        programNextBtn.addEventListener('click', () => {
+            programContainer.scrollBy({ left: 340, behavior: 'smooth' });
+        });
+
+        programPrevBtn.addEventListener('click', () => {
+            programContainer.scrollBy({ left: -340, behavior: 'smooth' });
+        });
+    }
 }
