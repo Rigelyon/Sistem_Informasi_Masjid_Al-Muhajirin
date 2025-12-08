@@ -183,6 +183,8 @@ document.addEventListener('DOMContentLoaded', function() {
         
         const slides = Array.from(track.children);
         const indicators = Array.from(carousel.querySelectorAll('.carousel-indicator'));
+        const nextBtn = carousel.querySelector('.carousel-next');
+        const prevBtn = carousel.querySelector('.carousel-prev');
 
         let currentIndex = 0;
         let autoSlideInterval;
@@ -203,6 +205,12 @@ document.addEventListener('DOMContentLoaded', function() {
             updateCarousel();
         }
 
+        // Fungsi untuk pindah ke slide sebelumnya
+        function prevSlide() {
+            currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+            updateCarousel();
+        }
+
         // Event listeners untuk indicators
         indicators.forEach((indicator, index) => {
             indicator.addEventListener('click', () => {
@@ -211,6 +219,21 @@ document.addEventListener('DOMContentLoaded', function() {
                 resetAutoSlide();
             });
         });
+
+        // Event listeners untuk Tombol Prev/Next
+        if (nextBtn) {
+            nextBtn.addEventListener('click', () => {
+                nextSlide();
+                resetAutoSlide();
+            });
+        }
+
+        if (prevBtn) {
+            prevBtn.addEventListener('click', () => {
+                prevSlide();
+                resetAutoSlide();
+            });
+        }
 
         // Fungsi untuk memulai auto slide
         function startAutoSlide() {

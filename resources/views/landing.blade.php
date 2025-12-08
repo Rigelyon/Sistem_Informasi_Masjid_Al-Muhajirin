@@ -192,7 +192,7 @@
 
         <div class="relative z-10 container mx-auto px-4 text-center text-white">
             <h1 class="text-5xl md:text-7xl font-bold mb-6 animate-fade-in">
-                Selamat Datang di Masjid <br>Al-Muhajirin
+                Selamat Datang di Masjid<br>Al-Muhajirin
             </h1>
             <h3 class="text-xl md:text-2xl font-semibold mb-6 animate-fade-in opacity-90">
                 Tamanjaya, Kec. Tamansari, Kab. Tasikmalaya, Jawa Barat
@@ -234,11 +234,11 @@
                     <div class="mt-8 space-y-4">
                         <div class="p-6 bg-islamic-green-lighter rounded-xl border border-islamic-green/20">
                             <h3 class="text-xl font-bold mb-2 text-islamic-green">Visi Kami</h3>
-                            <p class="text-gray-600">
-                            <p class="font-bold">"Genah, Betah, Tuma'ninah Dina Ngalaksanakeun Ibadah." </p>
-                            Mewujudkan masjid sebagai tempat yang nyaman, penuh kekeluargaan, dan menenangkan hati,
-                            sehingga setiap jemaah dapat merasakan kekhusukan dalam beribadah kepada Allah SWT.
-                            </p>
+                            <div class="text-gray-600">
+                                <p class="font-bold">"Genah, Betah, Tuma'ninah Dina Ngalaksanakeun Ibadah." </p>
+                                Mewujudkan masjid sebagai tempat yang nyaman, penuh kekeluargaan, dan menenangkan hati,
+                                sehingga setiap jemaah dapat merasakan kekhusukan dalam beribadah kepada Allah SWT.
+                            </div>
                         </div>
                         <div class="p-6 bg-islamic-green-lighter rounded-xl border border-islamic-green/20">
                             <h3 class="text-xl font-bold mb-2 text-islamic-green">Misi Kami</h3>
@@ -508,6 +508,10 @@
                 @foreach ($galleries as $index => $group)
                     <div class="gallery-item">
                         <div class="activity-carousel" id="carousel-{{ $index + 1 }}">
+                            <!-- Navigation Buttons -->
+                            <button class="carousel-nav carousel-prev" aria-label="Previous Slide">❮</button>
+                            <button class="carousel-nav carousel-next" aria-label="Next Slide">❯</button>
+                            
                             <div class="carousel-track">
                                 @foreach ($group->photos as $photo)
                                     <div class="carousel-slide">
@@ -683,13 +687,27 @@
                 img.style.cursor = 'zoom-in';
                 
                 img.addEventListener('click', function(e) {
-                    // Prevent if it's inside a button or link that shouldn't open modal
-                    // but user requested "setiap gambar", so apply to all.
-                    // Only exception might be if intended behavior is navigation (like logo link)
-                    // implementing stopPropagation if needed, but for now apply to all as requested.
                     e.preventDefault(); 
                     e.stopPropagation();
                     openModal(this.src);
+                });
+            });
+
+            // Handle Gallery Carousel Captions
+            // Because the caption overlays the image, we need to capture clicks on it too
+            const captions = document.querySelectorAll('.carousel-caption');
+            captions.forEach(caption => {
+                caption.style.cursor = 'zoom-in';
+                caption.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const slide = this.closest('.carousel-slide');
+                    if (slide) {
+                        const img = slide.querySelector('img');
+                        if (img) {
+                            openModal(img.src);
+                        }
+                    }
                 });
             });
 
