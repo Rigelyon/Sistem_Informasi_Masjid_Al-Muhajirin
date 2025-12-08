@@ -155,15 +155,15 @@
         <div id="slideshow-bg" class="absolute inset-0">
 
             <div class="absolute inset-0 bg-cover bg-center transition-opacity duration-1000 opacity-100 z-0"
-                style="background-image: url({{ asset('img/bg3.jpg') }})">
-            </div>
-
-            <div class="absolute inset-0 bg-cover bg-center transition-opacity duration-1000 opacity-0 z-[-1]"
-                style="background-image: url({{ asset('img/bg2.jpeg') }})">
-            </div>
-
-            <div class="absolute inset-0 bg-cover bg-center transition-opacity duration-1000 opacity-0 z-[-1]"
                 style="background-image: url({{ asset('img/bg1.jpg') }})">
+            </div>
+
+            <div class="absolute inset-0 bg-cover bg-center transition-opacity duration-1000 opacity-0 z-[-1]"
+                style="background-image: url({{ asset('img/bg2.jpg') }})">
+            </div>
+
+            <div class="absolute inset-0 bg-cover bg-center transition-opacity duration-1000 opacity-0 z-[-1]"
+                style="background-image: url({{ asset('img/bg3.jpg') }})">
             </div>
             <div class="absolute inset-0 bg-cover bg-center transition-opacity duration-1000 opacity-0 z-[-1]"
                 style="background-image: url({{ asset('img/bg4.jpg') }})">
@@ -200,17 +200,23 @@
                     <h2 class="text-4xl md:text-5xl font-bold mb-6">Tentang Masjid </h2>
                     <div class="space-y-4 text-lg text-gray-600">
                         <p>
-                            Masjid Al-Muhajirin berdiri seiring dengan berdirinya Perumahan Tamanjaya Indah pada awal
-                            tahun 1990-an. Berawal dari fasilitas ibadah sederhana yang ditujukan bagi anggota TNI dan
-                            warga sekitar, masjid ini telah berkembang pesat sejalan dengan dinamika masyarakat
-                            Tasikmalaya. </p>
+                            Riwayat berdirinya Masjid Al-Muhajirin bermula seiring dengan pembangunan Perumahan
+                            Tamanjaya Indah
+                            pada tahun 1990-an di bawah naungan Yayasan ASABRI. Awalnya didirikan untuk memenuhi
+                            kebutuhan ibadah
+                            anggota TNI yang bertugas di Tasikmalaya, masjid ini kini telah berkembang melayani
+                            masyarakat umum
+                            sejalan dengan mobilitas dan pertumbuhan penduduk di lingkungan tersebut.
+                        </p>
                         <p>
-                            Sejak renovasi besar pada tahun 1995, Masjid Al-Muhajirin kini hadir dengan bangunan tiga
-                            lantai yang mampu menampung 700 hingga 1.000 jemaah. Lantai dasar difungsikan sebagai
-                            madrasah (MDA) untuk pendidikan agama anak-anak, lantai dua sebagai ruang utama ibadah dan
-                            sekretariat DKM, serta dilengkapi fasilitas pendukung seperti garasi ambulans. Kami
-                            berkomitmen untuk menjadi pusat kegiatan keagamaan yang tidak hanya melayani ibadah mahdhah,
-                            tetapi juga kepedulian sosial seperti santunan yatim piatu dan layanan pengurusan jenazah.
+                            Berawal dari bangunan sederhana, masjid ini mengalami renovasi besar sejak tahun 2005 untuk
+                            mengakomodasi kebutuhan jemaah yang terus bertambah. Saat ini, masjid diproyeksikan mampu
+                            menampung
+                            700 hingga 1.000 jemaah. Selain fungsi utamanya sebagai tempat ibadah dan sekretariat DKM,
+                            kami juga
+                            menyediakan fasilitas pendidikan Madrasah Diniyah Awaliyah (MDA) di lantai dasar, serta
+                            fasilitas
+                            sosial berupa garasi ambulans untuk melayani umat dan kegiatan santunan yatim piatu.
                         </p>
                     </div>
                     <div class="mt-8 space-y-4">
